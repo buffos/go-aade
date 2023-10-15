@@ -1,2 +1,2 @@
-# go-mydata
-A golang implementation of aade myData service of the greek goverment.
+# go-aade
+A golang implementation of aade services of the greek goverment.
