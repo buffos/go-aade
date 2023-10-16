@@ -1,3 +1,7 @@
+# assets local to the project directory
+assets/
+./**/cover/
+
 # Compiled Object files, Static and Dynamic libs (Shared Objects)
 *.o
 *.a
@@ -26,3 +30,4 @@ _testmain.go
 # InteeliJ files
 .idea
 *.iml
+/pdfinvoice/cover/
