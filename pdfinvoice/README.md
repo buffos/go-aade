@@ -21,6 +21,12 @@ First, We need to set to environment variables to use the api.
  - `FONT_PATH`: The path to the fonts directory
  - `LOGO_FILE_PATH`: the path to the logo file (including the file name and extension)
 
+In the default options struct, we are expecting the following font files:
+
+	`FONT_PATH`/Roboto-Regular.ttf
+	`FONT_PATH`/Roboto-Bold.ttf
+
+Font files are not included
 
 We create a document that holds the required data
 ```go
@@ -95,8 +101,17 @@ Now we need to add the invoice entries for each item. For example:
 		TaxAmount:         24,
 	})
 ```
+Call the `doc.CalculateTotals()` function to calculate the totals row of the invoice.
+Next, we need to complete the taxes entries.
+```go
+	doc.Taxes.WithHoldingTaxes = 20
+	doc.Taxes.Deductions = 0
+	doc.Taxes.StampDuty = 0
+	doc.Taxes.Fees = 0
+	doc.Taxes.OtherTaxes = 0
+```
 
-Finally we need to create the document. It is as simple as possible
+Finally, we need to create the document.
 
 ```go
 err = doc.CreateAndSave("test.pdf", SimpleA4Invoice{})
