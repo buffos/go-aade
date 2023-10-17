@@ -33,3 +33,5 @@ _testmain.go
 *.iml
 /pdfinvoice/cover/
 /vatservice/cover/
+/mydata/cover/
+
