@@ -21,7 +21,10 @@ func (doc *Document) AppendLogoToDocument(x, y float64) {
 	// region 1.handle logo
 	doc.pdf.SetXY(x, y)
 	if doc.LogoFileName != "" {
-		logoBytes, _ := os.ReadFile(doc.LogoFileName)
+		logoBytes, err := os.ReadFile(doc.LogoFileName)
+		if err != nil {
+			return // we do not add the image
+		}
 		doc.AppendImage(
 			x+doc.Options.Layout.LogoOffsetX, y,
 			0, doc.Options.Layout.LogoHeight,
