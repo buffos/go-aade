@@ -137,7 +137,7 @@ func (suite *ExpenseClassificationSuite) TestInvoiceExpensesClassificationNewWay
 	// vat amount testing
 	require.Equal(t, (*float64)(nil), inv1Entries[0].VatAmount)
 	require.Equal(t, (*float64)(nil), inv1Entries[1].VatAmount)
-	require.Equal(t, float64(28.8), *inv1Entries[2].VatAmount)
+	require.Equal(t, 28.8, *inv1Entries[2].VatAmount)
 	require.Equal(t, float64(0), *inv1Entries[3].VatAmount)
 
 	// classification category

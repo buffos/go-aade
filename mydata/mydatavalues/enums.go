@@ -1,5 +1,7 @@
 package mydatavalues
 
+import "math"
+
 const (
 	Xmlns     = "http://www.aade.gr/myDATA/invoice/v1.0"
 	XmlnsICLS = "https://www.aade.gr/myDATA/incomeClassificaton/v1.0"
@@ -423,30 +425,30 @@ const (
 )
 
 func (i InvoiceVATCategory) CalculateVAT(amount float64) float64 {
-	vatAmount := int64(0)
+	vatAmount := float64(0)
 
 	switch i {
 	case InvoiceVAT24Percent:
-		vatAmount = int64(amount*100) * 24
+		vatAmount = amount * 0.24
 	case InvoiceVAT13Percent:
-		vatAmount = int64(amount*100) * 13
+		vatAmount = amount * 0.13
 	case InvoiceVAT6Percent:
-		vatAmount = int64(amount*100) * 6
+		vatAmount = amount * 0.6
 	case InvoiceVAT0Percent:
 		vatAmount = 0
 	case InvoiceVATExempt:
 		vatAmount = 0
 	case InvoiceVAT17Percent:
-		vatAmount = int64(amount*100) * 17
+		vatAmount = amount * 0.17
 	case InvoiceVAT9Percent:
-		vatAmount = int64(amount*100) * 9
+		vatAmount = amount * 0.9
 	case InvoiceVAT4Percent:
-		vatAmount = int64(amount*100) * 4
+		vatAmount = amount * 0.4
 	default:
 		vatAmount = 0
 	}
-	// first divide by 100 to get it down to percentage, then divide by 100 to get it from cents to euros.
-	return float64(int(vatAmount/100)) / 100
+	// round money down to cents
+	return math.Round(vatAmount*100) / 100
 }
 
 // endregion
