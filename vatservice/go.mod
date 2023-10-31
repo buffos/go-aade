@@ -1,4 +1,4 @@
-module github.com/buffos/go-aade/vatservice
+module github.com/buffos/go-aade/vatService
 
 go 1.21.0
 
