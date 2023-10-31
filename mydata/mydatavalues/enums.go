@@ -422,6 +422,33 @@ const (
 	InvoiceVATExempt                                  // Εγγραφές χωρίς ΦΠΑ (πχ Μισθοδοσία, Αποσβέσεις)
 )
 
+func (i InvoiceVATCategory) CalculateVAT(amount float64) float64 {
+	vatAmount := int64(0)
+
+	switch i {
+	case InvoiceVAT24Percent:
+		vatAmount = int64(amount*100) * 24
+	case InvoiceVAT13Percent:
+		vatAmount = int64(amount*100) * 13
+	case InvoiceVAT6Percent:
+		vatAmount = int64(amount*100) * 6
+	case InvoiceVAT0Percent:
+		vatAmount = 0
+	case InvoiceVATExempt:
+		vatAmount = 0
+	case InvoiceVAT17Percent:
+		vatAmount = int64(amount*100) * 17
+	case InvoiceVAT9Percent:
+		vatAmount = int64(amount*100) * 9
+	case InvoiceVAT4Percent:
+		vatAmount = int64(amount*100) * 4
+	default:
+		vatAmount = 0
+	}
+	// first divide by 100 to get it down to percentage, then divide by 100 to get it from cents to euros.
+	return float64(int(vatAmount/100)) / 100
+}
+
 // endregion
 
 // region Κωδικοί Καυσίμων
@@ -617,7 +644,7 @@ const (
 	E3_305     ExpenseClassificationTypeStringType = "E3_305"     // Ιδιοπαραγωγή παγίων - Αυτοπαραδόσεις - Καταστροφές αποθεμάτων
 	E3_210     ExpenseClassificationTypeStringType = "E3_210"     // Ιδιοπαραγωγή παγίων - Αυτοπαραδόσεις - Καταστροφές αποθεμάτων
 	E3_310     ExpenseClassificationTypeStringType = "E3_310"     // Ιδιοπαραγωγή παγίων - Αυτοπαραδόσεις - Καταστροφές αποθεμάτων
-	E3_318     ExpenseClassificationTypeStringType = "E3_318"     //Ιδιοπαραγωγή παγίων - Αυτοπαραδόσεις - Καταστροφές αποθεμάτων
+	E3_318     ExpenseClassificationTypeStringType = "E3_318"     // Ιδιοπαραγωγή παγίων - Αυτοπαραδόσεις - Καταστροφές αποθεμάτων
 	E3_598_002 ExpenseClassificationTypeStringType = "E3_598_002" // Αγορές αγαθών που υπάγονται σε ΕΦΚΑ
 )
 
