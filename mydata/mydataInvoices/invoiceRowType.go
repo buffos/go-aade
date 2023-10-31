@@ -203,12 +203,29 @@ func (i *InvoiceRowType) AddIncomeClassification(clType mydatavalues.IncomeClass
 	return i
 }
 
-// AddExpenseClassification adds an expense classification to the invoice row's expense classification array.
-func (i *InvoiceRowType) AddExpenseClassification(clType mydatavalues.ExpenseClassificationTypeStringType, clCategory mydatavalues.ExpensesClassificationCategoryStringType, amount float64) *InvoiceRowType {
+// AddE3ExpenseClassification adds an expense classification to the invoice row's expense classification array. This does not classify VAT values
+func (i *InvoiceRowType) AddE3ExpenseClassification(clType mydatavalues.ExpenseClassificationTypeStringType, clCategory mydatavalues.ExpensesClassificationCategoryStringType, amount float64) *InvoiceRowType {
 	if i.ExpensesClassification == nil {
 		i.ExpensesClassification = make([]*ExpensesClassificationType, 0)
 	}
-	i.ExpensesClassification = append(i.ExpensesClassification, NewExpenseClassification(clType, clCategory, amount, byte(len(i.ExpensesClassification)+1)))
+	i.ExpensesClassification = append(i.ExpensesClassification, NewExpenseClassification(clType, clCategory, 0, 0, amount, byte(len(i.ExpensesClassification)+1)))
+
+	return i
+}
+
+// AddVATExpenseClassification adds an expense classification to the invoice row's expense classification array. This does not classify VAT values
+func (i *InvoiceRowType) AddVATExpenseClassification(
+	clType mydatavalues.ExpenseClassificationTypeStringType,
+	clCategory mydatavalues.ExpensesClassificationCategoryStringType,
+	vatCategory mydatavalues.InvoiceVATCategory,
+	vatExemptionCategory mydatavalues.VATExceptionReasonType,
+	amount float64) *InvoiceRowType {
+	if i.ExpensesClassification == nil {
+		i.ExpensesClassification = make([]*ExpensesClassificationType, 0)
+	}
+	i.ExpensesClassification = append(i.ExpensesClassification,
+		NewExpenseClassification(clType, clCategory, vatCategory, vatExemptionCategory, amount, byte(len(i.ExpensesClassification)+1)),
+	)
 	return i
 }
 

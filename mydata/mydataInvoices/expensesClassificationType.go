@@ -20,47 +20,47 @@ type ExpensesClassificationType struct {
 func NewExpenseClassification(
 	clType mydatavalues.ExpenseClassificationTypeStringType,
 	clCategory mydatavalues.ExpensesClassificationCategoryStringType,
+	vatCategory mydatavalues.InvoiceVATCategory,
+	vatExemptCategory mydatavalues.VATExceptionReasonType,
 	amount float64,
 	id byte) *ExpensesClassificationType {
+	// region initialize pointers
 	var clPtr *mydatavalues.ExpenseClassificationTypeStringType
 	var catPtr *mydatavalues.ExpensesClassificationCategoryStringType
+	var vatCatPtr *mydatavalues.InvoiceVATCategory
+	var vatExemptCatPtr *mydatavalues.VATExceptionReasonType
+	vatAmountPtr := (*float64)(nil)
+	idPtr := (*byte)(nil)
 	if clType != "" {
 		clPtr = &clType
 	}
 	if clCategory != "" {
 		catPtr = &clCategory
 	}
-
-	return &ExpensesClassificationType{
-		ClassificationType:     clPtr,
-		ClassificationCategory: catPtr,
-		Amount:                 amount,
-		ID:                     &id,
-	}
-}
-
-// NewExpenseClassificationVAT returns a new ExpensesClassificationType for VAT classifications
-func NewExpenseClassificationVAT(
-	vatCategory mydatavalues.InvoiceVATCategory,
-	vatExemptCategory mydatavalues.VATExceptionReasonType,
-	amount float64,
-	vatAmount float64,
-	id byte) *ExpensesClassificationType {
-	var vatCatPtr *mydatavalues.InvoiceVATCategory
-	var vatExemptCatPtr *mydatavalues.VATExceptionReasonType
 	if vatCategory != 0 {
 		vatCatPtr = &vatCategory
 	}
 	if vatExemptCategory != 0 {
 		vatExemptCatPtr = &vatExemptCategory
 	}
+	if id != 0 {
+		idPtr = &id
+	}
+	// vat amount is calculated only if vatCategory and vatExemptCategory are not 0
+	if vatCategory != 0 {
+		vatAmount := vatCategory.CalculateVAT(amount)
+		vatAmountPtr = &vatAmount
+	}
+	// endregion
 
 	return &ExpensesClassificationType{
-		VatCategory:          vatCatPtr,
-		VatExemptionCategory: vatExemptCatPtr,
-		Amount:               amount,
-		VatAmount:            &vatAmount,
-		ID:                   &id,
+		ClassificationType:     clPtr,
+		ClassificationCategory: catPtr,
+		Amount:                 amount,
+		VatAmount:              vatAmountPtr,
+		VatCategory:            vatCatPtr,
+		VatExemptionCategory:   vatExemptCatPtr,
+		ID:                     idPtr,
 	}
 }
 

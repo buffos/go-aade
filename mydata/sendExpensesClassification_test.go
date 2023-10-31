@@ -94,7 +94,7 @@ func TestSendExpensesClassificationEditDetailPostPerLine(t *testing.T) {
 			createRequest: func() *mydataInvoices.ExpensesClassificationsDoc {
 				doc := mydataInvoices.NewExpensesClassificationDoc()
 				doc.EditLineNumberDetail(400001906829007, "", 1,
-					mydatavalues.E3_585_009, mydatavalues.ECategory2_3, 5, 1)
+					mydatavalues.E3_585_009, mydatavalues.ECategory2_3, 5)
 				return doc
 			},
 			validateResponse: func(d *mydataInvoices.ResponseDoc) {},
@@ -106,9 +106,9 @@ func TestSendExpensesClassificationEditDetailPostPerLine(t *testing.T) {
 			createRequest: func() *mydataInvoices.ExpensesClassificationsDoc {
 				doc := mydataInvoices.NewExpensesClassificationDoc()
 				doc.EditLineNumberDetail(400001906829007, "", 1,
-					mydatavalues.E3_585_009, mydatavalues.ECategory2_3, 5, 1)
+					mydatavalues.E3_585_009, mydatavalues.ECategory2_3, 5)
 				doc.EditLineNumberDetail(400001906829007, "", 1,
-					mydatavalues.E3_585_009, mydatavalues.ECategory2_3, 5, 1)
+					mydatavalues.E3_585_009, mydatavalues.ECategory2_3, 5)
 				return doc
 			},
 			validateResponse: func(d *mydataInvoices.ResponseDoc) {
@@ -137,7 +137,7 @@ func TestSendExpensesClassificationEditDetailPostPerLine(t *testing.T) {
 func TestSimple(t *testing.T) {
 	doc := mydataInvoices.NewExpensesClassificationDoc()
 	doc.EditLineNumberDetail(400001906829007, "", 1,
-		mydatavalues.E3_585_009, mydatavalues.ECategory2_3, 5, 1)
+		mydatavalues.E3_585_009, mydatavalues.ECategory2_3, 5)
 
 	c := NewClient(userID, subscriptionKey, 30, false)
 	_, result, err := c.SendExpensesClassification(doc, false)
@@ -149,7 +149,7 @@ func TestSimple(t *testing.T) {
 func TestSimpleNewWay(t *testing.T) {
 	doc := mydataInvoices.NewExpensesClassificationDoc()
 	inv1 := doc.NewInvoiceClassificationForMark(400001906829007, "")
-	inv1.AddE3ClassificationDetail(mydatavalues.E3_102_001, mydatavalues.ECategory2_1, 5, 1)
+	inv1.AddE3ClassificationDetail(mydatavalues.E3_102_001, mydatavalues.ECategory2_1, 5)
 	//inv1.AddVatClassificationDetail(mydatavalues.InvoiceVAT24Percent, mydatavalues.VATExceptionReasonType(0), 5, 1.2, 2)
 
 	c := NewClient(userID, subscriptionKey, 30, false)
@@ -157,5 +157,3 @@ func TestSimpleNewWay(t *testing.T) {
 	spew.Dump(result)
 	spew.Dump(err)
 }
-
-//TODO: fix errors with the new method. It seems that the new method does not work.

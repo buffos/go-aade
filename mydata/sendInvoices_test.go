@@ -153,8 +153,8 @@ func TestSendInvoice(t *testing.T) {
 				invoice.InvoiceHeader.SetSelfPricing(true)
 				// create and add invoice row
 				invoiceRow := mydataInvoices.NewInvoiceRow(1.0, mydatavalues.InvoiceVAT24Percent)
-				invoiceRow.AddExpenseClassification(mydatavalues.E3_102_001, mydatavalues.ECategory2_1, 1)
-				invoiceRow.AddExpenseClassification(mydatavalues.VAT_361, "", 1)
+				invoiceRow.AddE3ExpenseClassification(mydatavalues.E3_102_001, mydatavalues.ECategory2_1, 1)
+				invoiceRow.AddE3ExpenseClassification(mydatavalues.VAT_361, "", 1)
 				invoice.AddInvoiceRow(invoiceRow)
 				// make summary for invoice
 				invoice.CalculateSummary()
@@ -457,7 +457,7 @@ func TestSendInvoice(t *testing.T) {
 				invoiceRow := mydataInvoices.
 					NewInvoiceRow(1.0, mydatavalues.InvoiceVAT24Percent).
 					SetInvoiceDetailType(mydatavalues.InvoiceDetailSalesClearanceOfThirdParties).
-					AddExpenseClassification("", mydatavalues.ECategory2_9, 1)
+					AddE3ExpenseClassification("", mydatavalues.ECategory2_9, 1)
 				invoice.AddInvoiceRow(invoiceRow)
 				invoiceRow = mydataInvoices.
 					NewInvoiceRow(1.0, mydatavalues.InvoiceVAT24Percent).
@@ -512,11 +512,11 @@ func TestSendInvoice(t *testing.T) {
 				// create and add invoice row 1
 				invoiceRow := mydataInvoices.
 					NewInvoiceRow(1.0, mydatavalues.InvoiceVATExempt).
-					AddExpenseClassification(mydatavalues.E3_581_001, mydatavalues.ECategory2_6, 1) // Μικτές Αποδοχές (Αμοιβές και Παροχές προσωπικού)
+					AddE3ExpenseClassification(mydatavalues.E3_581_001, mydatavalues.ECategory2_6, 1) // Μικτές Αποδοχές (Αμοιβές και Παροχές προσωπικού)
 				invoice.AddInvoiceRow(invoiceRow)
 				invoiceRow = mydataInvoices.
 					NewInvoiceRow(1.0, mydatavalues.InvoiceVATExempt).
-					AddExpenseClassification(mydatavalues.E3_581_002, mydatavalues.ECategory2_6, 1) // Εργοδοτικές Εισφορές (Αμοιβές και Παροχές προσωπικού)
+					AddE3ExpenseClassification(mydatavalues.E3_581_002, mydatavalues.ECategory2_6, 1) // Εργοδοτικές Εισφορές (Αμοιβές και Παροχές προσωπικού)
 				invoice.AddInvoiceRow(invoiceRow)
 
 				invoice.AddTaxTotals(mydatavalues.TaxTypeWithHoldingTax, uint(mydatavalues.WithHoldingTaxFMY), 0, 0.2, 0)                     // ΦΜΥ

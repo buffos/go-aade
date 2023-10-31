@@ -74,7 +74,7 @@ func (d *ExpensesClassificationsDoc) EditLineNumberDetail(
 	mark uint64, entityVatNumber string, lineNumber int,
 	clType mydatavalues.ExpenseClassificationTypeStringType,
 	clCategory mydatavalues.ExpensesClassificationCategoryStringType,
-	amount float64, id byte) {
+	amount float64) {
 	var entityVatNumberPointer *string
 	if entityVatNumber == "" {
 		entityVatNumberPointer = nil
@@ -89,33 +89,37 @@ func (d *ExpensesClassificationsDoc) EditLineNumberDetail(
 			for _, classificationDetails := range invoiceClassification.InvoicesExpensesClassificationDetails {
 				if classificationDetails.LineNumber == lineNumber {
 					// append to the existing classification
+					id := byte(len(classificationDetails.ExpensesClassificationDetailData) + 1)
 					classificationDetails.ExpensesClassificationDetailData = append(
 						classificationDetails.ExpensesClassificationDetailData,
-						NewExpenseClassification(clType, clCategory, amount, id))
+						NewExpenseClassification(clType, clCategory, mydatavalues.InvoiceVATCategory(0), mydatavalues.VATExceptionReasonType(0), amount, id))
 					return
 				}
 			}
-			// add a new classification and a new array of classifications with the given line number  (mark exists but not line number)
+			// add a new classification and a new array of classifications with the given line number
+			// (mark exists but not line number)
 			invoiceClassification.InvoicesExpensesClassificationDetails = append(invoiceClassification.InvoicesExpensesClassificationDetails, &InvoicesExpensesClassificationDetails{
-				LineNumber:                       lineNumber,
-				ExpensesClassificationDetailData: []*ExpensesClassificationType{NewExpenseClassification(clType, clCategory, amount, id)},
+				LineNumber: lineNumber,
+				ExpensesClassificationDetailData: []*ExpensesClassificationType{
+					NewExpenseClassification(clType, clCategory, mydatavalues.InvoiceVATCategory(0), mydatavalues.VATExceptionReasonType(0), amount, byte(1)),
+				},
 			})
 			return
 		}
 	}
 
 	// if we reach this point, then the invoice mark does not exist. add a new invoice classification
-	//classificationPostMode := byte(0)
 	d.ExpensesInvoiceClassification = append(d.ExpensesInvoiceClassification, &ExpensesInvoiceClassification{
 		InvoiceMark:     mark,
 		EntityVatNumber: entityVatNumberPointer,
 		InvoicesExpensesClassificationDetails: []*InvoicesExpensesClassificationDetails{
 			{
-				LineNumber:                       lineNumber,
-				ExpensesClassificationDetailData: []*ExpensesClassificationType{NewExpenseClassification(clType, clCategory, amount, id)},
+				LineNumber: lineNumber,
+				ExpensesClassificationDetailData: []*ExpensesClassificationType{
+					NewExpenseClassification(clType, clCategory, mydatavalues.InvoiceVATCategory(0), mydatavalues.VATExceptionReasonType(0), amount, byte(1)),
+				},
 			},
 		},
-		//ClassificationPostMode: &classificationPostMode,
 	})
 }
 
@@ -128,11 +132,10 @@ func (d *ExpensesClassificationsDoc) NewInvoiceClassificationForMark(mark uint64
 	} else {
 		entityVatNumberPointer = &entityVatNumber
 	}
-	//classificationPostMode := byte(1)
+
 	newInvoiceClassification := &ExpensesInvoiceClassification{
-		InvoiceMark:     mark,
-		EntityVatNumber: entityVatNumberPointer,
-		//ClassificationPostMode:                &classificationPostMode,
+		InvoiceMark:                           mark,
+		EntityVatNumber:                       entityVatNumberPointer,
 		InvoicesExpensesClassificationDetails: make([]*InvoicesExpensesClassificationDetails, 0),
 	}
 	d.ExpensesInvoiceClassification = append(d.ExpensesInvoiceClassification, newInvoiceClassification)
@@ -144,39 +147,62 @@ func (d *ExpensesClassificationsDoc) NewInvoiceClassificationForMark(mark uint64
 func (d *ExpensesInvoiceClassification) AddE3ClassificationDetail(
 	clType mydatavalues.ExpenseClassificationTypeStringType,
 	clCategory mydatavalues.ExpensesClassificationCategoryStringType,
-	amount float64, id byte) *ExpensesInvoiceClassification {
+	amount float64) *ExpensesInvoiceClassification {
 	// search d.InvoicesExpensesClassificationDetails to see if the LineNumber zero already exists
 	for _, classificationDetails := range d.InvoicesExpensesClassificationDetails {
 		if classificationDetails.LineNumber == 1 {
 			// append to the existing classification
-			classificationDetails.ExpensesClassificationDetailData = append(classificationDetails.ExpensesClassificationDetailData, NewExpenseClassification(clType, clCategory, amount, id))
+			id := byte(len(classificationDetails.ExpensesClassificationDetailData) + 1)
+			classificationDetails.ExpensesClassificationDetailData = append(
+				classificationDetails.ExpensesClassificationDetailData,
+				NewExpenseClassification(clType, clCategory, mydatavalues.InvoiceVATCategory(0), mydatavalues.VATExceptionReasonType(0), amount, id))
 			return d
 		}
 	}
 	d.InvoicesExpensesClassificationDetails = append(d.InvoicesExpensesClassificationDetails, &InvoicesExpensesClassificationDetails{
-		LineNumber:                       1,
-		ExpensesClassificationDetailData: []*ExpensesClassificationType{NewExpenseClassification(clType, clCategory, amount, id)},
+		LineNumber: 1,
+		ExpensesClassificationDetailData: []*ExpensesClassificationType{
+			NewExpenseClassification(clType, clCategory, mydatavalues.InvoiceVATCategory(0), mydatavalues.VATExceptionReasonType(0), amount, byte(1)), // id is one
+			// since this is the first entry in the ExpensesClassificationDetailData array.
+		},
 	})
 	return d
 }
 
 func (d *ExpensesInvoiceClassification) AddVatClassificationDetail(
+	clType mydatavalues.ExpenseClassificationTypeStringType,
+	clCategory mydatavalues.ExpensesClassificationCategoryStringType,
 	vatCategory mydatavalues.InvoiceVATCategory,
 	vatExemptionCategory mydatavalues.VATExceptionReasonType,
-	amount float64, vatAmount float64, id byte) *ExpensesInvoiceClassification {
+	amount float64) *ExpensesInvoiceClassification {
+	if vatCategory == mydatavalues.InvoiceVATExempt {
+		// Τα ποσά των γραμμών του παραστατικού με τιμή vatCategory 8 (Άνευ ΦΠΑ) δεν
+		//χαρακτηρίζονται εδώ
+		return d
+	}
+	if vatCategory == mydatavalues.InvoiceVAT0Percent && vatExemptionCategory != mydatavalues.Article39a {
+		// Τα ποσά των γραμμών του παραστατικού με τιμή vatCategory 7 (0%) δε
+		// χαρακτηρίζονται εδώ, με εξαίρεση όταν το vatExemptionCategory έχει τιμή 16 (άρθρο
+		// 39α του Κώδικα ΦΠΑ)
+		return d
+	}
 	// search d.InvoicesExpensesClassificationDetails to see if the LineNumber zero already exists
 	for _, classificationDetails := range d.InvoicesExpensesClassificationDetails {
 		if classificationDetails.LineNumber == 1 {
 			// append to the existing classification
+			id := byte(len(classificationDetails.ExpensesClassificationDetailData) + 1)
 			classificationDetails.ExpensesClassificationDetailData = append(
 				classificationDetails.ExpensesClassificationDetailData,
-				NewExpenseClassificationVAT(vatCategory, vatExemptionCategory, amount, vatAmount, id))
+				NewExpenseClassification(clType, clCategory, vatCategory, vatExemptionCategory, amount, id))
 			return d
 		}
 	}
 	d.InvoicesExpensesClassificationDetails = append(d.InvoicesExpensesClassificationDetails, &InvoicesExpensesClassificationDetails{
-		LineNumber:                       1,
-		ExpensesClassificationDetailData: []*ExpensesClassificationType{NewExpenseClassificationVAT(vatCategory, vatExemptionCategory, amount, vatAmount, id)},
+		LineNumber: 1,
+		ExpensesClassificationDetailData: []*ExpensesClassificationType{
+			NewExpenseClassification(clType, clCategory, vatCategory, vatExemptionCategory, amount, byte(1)), // id is one
+			// since this is the first entry in the ExpensesClassificationDetailData array.
+		},
 	})
 	return d
 }
@@ -192,4 +218,19 @@ func (d *ExpensesClassificationsDoc) ValidateAgainstInvoice(v *Invoice) error {
 		}
 	}
 	return errors.New("invoice mark not found in classification doc")
+}
+
+func (d *ExpensesInvoiceClassification) CalculateClassificationTotals() (float64, float64) {
+	var e3Total float64
+	var vatTotal float64
+	for _, classificationDetails := range d.InvoicesExpensesClassificationDetails {
+		for _, classification := range classificationDetails.ExpensesClassificationDetailData {
+			if classification.ClassificationType != nil {
+				e3Total += classification.Amount
+			} else {
+				vatTotal += classification.Amount
+			}
+		}
+	}
+	return e3Total, vatTotal
 }
