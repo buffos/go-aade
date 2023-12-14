@@ -1,9 +1,98 @@
 repo_name: buffos/go-aade
-report_id: d79c71916d9bb70b6581410f542333b3
+report_id: 1a3381a8a042114a3b818110816f682d
 repo_type: Public
-timestamp: '2023-11-09T12:02:53+00:00'
+timestamp: '2023-12-14T09:24:52+00:00'
 requested_by: buffos
 provider: github
 branch: main
-detected_tools_count: 0
-tools: []
+detected_tools_count: 7
+tools:
+- name: Golang
+  description: An open source programming language that makes it easy to build simple,
+    reliable, and efficient software
+  website_url: http://golang.org/
+  license: BSD-3-Clause
+  open_source: true
+  hosted_saas: false
+  category: Languages & Frameworks
+  sub_category: Languages
+  image_url: https://img.stackshare.io/service/1005/O6AczwfV_400x400.png
+  detection_source: Repo Metadata
+- name: Git
+  description: Fast, scalable, distributed revision control system
+  website_url: http://git-scm.com/
+  open_source: true
+  hosted_saas: false
+  category: Build, Test, Deploy
+  sub_category: Version Control System
+  image_url: https://img.stackshare.io/service/1046/git.png
+  detection_source: Repo Metadata
+- name: Testify
+  description: A toolkit with common assertions and mocks that plays nicely with the
+    standard library
+  website_url: https://github.com/stretchr/testify
+  license: MIT
+  open_source: true
+  hosted_saas: false
+  category: Build, Test, Deploy
+  sub_category: Go Testing
+  image_url: https://img.stackshare.io/service/8695/stretchr.png
+  detection_source: mydata/go.mod
+  last_updated_by: kostas.oraiopoulos
+  last_updated_on: 2023-10-17 22:15:38.000000000 Z
+- name: exp
+  description: Experimental and deprecated packages
+  package_url: https://pkg.go.dev/golang.org/x/exp
+  version: 0.0.0
+  license: BSD-3-Clause
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: Go Modules Packages
+  image_url: https://img.stackshare.io/package/go-packages/image.png
+  detection_source_url: https://github.com/buffos/go-aade/blob/main/mydata/go.sum
+  detection_source: mydata/go.mod
+  last_updated_by: kostas.oraiopoulos
+  last_updated_on: 2023-10-15 18:40:46.000000000 Z
+- name: go-difflib
+  description: Partial port of Python difflib package to Go
+  package_url: https://pkg.go.dev/github.com/pmezard/go-difflib
+  version: 1.0.0
+  license: BSD-3-Clause
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: Go Modules Packages
+  image_url: https://img.stackshare.io/package/go-packages/image.png
+  detection_source_url: https://github.com/buffos/go-aade/blob/main/mydata/go.sum
+  detection_source: mydata/go.mod
+  last_updated_by: kostas.oraiopoulos
+  last_updated_on: 2023-10-17 22:15:38.000000000 Z
+- name: go-qrcode
+  description: ":sparkles: QR Code encoder"
+  package_url: https://pkg.go.dev/github.com/skip2/go-qrcode
+  version: 0.0.0
+  license: MIT
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: Go Modules Packages
+  image_url: https://img.stackshare.io/package/go-packages/image.png
+  detection_source_url: https://github.com/buffos/go-aade/blob/main/pdfinvoice/go.sum
+  detection_source: pdfinvoice/go.mod
+  last_updated_by: kostas.oraiopoulos
+  last_updated_on: 2023-10-16 06:53:38.000000000 Z
+- name: go-spew
+  description: Implements a deep pretty printer for Go data structures to aid in debugging
+  package_url: https://pkg.go.dev/github.com/davecgh/go-spew
+  version: 1.1.1
+  license: ISC
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: Go Modules Packages
+  image_url: https://img.stackshare.io/package/go-packages/image.png
+  detection_source_url: https://github.com/buffos/go-aade/blob/main/mydata/go.sum
+  detection_source: mydata/go.mod
+  last_updated_by: kostas.oraiopoulos
+  last_updated_on: 2023-10-17 22:15:38.000000000 Z
