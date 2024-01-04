@@ -1,7 +1,8 @@
 repo_name: buffos/go-aade
-report_id: 1a3381a8a042114a3b818110816f682d
+report_id: d79c71916d9bb70b6581410f542333b3
+version: 0.1
 repo_type: Public
-timestamp: '2023-12-14T09:24:52+00:00'
+timestamp: '2024-01-04T14:53:12+00:00'
 requested_by: buffos
 provider: github
 branch: main
@@ -17,6 +18,7 @@ tools:
   category: Languages & Frameworks
   sub_category: Languages
   image_url: https://img.stackshare.io/service/1005/O6AczwfV_400x400.png
+  detection_source_url: https://github.com/buffos/go-aade
   detection_source: Repo Metadata
 - name: Git
   description: Fast, scalable, distributed revision control system
@@ -26,6 +28,7 @@ tools:
   category: Build, Test, Deploy
   sub_category: Version Control System
   image_url: https://img.stackshare.io/service/1046/git.png
+  detection_source_url: https://github.com/buffos/go-aade
   detection_source: Repo Metadata
 - name: Testify
   description: A toolkit with common assertions and mocks that plays nicely with the
@@ -37,6 +40,7 @@ tools:
   category: Build, Test, Deploy
   sub_category: Go Testing
   image_url: https://img.stackshare.io/service/8695/stretchr.png
+  detection_source_url: https://github.com/buffos/go-aade/blob/main/mydata/go.mod
   detection_source: mydata/go.mod
   last_updated_by: kostas.oraiopoulos
   last_updated_on: 2023-10-17 22:15:38.000000000 Z
