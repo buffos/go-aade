@@ -114,10 +114,17 @@ type InvoiceSpecialCategory uint
 
 //goland:noinspection GoUnusedConst
 const (
-	Subsidy                InvoiceSpecialCategory = iota + 1 // Επιδοτήσεις – Επιχορηγήσεις
-	HotelIncomeRoomCharges                                   // Έσοδα Ξενοδοχείων – Χρεώσεις Δωματίων
-	AccountingEntry                                          // Λογιστική Εγγραφή
-	TaxFree                                                  // Χωρίς Φόρο. Έγκυρη τιμή μόνο για	διαβίβαση μέσω erp ή έκδοση μέσω παρόχου ή timologio
+	Subsidy                             InvoiceSpecialCategory = iota + 1 // Επιδοτήσεις – Επιχορηγήσεις
+	HotelIncomeRoomCharges                                                // Έσοδα Ξενοδοχείων – Χρεώσεις Δωματίων
+	AccountingEntry                                                       // Λογιστική Εγγραφή
+	TaxFree                                                               // Χωρίς Φόρο. Έγκυρη τιμή μόνο για	διαβίβαση μέσω erp ή έκδοση μέσω παρόχου ή timologio
+	ComplexTransactionsHomeForeign                                        // Σύνθετες συναλλαγές ημεδαπής – αλλοδαπής
+	BeneficiaryOfArticle39                                                // Δικαιούχοι του άρθρου 3 της υπό στοιχεία 139818 ΕΞ2022/28.09.2022 (Β’5083)
+	BuyingAgriculturalProductsArticle41                                   // Αγορά γεωργικών προϊόντων άρθρο 41 του ΦΠΑ
+	RetailFHM_AADE_1                                                      // Λιανικές πωλήσεις, μόνο για ανάγνωση
+	RetailFHM_AADE_2                                                      // Λιανικές πωλήσεις, μόνο για ανάγνωση
+	WelfareHeating                                                        // Επιδότηση θέρμανσης
+	FoodServiceTransactions                                               // Συναλλαγές Εστίασης
 )
 
 // endregion
@@ -196,6 +203,16 @@ const InvoiceTypeContractIncome InvoiceType = "7.1" // Συμβόλαιο Έσο
 const (
 	InvoiceTypeRentIncome                InvoiceType = "8.1" // Ενοίκια - Έσοδο
 	InvoiceTypeReceiptOfAccommodationTax InvoiceType = "8.2" // Απόδειξη Είσπραξης Φόρου Διαμονής
+	InvoiceTypeReceiptPOS                InvoiceType = "8.4" // Απόδειξη Είσπραξης POS
+	InvoiceTypeReturnReceiptPOS          InvoiceType = "8.5" // Απόδειξη Επιστροφής POS
+	OrderReceiptFoodService              InvoiceType = "8.6" // Δελτίο Παραγγελίας Εστίασης
+)
+
+// Παραστατικό διακίνησης
+
+//goland:noinspection GoUnusedConst
+const (
+	InvoiceTypeMovementInvoice InvoiceType = "9.3" // Παραστατικό διακίνησης μη συσχετιζόμενο
 )
 
 // Παραστατικά Λιανικής
@@ -403,8 +420,12 @@ type EntityCategory uint
 
 //goland:noinspection GoUnusedConst
 const (
-	TaxRepresentative EntityCategory = iota + 1 // Φορολογικός Εκπρόσωπος
-	Mediator                                    // Διαμεσολαβητής
+	TaxRepresentative      EntityCategory = iota + 1 // Φορολογικός Εκπρόσωπος
+	Mediator                                         // Διαμεσολαβητής
+	Transporter                                      // Μεταφορέας
+	ReceiverOfSeller                                 // Λήπτης του Αποστολέα (Πωλητή)
+	Sender                                           // Αποστολέας (Πωλητής)
+	MiscCorrelatedEntities                           // Λοιπές Συσχετιζόμενες Οντότητες
 )
 
 // endregion
@@ -413,6 +434,7 @@ const (
 
 type InvoiceVATCategory uint
 
+//goland:noinspection GoUnusedConst
 const (
 	InvoiceVAT24Percent InvoiceVATCategory = iota + 1 // Κανονικό Τιμολόγιο 24%
 	InvoiceVAT13Percent                               // Κανονικό Τιμολόγιο 13%
@@ -422,6 +444,7 @@ const (
 	InvoiceVAT4Percent                                // Μειωμένο Τιμολόγιο 4%
 	InvoiceVAT0Percent                                // Μηδενικό Τιμολόγιο 0%
 	InvoiceVATExempt                                  // Εγγραφές χωρίς ΦΠΑ (πχ Μισθοδοσία, Αποσβέσεις)
+	InvoiceVAT3Percent                                // Μειωμένο Τιμολόγιο 3%
 )
 
 func (i InvoiceVATCategory) CalculateVAT(amount float64) float64 {

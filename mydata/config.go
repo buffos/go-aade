@@ -2,7 +2,7 @@ package mydata
 
 const (
 	develHost = "mydataapidev.aade.gr"
-	prodHost  = "mydatapi.aade.grrrrrr"
+	prodHost  = "mydatapi.aade.gr/myDATA"
 
 	URLSendInvoices               = "/SendInvoices"
 	URLRequestMyIncome            = "/RequestMyIncome"
@@ -12,6 +12,7 @@ const (
 	URLSendIncomeClassification   = "/SendIncomeClassification"
 	URLSendExpensesClassification = "/SendExpensesClassification"
 	URLCancelInvoice              = "/CancelInvoice"
+	URLSendPaymentsMethod         = "/SendPaymentsMethod"
 
 	InternalErrorCode = -500
 )

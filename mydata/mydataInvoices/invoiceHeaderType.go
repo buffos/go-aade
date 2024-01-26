@@ -24,6 +24,10 @@ type InvoiceHeaderType struct {
 	SpecialInvoiceCategory  *mydatavalues.InvoiceSpecialCategory   `xml:"specialInvoiceCategory"`  // Ειδική κατηγορία παραστατικού 1-4
 	InvoiceVariationType    *mydatavalues.InvoiceVariationType     `xml:"invoiceVariationType"`    // Τύπος απόκλισης παραστατικού 1-4
 	OtherCorrelatedEntities *EntityType                            `xml:"otherCorrelatedEntities"` // Λοιπές συσχετιζόμενες οντότητες
+	OtherDeliveryNoteHeader *OtherDeliveryNoteHeaderType           `xml:"otherDeliveryNoteHeader"` // Λοιπές συσχετιζόμενες οντότητες
+	IsDeliveryNote          *bool                                  `xml:"isDeliveryNote"`          // Παραστατικό παράδοσης?
+	OtherMovePurposeTitle   *string                                `xml:"otherMovePurposeTitle"`   // Άλλος σκοπός διακίνησης Αποδεκτό μόνο για την περίπτωση που movePurpose = 19
+	ThirdPartyCollection    *bool                                  `xml:"thirdPartyCollection"`    // Συλλογή από τρίτο πρόσωπο Αποδεκτό μόνο για παραστατικά τύπου 8.4 και 8.5
 }
 
 //goland:noinspection GoUnusedExportedFunction

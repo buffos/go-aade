@@ -11,4 +11,5 @@ type RequestedDoc struct {
 	CancelledInvoicesDoc      *CancelledInvoicesDoc       `xml:"cancelledInvoicesDoc"`
 	IncomeClassificationDoc   *IncomeClassificationsDoc   `xml:"incomeClassificationsDoc"`
 	ExpensesClassificationDoc *ExpensesClassificationsDoc `xml:"expensesClassificationDoc"`
+	PaymentMethodsDoc         *PaymentMethodsDoc          `xml:"paymentMethodsDoc"`
 }

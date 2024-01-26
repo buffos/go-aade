@@ -7,32 +7,36 @@ import (
 )
 
 type InvoiceRowType struct {
-	LineNumber                *uint                                    `xml:"lineNumber"`                // * ΑΑ γραμμής
-	RecType                   *mydatavalues.InvoiceLineType            `xml:"recType"`                   // Είδος Γραμμής
-	FuelCode                  *mydatavalues.FuelCode                   `xml:"fuelCode"`                  // Κωδικός Καυσίμου
-	Quantity                  *float64                                 `xml:"quantity"`                  // Ποσότητα
-	MeasurementUnit           *mydatavalues.InvoiceMeasurementUnit     `xml:"measurementUnit"`           // Είδος Ποσότητας
-	InvoiceDetailType         *mydatavalues.InvoiceDetailType          `xml:"invoiceDetailType"`         // Επισήμανση
-	NetValue                  *float64                                 `xml:"netValue"`                  // * Καθαρή αξία
-	VatCategory               *mydatavalues.InvoiceVATCategory         `xml:"vatCategory"`               // * Κατηγορία ΦΠΑ
-	VatAmount                 *float64                                 `xml:"vatAmount"`                 // * Ποσό ΦΠΑ
-	VatExemptionCategory      *mydatavalues.VATExceptionReasonType     `xml:"vatExemptionCategory"`      // Κατηγορία Αιτίας Απαλλαγής ΦΠΑ
-	Dienergia                 *ShipType                                `xml:"dienergia"`                 // ΠΟΛ 1177/2018	Αρ. 27
-	DiscountOption            *bool                                    `xml:"discountOption"`            // Δικαίωμα έκπτωσης
-	WithheldAmount            *float64                                 `xml:"withheldAmount"`            // Ποσό παρακράτησης φόρου
-	WithheldPercentCategory   *mydatavalues.WithholdingTaxCategoryType `xml:"withheldPercentCategory"`   // Κατηγορία ποσοστού παρακράτησης φόρου
-	StampDutyAmount           *float64                                 `xml:"stampDutyAmount"`           // Ποσό Χαρτοσήμου
-	StampDutyPercentCategory  *mydatavalues.PaperStampCategoryType     `xml:"stampDutyPercentCategory"`  // Κατηγορία ποσοστού χαρτοσήμου
-	FeesAmount                *float64                                 `xml:"feesAmount"`                // Ποσό Τελών
-	FeesPercentCategory       *mydatavalues.FeeCategoriesType          `xml:"feesPercentCategory"`       // Κατηγορία ποσοστού τελών
-	OtherTaxesPercentCategory *mydatavalues.MiscTaxCategoryType        `xml:"otherTaxesPercentCategory"` // Κατηγορία ποσοστού λοιπών φόρων
-	OtherTaxesAmount          *float64                                 `xml:"otherTaxesAmount"`          // Ποσό Λοιπών Φόρων
-	DeductionsAmount          *float64                                 `xml:"deductionsAmount"`          // Ποσό Κρατήσεων
-	LineComments              *string                                  `xml:"lineComments"`              // Σχόλια γραμμής
-	Quantity15                *float64                                 `xml:"quantity15"`                // Ποσότητα Θερμοκρασίας 15 βαθμών (για παραστατικά καυσίμων από παρόχους)
-	ItemDescr                 *string                                  `xml:"itemDescr"`                 // Περιγραφή Είδους (max 300 chars). Μόνο για την ειδική κατηγορία tax free
-	IncomeClassification      []*IncomeClassificationType              `xml:"incomeClassification"`      // Χαρακτηρισμοί Εσόδων
-	ExpensesClassification    []*ExpensesClassificationType            `xml:"expensesClassification"`    // Χαρακτηρισμοί Εξόδων
+	LineNumber                   *uint                                    `xml:"lineNumber"`                   // * ΑΑ γραμμής
+	RecType                      *mydatavalues.InvoiceLineType            `xml:"recType"`                      // Είδος Γραμμής
+	FuelCode                     *mydatavalues.FuelCode                   `xml:"fuelCode"`                     // Κωδικός Καυσίμου
+	Quantity                     *float64                                 `xml:"quantity"`                     // Ποσότητα
+	MeasurementUnit              *mydatavalues.InvoiceMeasurementUnit     `xml:"measurementUnit"`              // Είδος Ποσότητας
+	InvoiceDetailType            *mydatavalues.InvoiceDetailType          `xml:"invoiceDetailType"`            // Επισήμανση
+	NetValue                     *float64                                 `xml:"netValue"`                     // * Καθαρή αξία
+	VatCategory                  *mydatavalues.InvoiceVATCategory         `xml:"vatCategory"`                  // * Κατηγορία ΦΠΑ
+	VatAmount                    *float64                                 `xml:"vatAmount"`                    // * Ποσό ΦΠΑ
+	VatExemptionCategory         *mydatavalues.VATExceptionReasonType     `xml:"vatExemptionCategory"`         // Κατηγορία Αιτίας Απαλλαγής ΦΠΑ
+	Dienergia                    *ShipType                                `xml:"dienergia"`                    // ΠΟΛ 1177/2018	Αρ. 27
+	DiscountOption               *bool                                    `xml:"discountOption"`               // Δικαίωμα έκπτωσης
+	WithheldAmount               *float64                                 `xml:"withheldAmount"`               // Ποσό παρακράτησης φόρου
+	WithheldPercentCategory      *mydatavalues.WithholdingTaxCategoryType `xml:"withheldPercentCategory"`      // Κατηγορία ποσοστού παρακράτησης φόρου
+	StampDutyAmount              *float64                                 `xml:"stampDutyAmount"`              // Ποσό Χαρτοσήμου
+	StampDutyPercentCategory     *mydatavalues.PaperStampCategoryType     `xml:"stampDutyPercentCategory"`     // Κατηγορία ποσοστού χαρτοσήμου
+	FeesAmount                   *float64                                 `xml:"feesAmount"`                   // Ποσό Τελών
+	FeesPercentCategory          *mydatavalues.FeeCategoriesType          `xml:"feesPercentCategory"`          // Κατηγορία ποσοστού τελών
+	OtherTaxesPercentCategory    *mydatavalues.MiscTaxCategoryType        `xml:"otherTaxesPercentCategory"`    // Κατηγορία ποσοστού λοιπών φόρων
+	OtherTaxesAmount             *float64                                 `xml:"otherTaxesAmount"`             // Ποσό Λοιπών Φόρων
+	DeductionsAmount             *float64                                 `xml:"deductionsAmount"`             // Ποσό Κρατήσεων
+	LineComments                 *string                                  `xml:"lineComments"`                 // Σχόλια γραμμής
+	IncomeClassification         []*IncomeClassificationType              `xml:"incomeClassification"`         // Χαρακτηρισμοί Εσόδων
+	ExpensesClassification       []*ExpensesClassificationType            `xml:"expensesClassification"`       // Χαρακτηρισμοί Εξόδων
+	Quantity15                   *float64                                 `xml:"quantity15"`                   // Ποσότητα Θερμοκρασίας 15 βαθμών (για παραστατικά καυσίμων από παρόχους)
+	ItemDescr                    *string                                  `xml:"itemDescr"`                    // Περιγραφή Είδους (max 300 chars).Μόνο για την ειδική κατηγορία tax free
+	TaricNo                      *string                                  `xml:"TaricNo"`                      // Κωδικός ΤΑΡΙΚ.
+	ItemCode                     *string                                  `xml:"itemCode"`                     // Κωδικός Είδους.
+	OtherMeasurementUnitQuantity *int                                     `xml:"otherMeasurementUnitQuantity"` // Ποσότητα Εναλλακτικής Μονάδας Μέτρησης.Μόνο όταν measurementUnit = 7
+	OtherMeasurementUnitTitle    *string                                  `xml:"otherMeasurementUnitTitle"`    // Τίτλος Εναλλακτικής Μονάδας Μέτρησης.Μόνο όταν measurementUnit = 7
 }
 
 //goland:noinspection GoUnusedExportedFunction
@@ -55,6 +59,8 @@ func NewInvoiceRow(netValue float64, vatCat mydatavalues.InvoiceVATCategory) *In
 		vatPercent = 0
 	case mydatavalues.InvoiceVATExempt:
 		vatPercent = 0
+	case mydatavalues.InvoiceVAT3Percent:
+		vatPercent = 0.03
 	}
 	vatAmount := roundToMoney(netValue * vatPercent)
 	i := &InvoiceRowType{}
