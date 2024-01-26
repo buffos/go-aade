@@ -35,3 +35,4 @@ _testmain.go
 /vatService/cover/
 /mydata/cover/
 
+/mydata/main_test.go

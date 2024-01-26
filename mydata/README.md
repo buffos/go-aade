@@ -3,7 +3,8 @@
 ### Documentation
 
 * Official myDATA webpage: [AADE myDATA](https://www.aade.gr/mydata)
-* Latest documentation: [1.0.7](https://www.aade.gr/sites/default/files/2023-07/myDATA%20API%20Documentation%20v1.0.7_preofficial_erp.pdf)
+* Portal για developers [here](https://www.aade.gr/epiheiriseis/mydata-ilektronika-biblia-aade/mydata/dokimastiko-periballon)
+* Latest documentation: [1.0.8](https://www.aade.gr/sites/default/files/2023-12/myDATA%20API%20Documentation%20v1.0.8_preofficial_erp_1.pdf)
 * Test urls: [here](https://www.aade.gr/sites/default/files/2022-12/test_urls_0.pdf)
 * XML examples can be found [here](https://www.aade.gr/myData/prodiagrafes)
 * XML validation docs:
