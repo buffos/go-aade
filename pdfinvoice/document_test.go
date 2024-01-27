@@ -39,6 +39,7 @@ func setupDoc(doc *Document) {
 	doc.Number = "1"
 	doc.Date = "01/01/2021"
 	doc.Mark = "4000000012351351"
+	doc.UID = "GR090000000"
 	doc.PaymentMethod = "Μετρητά"
 	doc.Notes = `Η παραγγελία θα εκτελεσθεί μέχρι τις 24 Ιουνίου 2021. Αριθμός συναλλαγής 40909345`
 	doc.QRCodeString = "https://www.example.gr"
@@ -54,7 +55,7 @@ func setupDoc(doc *Document) {
 		TaxAmount:         24,
 	})
 	doc.InvoiceDetails.AddEntry(&InvoiceEntry{
-		Description:       "Παροχή συντήρηση ιστοσελίδας για ένα έτος.",
+		Description:       "Παροχή συντήρηση ιστοσελίδας για ένα έτος η και για δύο έτη ανάλογα.",
 		Quantity:          1,
 		UnitOfMeasurement: "",
 		NetPrice:          100,
@@ -64,7 +65,7 @@ func setupDoc(doc *Document) {
 		TaxAmount:         24,
 	})
 	doc.InvoiceDetails.AddEntry(&InvoiceEntry{
-		Description:       "Παροχή συντήρηση ιστοσελίδας για ένα έτος.",
+		Description:       "Παροχή συντήρηση ιστοσελίδας για ένα έτος η και για δύο έτη ανάλογα.",
 		Quantity:          1,
 		UnitOfMeasurement: "",
 		NetPrice:          100,
@@ -74,7 +75,7 @@ func setupDoc(doc *Document) {
 		TaxAmount:         24,
 	})
 	doc.InvoiceDetails.AddEntry(&InvoiceEntry{
-		Description:       "Παροχή συντήρηση ιστοσελίδας για ένα έτος.",
+		Description:       "Παροχή συντήρηση ιστοσελίδας για ένα έτος η και για δύο έτη ανάλογα.",
 		Quantity:          1,
 		UnitOfMeasurement: "",
 		NetPrice:          100,
@@ -84,7 +85,7 @@ func setupDoc(doc *Document) {
 		TaxAmount:         24,
 	})
 	doc.InvoiceDetails.AddEntry(&InvoiceEntry{
-		Description:       "Παροχή συντήρηση ιστοσελίδας για ένα έτος.",
+		Description:       "Παροχή συντήρηση ιστοσελίδας για ένα έτος η και για δύο έτη ανάλογα.",
 		Quantity:          1,
 		UnitOfMeasurement: "",
 		NetPrice:          100,
@@ -94,7 +95,7 @@ func setupDoc(doc *Document) {
 		TaxAmount:         24,
 	})
 	doc.InvoiceDetails.AddEntry(&InvoiceEntry{
-		Description:       "Παροχή συντήρηση ιστοσελίδας για ένα έτος.",
+		Description:       "Παροχή συντήρηση ιστοσελίδας για ένα έτος η και για δύο έτη ανάλογα.",
 		Quantity:          1,
 		UnitOfMeasurement: "",
 		NetPrice:          100,
@@ -104,7 +105,7 @@ func setupDoc(doc *Document) {
 		TaxAmount:         24,
 	})
 	doc.InvoiceDetails.AddEntry(&InvoiceEntry{
-		Description:       "Παροχή συντήρηση ιστοσελίδας για ένα έτος.",
+		Description:       "Παροχή συντήρηση ιστοσελίδας για ένα έτος η και για δύο έτη ανάλογα.",
 		Quantity:          1,
 		UnitOfMeasurement: "",
 		NetPrice:          100,
@@ -114,7 +115,7 @@ func setupDoc(doc *Document) {
 		TaxAmount:         24,
 	})
 	doc.InvoiceDetails.AddEntry(&InvoiceEntry{
-		Description:       "Παροχή συντήρηση ιστοσελίδας για ένα έτος.",
+		Description:       "Παροχή συντήρηση ιστοσελίδας για ένα έτος η και για δύο έτη ανάλογα.",
 		Quantity:          2,
 		UnitOfMeasurement: "",
 		NetPrice:          100,
@@ -124,7 +125,7 @@ func setupDoc(doc *Document) {
 		TaxAmount:         24,
 	})
 	doc.InvoiceDetails.AddEntry(&InvoiceEntry{
-		Description:       "Παροχή συντήρηση ιστοσελίδας για ένα έτος.",
+		Description:       "Παροχή συντήρηση ιστοσελίδας για ένα έτος η και για δύο έτη ανάλογα.",
 		Quantity:          2,
 		UnitOfMeasurement: "",
 		NetPrice:          100,
@@ -134,7 +135,7 @@ func setupDoc(doc *Document) {
 		TaxAmount:         24,
 	})
 	doc.InvoiceDetails.AddEntry(&InvoiceEntry{
-		Description:       "Παροχή συντήρηση ιστοσελίδας για ένα έτος.",
+		Description:       "Παροχή συντήρηση ιστοσελίδας για ένα έτος η και για δύο έτη ανάλογα.",
 		Quantity:          2,
 		UnitOfMeasurement: "",
 		NetPrice:          100,
@@ -144,7 +145,7 @@ func setupDoc(doc *Document) {
 		TaxAmount:         24,
 	})
 	doc.InvoiceDetails.AddEntry(&InvoiceEntry{
-		Description:       "Παροχή συντήρηση ιστοσελίδας για ένα έτος.",
+		Description:       "Παροχή συντήρηση ιστοσελίδας για ένα έτος η και για δύο έτη ανάλογα.",
 		Quantity:          2,
 		UnitOfMeasurement: "",
 		NetPrice:          100,
@@ -164,6 +165,8 @@ func setupDoc(doc *Document) {
 }
 
 func TestNewDocument(t *testing.T) {
+	_ = os.Setenv("LOGO_FILE_PATH", "../assets/logos/logoLight.png")
+	_ = os.Setenv("FONT_PATH", "../assets/fonts")
 	doc, err := NewInvoice(nil)
 	require.NoError(t, err)
 

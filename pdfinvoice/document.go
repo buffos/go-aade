@@ -162,6 +162,27 @@ func (doc *Document) AppendTableRow(
 	return doc.pdf.GetY() + h
 }
 
+func (doc *Document) AppendTableRowMultiCell(
+	x float64, y float64, w []float64, h float64, gap float64,
+	color []int, textColor []int, values []string, fontSize float64, borderStr string) float64 {
+	doc.pdf.SetXY(x, y) // set the current position
+	doc.pdf.SetFontSize(fontSize)
+	doc.SetFillColor(color)
+	doc.SetTextColor(textColor)
+
+	if len(w) != len(values) {
+		panic("length of w and values must be the same")
+	}
+	startX, startY := doc.pdf.GetXY()
+	for i, value := range values {
+		doc.pdf.SetY(startY)
+		doc.pdf.SetX(startX + gap)
+		doc.pdf.MultiCell(w[i], h/2, doc.EncodeString(value), borderStr, "C", false)
+		startX += w[i] + gap
+	}
+	return startY + h
+}
+
 // AppendTaxes appends the taxes section to the document
 // The position is specified in Options.Layout struct by TaxesX and TaxesY.
 // The row height is specified in Options.Layout struct by TaxesRowHeight.

@@ -5,6 +5,7 @@ import "github.com/buffos/go-aade/mydata/mydataInvoices"
 type ConnectionClient interface {
 	SetOnInvalidAction(action OnInvalidAction)
 	SendInvoices(invoices *mydataInvoices.InvoicesDoc) (int, *mydataInvoices.ResponseDoc, error)
+	SendPaymentsMethod(paymentMethods *mydataInvoices.PaymentMethodsDoc) (int, *mydataInvoices.ResponseDoc, error)
 	RequestDocs(params mydataInvoices.RequestDocsParams) (int, *mydataInvoices.RequestedDoc, error)
 	RequestDocsPastDays(days int) (int, *mydataInvoices.RequestedDoc, error)
 	RequestDocWithMark(mark uint) (int, *mydataInvoices.RequestedDoc, error)

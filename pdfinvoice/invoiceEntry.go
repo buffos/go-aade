@@ -78,7 +78,7 @@ func (doc *Document) AppendInvoiceDetail(y float64, entry *InvoiceEntry) float64
 	if entry == nil {
 		return y
 	}
-	return doc.AppendTableRow(
+	return doc.AppendTableRowMultiCell(
 		BaseMargin, y, []float64{60, 17, 10, 19, 20, 25, 13, 22}, 10, doc.Options.Layout.InvoiceColumnGap,
 		doc.Options.LightBgColor, doc.Options.DarkTextColor,
 		[]string{
