@@ -150,16 +150,41 @@ func (i *Invoice) SetIssuer(vat string, country string, branch uint64) *Invoice 
 	return i
 }
 
-// SetPaymentMethod sets the invoice's payment method
-func (i *Invoice) SetPaymentMethod(method mydatavalues.InvoicePaymentType, amount float64, paymentInfo string) *Invoice {
+// AddPaymentMethod sets the invoice's payment method
+func (i *Invoice) AddPaymentMethod(method mydatavalues.InvoicePaymentType, amount float64, paymentInfo string) *Invoice {
 	paymentDetail := &PaymentMethodDetailsType{
 		Type:              &method, // values 1 - 7 are valid
 		Amount:            &amount,
 		PaymentMethodInfo: paymentInfo,
 	}
-	i.PaymentMethods = &PaymentMethods{
-		PaymentMethodDetails: paymentDetail,
+	if i.PaymentMethods == nil {
+		i.PaymentMethods = &PaymentMethods{
+			PaymentMethodDetails: make([]PaymentMethodDetailsType, 0),
+		}
 	}
+	i.PaymentMethods.PaymentMethodDetails = append(i.PaymentMethods.PaymentMethodDetails, *paymentDetail)
+
+	return i
+}
+
+func (i *Invoice) AddPaymentMethodPOS(amount float64, paymentInfo string, transactionId string, signingAuthor string, sessionNumber string) *Invoice {
+	method := mydatavalues.POS
+	paymentDetail := &PaymentMethodDetailsType{
+		Type:              &method, // values 1 - 7 are valid
+		Amount:            &amount,
+		PaymentMethodInfo: paymentInfo,
+		TransactionId:     &transactionId,
+		ECRToken: &ECRTokenType{
+			SigningAuthor: &signingAuthor,
+			Signature:     &sessionNumber,
+		},
+	}
+	if i.PaymentMethods == nil {
+		i.PaymentMethods = &PaymentMethods{
+			PaymentMethodDetails: make([]PaymentMethodDetailsType, 0),
+		}
+	}
+	i.PaymentMethods.PaymentMethodDetails = append(i.PaymentMethods.PaymentMethodDetails, *paymentDetail)
 
 	return i
 }
