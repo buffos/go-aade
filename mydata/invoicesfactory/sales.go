@@ -31,7 +31,7 @@ func CreateSalesInvoice(params *SalesInvoiceParams) *mydataInvoices.Invoice {
 	invoice := mydataInvoices.NewInvoice(params.Series, params.AA, params.IssueDate, params.InvType)
 	invoice.SetIssuer(params.IssuerVat, params.IssuerCountry, params.IssuerBranch)
 	invoice.SetCounterPart(params.CounterVat, params.CounterCountry, params.CounterBranch)
-	invoice.SetPaymentMethod(params.PaymentMethod, params.PaymentAmount, params.PaymentInfo)
+	invoice.AddPaymentMethod(params.PaymentMethod, params.PaymentAmount, params.PaymentInfo)
 
 	invoice.InvoiceHeader.SetCurrency(params.Currency)
 
@@ -71,7 +71,7 @@ type PayrollInvoiceParams struct {
 func CreatePayrollInvoice(params *PayrollInvoiceParams) *mydataInvoices.Invoice {
 	invoice := mydataInvoices.NewInvoice(params.Series, params.AA, params.IssueDate, mydatavalues.InvoiceTypePayroll)
 	invoice.SetIssuer(params.IssuerVat, params.IssuerCountry, params.IssuerBranch)
-	invoice.SetPaymentMethod(params.PaymentMethod, params.PaymentAmount, params.PaymentInfo)
+	invoice.AddPaymentMethod(params.PaymentMethod, params.PaymentAmount, params.PaymentInfo)
 
 	invoice.InvoiceHeader.SetCurrency(params.Currency)
 
@@ -95,7 +95,7 @@ type RetailReceiptParams struct {
 func CreateRetailReceipt(params *RetailReceiptParams) *mydataInvoices.Invoice {
 	invoice := mydataInvoices.NewInvoice(params.Series, params.AA, params.IssueDate, params.InvType)
 	invoice.SetIssuer(params.IssuerVat, params.IssuerCountry, params.IssuerBranch)
-	invoice.SetPaymentMethod(params.PaymentMethod, params.PaymentAmount, params.PaymentInfo)
+	invoice.AddPaymentMethod(params.PaymentMethod, params.PaymentAmount, params.PaymentInfo)
 
 	invoice.InvoiceHeader.SetCurrency(params.Currency)
 
