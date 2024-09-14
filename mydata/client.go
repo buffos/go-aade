@@ -48,7 +48,7 @@ func (c *Client) getURL(path string, queryArgs map[string]string) string {
 	}
 	if c.prod {
 		u.Host = prodHost
-		u.Path = "/myDATA" + path
+		u.Path = path
 	} else {
 		u.Host = develHost
 		u.Path = path
