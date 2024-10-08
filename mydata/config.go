@@ -9,6 +9,7 @@ const (
 	URLRequestMyExpenses          = "/RequestMyExpenses"
 	URLRequestDocs                = "/RequestDocs"
 	URLRequestTransmittedDocs     = "/RequestTransmittedDocs"
+	URLRequestVatInfo             = "/RequestVatInfo"
 	URLSendIncomeClassification   = "/SendIncomeClassification"
 	URLSendExpensesClassification = "/SendExpensesClassification"
 	URLCancelInvoice              = "/CancelInvoice"

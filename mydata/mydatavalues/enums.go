@@ -34,6 +34,7 @@ const (
 	Credit                                           // Επί πιστώσει
 	WebBanking                                       // Ηλεκτρονική Τραπεζική Πληρωμή
 	POS                                              // Point of Sale
+	IRIS                                             // Αμεσες πληρωμές μέσω ΙΡΙΣ
 )
 
 // endregion
@@ -44,9 +45,13 @@ type InvoiceMeasurementUnit uint
 
 //goland:noinspection GoUnusedConst
 const (
-	Pieces    InvoiceMeasurementUnit = iota + 1 // Τεμάχια
-	Kilograms                                   // Κιλά
-	Liters                                      // Λίτρα
+	Pieces               InvoiceMeasurementUnit = iota + 1 // Τεμάχια
+	Kilograms                                              // Κιλά
+	Liters                                                 // Λίτρα
+	Meters                                                 // Μέτρα
+	SquareMeters                                           // Μ2
+	CubicMeters                                            // Μ3
+	Pieces_Miscellaneous                                   // Τεμάχια λοιπές περιπτώσεις
 )
 
 // endregion
@@ -57,10 +62,25 @@ type InvoicePurposeOfMovement uint
 
 //goland:noinspection GoUnusedConst
 const (
-	MovePurposeSales         InvoicePurposeOfMovement = iota + 1 // Πώληση
-	MovePurposeSalesOnBehalf                                     // Πώληση εκ μέρους τρίτων
-	MovePurposeSample                                            // Δειγματισμός
-
+	MovePurposeSales                               InvoicePurposeOfMovement = iota + 1 // Πώληση
+	MovePurposeSalesOnBehalf                                                           // Πώληση εκ μέρους τρίτων
+	MovePurposeSample                                                                  // Δειγματισμός
+	MovePurposeExhibition                                                              // Έκθεση
+	MovePurposeReturn                                                                  // Επιστροφή
+	MovePurposeKeep                                                                    // Φύλαξη
+	MovePurposeAssembly                                                                // Συναρμολόγηση
+	MovePurposeBetweenEntities                                                         // Μεταξύ Εγκαταστάσεων Οντότητας
+	MovePurposePurchase                                                                // Αγορά
+	MovePurposeSupplyOfShipsAndAircraft                                                //Εφοδιασμός πλοίων και αεροσκαφών
+	MovePurposeFreeDisposal                                                            //Δωρεάν διάθεση
+	MovePurposeGuarantee                                                               //Εγγύηση
+	MovePurposeLeasing                                                                 //Χρησιδανεισμός
+	MovePurposeStorageToThirdParties                                                   //Αποθήκευση σε Τρίτους
+	MovePurposeReturnFromStorage                                                       //Επιστροφή από Φύλαξη
+	MovePurposeRecycling                                                               //Ανακύκλωση
+	MovePurposeDestructionOfUnusedMaterial                                             //Καταστροφή άχρηστου υλικού
+	MovePurposeIntraCommunityTransferOfFixedAssets                                     //Διακίνηση Παγίων (Ενδοδιακίνηση)
+	MovePurposeOther                                                                   //Λοιπές Διακινήσεις
 )
 
 // endregion
@@ -117,12 +137,13 @@ const (
 	Subsidy                             InvoiceSpecialCategory = iota + 1 // Επιδοτήσεις – Επιχορηγήσεις
 	HotelIncomeRoomCharges                                                // Έσοδα Ξενοδοχείων – Χρεώσεις Δωματίων
 	AccountingEntry                                                       // Λογιστική Εγγραφή
-	TaxFree                                                               // Χωρίς Φόρο. Έγκυρη τιμή μόνο για	διαβίβαση μέσω erp ή έκδοση μέσω παρόχου ή timologio
+	TaxFree                                                               // Χωρίς Φόρο. Έγκυρη τιμή μόνο για	διαβίβαση μέσω erp ή έκδοση μέσω παρόχου ή τιμολόγιο
 	ComplexTransactionsHomeForeign                                        // Σύνθετες συναλλαγές ημεδαπής – αλλοδαπής
-	BeneficiaryOfArticle39                                                // Δικαιούχοι του άρθρου 3 της υπό στοιχεία 139818 ΕΞ2022/28.09.2022 (Β’5083)
+	BeneficiaryOfArticle3                                                 // Δικαιούχοι του άρθρου 3 της υπό στοιχεία 139818 ΕΞ2022/28.09.2022 (Β’5083)
 	BuyingAgriculturalProductsArticle41                                   // Αγορά γεωργικών προϊόντων άρθρο 41 του ΦΠΑ
 	RetailFHM_AADE_1                                                      // Λιανικές πωλήσεις, μόνο για ανάγνωση
 	RetailFHM_AADE_2                                                      // Λιανικές πωλήσεις, μόνο για ανάγνωση
+	RetailFHM_Divergent                                                   // Έσοδα Λιανικών ΦΗΜ Επιχείρησης Απόκλιση
 	WelfareHeating                                                        // Επιδότηση θέρμανσης
 	FoodServiceTransactions                                               // Συναλλαγές Εστίασης
 )
@@ -202,7 +223,7 @@ const InvoiceTypeContractIncome InvoiceType = "7.1" // Συμβόλαιο Έσο
 //goland:noinspection GoUnusedConst
 const (
 	InvoiceTypeRentIncome                InvoiceType = "8.1" // Ενοίκια - Έσοδο
-	InvoiceTypeReceiptOfAccommodationTax InvoiceType = "8.2" // Απόδειξη Είσπραξης Φόρου Διαμονής
+	InvoiceTypeReceiptOfAccommodationTax InvoiceType = "8.2" // Τέλος ανθεκτικότητας κλιματικής κρίσης
 	InvoiceTypeReceiptPOS                InvoiceType = "8.4" // Απόδειξη Είσπραξης POS
 	InvoiceTypeReturnReceiptPOS          InvoiceType = "8.5" // Απόδειξη Επιστροφής POS
 	OrderReceiptFoodService              InvoiceType = "8.6" // Δελτίο Παραγγελίας Εστίασης
@@ -230,25 +251,25 @@ const (
 
 //goland:noinspection GoUnusedConst
 const (
-	InvoiceTypeReceiveRetailReceipt  InvoiceType = "13.1" // Έξοδα - Αγορές Λιανικών Συναλλαγών ημεδαπής / αλλοδαπής
-	InvoiceTypeReceiveServiceReceipt InvoiceType = "13.2" // Παροχή Λιανικών Συναλλαγών ημεδαπής / αλλοδαπής
-	InvoiceTypeSharedExpenses        InvoiceType = "13.3" // Έξοδα - Κοινόχρηστα
-	InvoiceTypeSubscriptions         InvoiceType = "13.4" // Έξοδα - Συνδρομές
-	InvoiceTypeReceiptAsIsDynamic    InvoiceType = "13.5" // Παραστατικά Οντότητας ως αναγράφονται από την ίδια (δυναμικό)
-	InvoiceTypeReceiveCreditReceipt  InvoiceType = "13.6" // Πιστωτικό Στοιχείο Λιανικής
+	InvoiceTypeReceiveRetailReceipt  InvoiceType = "13.1"  // Έξοδα - Αγορές Λιανικών Συναλλαγών ημεδαπής / αλλοδαπής
+	InvoiceTypeReceiveServiceReceipt InvoiceType = "13.2"  // Παροχή Λιανικών Συναλλαγών ημεδαπής / αλλοδαπής
+	InvoiceTypeSharedExpenses        InvoiceType = "13.3"  // Έξοδα - Κοινόχρηστα
+	InvoiceTypeSubscriptions         InvoiceType = "13.4"  // Έξοδα - Συνδρομές
+	InvoiceTypeReceiptAsIsDynamic    InvoiceType = "13.30" // Παραστατικά Οντότητας ως αναγράφονται από την ίδια (δυναμικό)
+	InvoiceTypeReceiveCreditReceipt  InvoiceType = "13.31" // Πιστωτικό Στοιχείο Λιανικής ημεδαπής / αλλοδαπής
 )
 
 // Παραστατικά Εξαιρουμένων Οντοτήτων ημεδαπής / αλλοδαπής
 
 //goland:noinspection GoUnusedConst
 const (
-	ExemptInvoiceGoodsInsideEU     InvoiceType = "14.1" // Τιμολόγιο / Ενδοκοινοτικές Αποκτήσεις
-	ExemptInvoiceGoodsOutsideEU    InvoiceType = "14.2" // Τιμολόγιο / Αποκτήσεις Εμπορευμάτων από Τρίτες Χώρες
-	ExemptInvoiceServicesInsideEU  InvoiceType = "14.3" // Τιμολόγιο / Ενδοκοινοτικές Παροχές Υπηρεσιών
-	ExemptInvoiceServicesOutsideEU InvoiceType = "14.4" // Τιμολόγιο / Παροχές Υπηρεσιών από Τρίτες Χώρες
-	ExemptInsuranceServices        InvoiceType = "14.5" // ΕΦΚΑ και λοιποί ασφαλιστικοί οργανισμοί
-	ExemptInvoiceAsIsDynamic       InvoiceType = "14.6" // Παραστατικά Οντότητας ως αναγράφονται από την ίδια (δυναμικό)
-	ExemptionInvoiceCredit         InvoiceType = "14.7" // Πιστωτικό ημεδαπής / αλλοδαπής
+	ExemptInvoiceGoodsInsideEU     InvoiceType = "14.1"  // Τιμολόγιο / Ενδοκοινοτικές Αποκτήσεις
+	ExemptInvoiceGoodsOutsideEU    InvoiceType = "14.2"  // Τιμολόγιο / Αποκτήσεις Εμπορευμάτων από Τρίτες Χώρες
+	ExemptInvoiceServicesInsideEU  InvoiceType = "14.3"  // Τιμολόγιο / Ενδοκοινοτικές Παροχές Υπηρεσιών
+	ExemptInvoiceServicesOutsideEU InvoiceType = "14.4"  // Τιμολόγιο / Παροχές Υπηρεσιών από Τρίτες Χώρες
+	ExemptInsuranceServices        InvoiceType = "14.5"  // ΕΦΚΑ και λοιποί ασφαλιστικοί οργανισμοί
+	ExemptInvoiceAsIsDynamic       InvoiceType = "14.30" // Παραστατικά Οντότητας ως αναγράφονται από την ίδια (δυναμικό)
+	ExemptionInvoiceCredit         InvoiceType = "14.31" // Πιστωτικό ημεδαπής / αλλοδαπής
 )
 
 //goland:noinspection GoUnusedConst
@@ -349,7 +370,7 @@ const (
 	Fire5Percent                                                        // Ασφάλιστρα κλάδου πυρός 20% - 5%
 	LifeInsurance                                                       // Ασφάλιστρα κλάδου ζωής 4%
 	VariousInsurance                                                    // Ασφάλιστρα λοιπών κλάδων 15%
-	ExemptedInsuranceTax                                                // Aπαλλασσόμενα φόρου ασφαλίστρων 0%
+	ExemptedInsuranceTax                                                // Απαλλασσόμενα φόρου ασφαλίστρων 0%
 	Hotel1OR2Stars                                                      // Φόρος Διαμονής Ξενοδοχείων 1 ή 2 αστέρων 0,5 ευρώ
 	Hotel3Stars                                                         // Φόρος Διαμονής Ξενοδοχείων 3 αστέρων 1,5 ευρώ
 	Hotel4Stars                                                         // Φόρος Διαμονής Ξενοδοχείων 4 αστέρων 3 ευρώ
@@ -364,6 +385,17 @@ const (
 	VariousTaxes                                                        // Λοιποί Φόροι
 	ChargesOnVariousTaxes                                               // Επιβαρύνσεις Λοιπών Φόρων
 	EFK                                                                 // Ειδικός Φόρος Κατανάλωσης
+	Hotel1Or2StarTax                                                    // Φόρος Διαμονής Ξενοδοχείων 1 αστέρα 1,5 ευρώ ανά δωμάτιο
+	Hotel3StarTax                                                       // Φόρος Διαμονής Ξενοδοχείων 3 αστέρων 3,0 ευρώ ανά δωμάτιο
+	Hotel4StarTax                                                       // Φόρος Διαμονής Ξενοδοχείων 4 αστέρων 7,0 ευρώ ανά δωμάτιο
+	Hotel5StarTax                                                       // Φόρος Διαμονής Ξενοδοχείων 5 αστέρων 10,0 ευρώ ανά δωμάτιο
+	RentRoomsTax                                                        // Φόρος Διαμονής Ενοικιαζομένων επιπλωμένων Δωματίων 1,5 ευρώ ανά δωμάτιο
+	ShortTermRentTax                                                    // Φόρος Διαμονής Μικρών Ενοικιαζομένων Δωματίων 1,5 ευρώ ανά δωμάτιο
+	ShortTermRentOver80sqmTax                                           // Ακίνητα βραχυχρόνιας μίσθωσης μονοκατοικίες άνω των 80 τ.μ. 10,00€
+	VillasTax                                                           // Αυτοεξυπηρετούμενα καταλύματα – τουριστικές επιπλωμένες επαύλεις (βίλες) 10,00€
+	ShortTermRentTax2                                                   // Φόρος Διαμονής Μικρών Ενοικιαζομένων Δωματίων 0,5 ευρώ ανά δωμάτιο
+	ShortTermRentOver80sqmTax2                                          // Ακίνητα βραχυχρόνιας μίσθωσης μονοκατοικίες άνω των 80 τ.μ. 4,00€
+	VillasTax2                                                          // Αυτοεξυπηρετούμενα καταλύματα – τουριστικές επιπλωμένες επαύλεις (βίλες) 4,00€
 )
 
 // endregion
@@ -388,9 +420,9 @@ type FeeCategoriesType uint
 
 //goland:noinspection GoUnusedConst
 const (
-	MonthlyBillsUpto50Euros    FeeCategoriesType = iota + 1 // Για μηνιαίο λογαριασμό μέχρι και 50 ευρώ 12%
-	MonthlyBillsUpto100Euros                                // Για μηνιαίο λογαριασμό από 50,01 μέχρι και 100 ευρώ 15%
-	MonthlyBillsUpto150Euros                                // Για μηνιαίο λογαριασμό από 100,01 μέχρι και 150 ευρώ 18%
+	MonthlyBillsUpTo50Euros    FeeCategoriesType = iota + 1 // Για μηνιαίο λογαριασμό μέχρι και 50 ευρώ 12%
+	MonthlyBillsUpTo100Euros                                // Για μηνιαίο λογαριασμό από 50,01 μέχρι και 100 ευρώ 15%
+	MonthlyBillsUpTo150Euros                                // Για μηνιαίο λογαριασμό από 100,01 μέχρι και 150 ευρώ 18%
 	MonthlyBillAbove150                                     // Για μηνιαίο λογαριασμό από 150,01 ευρώ και άνω 20%
 	CartMobilePhone12Percent                                // Τέλος καρτοκινητής επί της αξίας του χρόνου ομιλίας (12%)
 	SubscriptionTV                                          // Τέλος στη συνδρομητική τηλεόραση 10%
@@ -436,15 +468,16 @@ type InvoiceVATCategory uint
 
 //goland:noinspection GoUnusedConst
 const (
-	InvoiceVAT24Percent InvoiceVATCategory = iota + 1 // Κανονικό Τιμολόγιο 24%
-	InvoiceVAT13Percent                               // Κανονικό Τιμολόγιο 13%
-	InvoiceVAT6Percent                                // Κανονικό Τιμολόγιο 6%
-	InvoiceVAT17Percent                               // Μειωμένο Τιμολόγιο 17%
-	InvoiceVAT9Percent                                // Μειωμένο Τιμολόγιο 9%
-	InvoiceVAT4Percent                                // Μειωμένο Τιμολόγιο 4%
-	InvoiceVAT0Percent                                // Μηδενικό Τιμολόγιο 0%
-	InvoiceVATExempt                                  // Εγγραφές χωρίς ΦΠΑ (πχ Μισθοδοσία, Αποσβέσεις)
-	InvoiceVAT3Percent                                // Μειωμένο Τιμολόγιο 3%
+	InvoiceVAT24Percent         InvoiceVATCategory = iota + 1 // Κανονικό Τιμολόγιο 24%
+	InvoiceVAT13Percent                                       // Κανονικό Τιμολόγιο 13%
+	InvoiceVAT6Percent                                        // Κανονικό Τιμολόγιο 6%
+	InvoiceVAT17Percent                                       // Μειωμένο Τιμολόγιο 17%
+	InvoiceVAT9Percent                                        // Μειωμένο Τιμολόγιο 9%
+	InvoiceVAT4Percent                                        // Μειωμένο Τιμολόγιο 4%
+	InvoiceVAT0Percent                                        // Μηδενικό Τιμολόγιο 0%
+	InvoiceVATExempt                                          // Εγγραφές χωρίς ΦΠΑ (πχ Μισθοδοσία, Αποσβέσεις)
+	InvoiceVAT3PercentArticle31                               // Μειωμένο Τιμολόγιο 3% (άρθρο 31 νόμος 5027/2023)
+	InvoiceVAT4PercentArticle31                               // Μειωμένο Τιμολόγιο 4% (άρθρο 31 νόμος 5027/2023)
 )
 
 func (i InvoiceVATCategory) CalculateVAT(amount float64) float64 {
@@ -482,31 +515,59 @@ type FuelCode uint
 
 //goland:noinspection GoUnusedConst
 const (
-	Benzine95RON           FuelCode = iota + 10 // Βενζίνη 95 RON
-	Benzine95RONPlus                            // Βενζίνη 95 RON Plus
-	Benzine100RON                               // Βενζίνη 100 RON
-	BenzineLRPG                                 // Βενζίνη LRP
-	BenzineAirplane                             // Βενζίνη Αεροπλάνου
-	BenzineSpecialAirplane                      // Ειδικό καύσιμο αεριωθουμένων
+	FuelBenzine95RON           FuelCode = iota + 10 // Βενζίνη 95 RON
+	FuelBenzine95RONPlus                            // Βενζίνη 95 RON Plus
+	FuelBenzine100RON                               // Βενζίνη 100 RON
+	FuelBenzineLRPG                                 // Βενζίνη LRP
+	FuelBenzineAirplane                             // Βενζίνη Αεροπλάνου
+	FuelBenzineSpecialAirplane                      // Ειδικό καύσιμο αεριωθουμένων
 )
 
 //goland:noinspection GoUnusedConst
 const (
-	Diesel     FuelCode = iota + 20 // Diesel
-	DieselPlus                      // Diesel Plus
+	FuelDiesel     FuelCode = iota + 20 // Diesel
+	FuelDieselPlus                      // Diesel Plus
 )
 
 //goland:noinspection GoUnusedConst
 const (
-	DieselHeatNN      FuelCode = iota + 30 // Diesel Heat nn
-	DieselHeatPremium                      // Diesel Heat premium
-	DieselLight                            // Diesel Light
-	DieselOtherUses                        // Diesel άλλων χρήσεων
-	DieselMarine                           // Diesel Ναυτιλίας
-	Kerosene                               // Κηροζίνη JP1
-	KeroseneOtherUses                      // Κηροζίνη άλλων χρήσεων
-	Mazout                                 // Μαζούτ
-	MazoutMarine                           // Μαζούτ Ναυτιλίας
+	FuelDieselHeatNN      FuelCode = iota + 30 // Diesel Heat nn
+	FuelDieselHeatPremium                      // Diesel Heat premium
+	FuelDieselLight                            // Diesel Light
+	FuelDieselOtherUses                        // Diesel άλλων χρήσεων
+	FuelDieselMarine                           // Diesel Ναυτιλίας
+	FuelKerosene                               // Κηροζίνη JP1
+	FuelKeroseneOtherUses                      // Κηροζίνη άλλων χρήσεων
+	FuelMazout                                 // Μαζούτ
+	FuelMazoutMarine                           // Μαζούτ Ναυτιλίας
+)
+
+//goland:noinspection GoUnusedConst
+const (
+	FuelLPG                                     FuelCode = iota + 40 // LPG (υγραέριο)
+	FuelLPGMethaneIndustrialCommercial                               //Υγραέριο (LPG) και μεθάνιο βιομηχανικό /εμπορικό κινητήρων
+	FuelLPGMethaneHeatingAndOtherUses                                //Υγραέριο (LPG) και μεθάνιο θέρμανσης και λοιπών χρήσεων
+	FuelLPGMethaneIndustrialCommercialInBottles                      //Υγραέριο (LPG) και μεθάνιο βιομηχανικό /εμπορικό κινητήρων (σε φιάλες)
+	FuelLPGMethaneHeatingAndOtherUsesInBottles                       //Υγραέριο (LPG) και μεθάνιο θέρμανσης και λοιπών χρήσεων (σε φιάλες)
+)
+
+const (
+	FuelCNG FuelCode = iota + 50 // CNG (πεπιεσμένο φυσικό αέριο)
+)
+
+const (
+	FuelAromaticHydrocarbons2707 FuelCode = iota + 60 // Αρωματικοί Υδρογονάνθρακες Δασμολογικής Κλάσης 2707
+	FuelCyclicHydrocarbons2902                        // Κυκλικοί Υδρογονάνθρακες Δασμολογικής Κλάσης 2902
+)
+
+const (
+	FuelLightPetroleumWhiteSpirit FuelCode = iota + 70 // Ελαφρύ πετρέλαιο (WHITE SPIRIT)
+	FuelLightLubricants                                // Ελαφριά λάδια
+	FuelBioDiesel                                      // Βιοντίζελ
+)
+
+const (
+	FuelFullOtherServices FuelCode = iota + 999 // Χρησιμοποιείται στις περιπτώσεις που σε ένα παραστατικό εκτός από καύσιμα υπάρχει η ανάγκη να τιμολογούνται και λοιπές χρεώσεις μικρών ποσών
 )
 
 // endregion
@@ -575,6 +636,7 @@ const (
 	ICategory1_9  IncomeClassificationCategoryStringType = "category1_9"  // Έσοδα επομένων χρήσεων (+) / (-)
 	ICategory1_10 IncomeClassificationCategoryStringType = "category1_10" // Λοιπές Εγγραφές Τακτοποίησης Εσόδων (+) / (-)
 	ICategory1_95 IncomeClassificationCategoryStringType = "category1_95" // Λοιπά Πληροφοριακά Στοιχεία Εσόδων (+) / (-)
+	ICategory3    IncomeClassificationCategoryStringType = "category3"    // Διακίνηση
 )
 
 // endregion
@@ -585,92 +647,93 @@ type ExpenseClassificationTypeStringType string
 
 //goland:noinspection GoUnusedConst,GoSnakeCaseUsage
 const (
-	E3_101     ExpenseClassificationTypeStringType = "E3_101"     // Εμπορεύματα έναρξης
-	E3_102_001 ExpenseClassificationTypeStringType = "E3_102_001" // Αγορές εμπορευμάτων χρήσης (καθαρό ποσό)/Χονδρικές
-	E3_102_002 ExpenseClassificationTypeStringType = "E3_102_002" // Αγορές εμπορευμάτων χρήσης (καθαρό ποσό)/Λιανικές
-	E3_102_003 ExpenseClassificationTypeStringType = "E3_102_003" // Αγορές εμπορευμάτων χρήσης (καθαρό ποσό)/Αγαθών του άρθρου 39α παρ.5 του Κώδικα Φ.Π.Α. (ν.2859/2000)
-	E3_102_004 ExpenseClassificationTypeStringType = "E3_102_004" // Αγορές εμπορευμάτων χρήσης (καθαρό ποσό)/Εξωτερικού Ενδοκοινοτικές
-	E3_102_005 ExpenseClassificationTypeStringType = "E3_102_005" // Αγορές εμπορευμάτων χρήσης (καθαρό ποσό)/Εξωτερικού Τρίτες Χώρες
-	E3_102_006 ExpenseClassificationTypeStringType = "E3_102_006" // Αγορές εμπορευμάτων χρήσης (καθαρό ποσό)Λοιπά
-	E3_104     ExpenseClassificationTypeStringType = "E3_104"     // Εμπορεύματα λήξης
-	E3_201     ExpenseClassificationTypeStringType = "E3_201"     // Πρώτες ύλες και υλικά έναρξης/Παραγωγή
-	E3_202_001 ExpenseClassificationTypeStringType = "E3_202_001" // Αγορές πρώτων υλών και υλικών χρήσης (καθαρό ποσό)/Χονδρικές
-	E3_202_002 ExpenseClassificationTypeStringType = "E3_202_002" // Αγορές πρώτων υλών και υλικών χρήσης (καθαρό ποσό)/Λιανικές
-	E3_202_003 ExpenseClassificationTypeStringType = "E3_202_003" // Αγορές πρώτων υλών και υλικών χρήσης (καθαρό ποσό)/Εξωτερικού Ενδοκοινοτικές
-	E3_202_004 ExpenseClassificationTypeStringType = "E3_202_004" // Αγορές πρώτων υλών και υλικών χρήσης (καθαρό ποσό)/Εξωτερικού Τρίτες Χώρες
-	E3_202_005 ExpenseClassificationTypeStringType = "E3_202_005" // Αγορές πρώτων υλών και υλικών χρήσης (καθαρό ποσό)/Λοιπά
-	E3_204     ExpenseClassificationTypeStringType = "E3_204"     // Αποθέματα λήξης πρώτων υλών και υλικών/Παραγωγή
-	E3_207     ExpenseClassificationTypeStringType = "E3_207"     // Προϊόντα και παραγωγή σε εξέλιξη έναρξης/Παραγωγή
-	E3_209     ExpenseClassificationTypeStringType = "E3_209"     // Προϊόντα και παραγωγή σε εξέλιξη λήξης/Παραγωγή
-	E3_301     ExpenseClassificationTypeStringType = "E3_301"     // Πρώτες ύλες και υλικά έναρξης/Αγροτική
-	E3_302_001 ExpenseClassificationTypeStringType = "E3_302_001" // Αγορές πρώτων υλών και υλικών χρήσης (καθαρό ποσό)/Χονδρικές
-	E3_302_002 ExpenseClassificationTypeStringType = "E3_302_002" // Αγορές πρώτων υλών και υλικών χρήσης (καθαρό ποσό)/Λιανικές
-	E3_302_003 ExpenseClassificationTypeStringType = "E3_302_003" // Αγορές πρώτων υλών και υλικών χρήσης (καθαρό ποσό)/Εξωτερικού Ενδοκοινοτικές
-	E3_302_004 ExpenseClassificationTypeStringType = "E3_302_004" // Αγορές πρώτων υλών και υλικών χρήσης (καθαρό ποσό)/Εξωτερικού Τρίτες Χώρες
-	E3_302_005 ExpenseClassificationTypeStringType = "E3_302_005" // Αγορές πρώτων υλών και υλικών χρήσης (καθαρό ποσό)/Λοιπά
-	E3_304     ExpenseClassificationTypeStringType = "E3_304"     // Αποθέματα λήξης πρώτων υλών και υλικών/Αγροτική
-	E3_307     ExpenseClassificationTypeStringType = "E3_307"     // Προϊόντα και παραγωγή σε εξέλιξη έναρξης/Αγροτική
-	E3_309     ExpenseClassificationTypeStringType = "E3_309"     // Προϊόντα και παραγωγή σε εξέλιξη λήξης/Αγροτική
-	E3_312     ExpenseClassificationTypeStringType = "E3_312"     // Αποθέματα έναρξης (ζώων - φυτών)
-	E3_313_001 ExpenseClassificationTypeStringType = "E3_313_001" // Αγορές ζώων - φυτών (καθαρό ποσό)/Χονδρικές
-	E3_313_002 ExpenseClassificationTypeStringType = "E3_313_002" // Αγορές ζώων - φυτών (καθαρό ποσό)/Λιανικές
-	E3_313_003 ExpenseClassificationTypeStringType = "E3_313_003" // Αγορές ζώων - φυτών (καθαρό ποσό)/Εξωτερικού Ενδοκοινοτικές
-	E3_313_004 ExpenseClassificationTypeStringType = "E3_313_004" // Αγορές ζώων - φυτών (καθαρό ποσό)/Εξωτερικού Τρίτες Χώρες
-	E3_313_005 ExpenseClassificationTypeStringType = "E3_313_005" // Αγορές ζώων - φυτών (καθαρό ποσό)/Λοιπά
-	E3_315     ExpenseClassificationTypeStringType = "E3_315"     // Αποθέματα τέλους (ζώων - φυτών)/Αγροτική
-	E3_581_001 ExpenseClassificationTypeStringType = "E3_581_001" // Παροχές σε εργαζόμενους/Μικτές αποδοχές
-	E3_581_002 ExpenseClassificationTypeStringType = "E3_581_002" // Παροχές σε εργαζόμενους/Εργοδοτικές εισφορές
-	E3_581_003 ExpenseClassificationTypeStringType = "E3_581_003" // Παροχές σε εργαζόμενους/Λοιπές παροχές
-	E3_582     ExpenseClassificationTypeStringType = "E3_582"     // Ζημιές επιμέτρησης περιουσιακών στοιχείων
-	E3_583     ExpenseClassificationTypeStringType = "E3_583"     // Χρεωστικές συναλλαγματικές διαφορές
-	E3_584     ExpenseClassificationTypeStringType = "E3_584"     // Ζημιές από διάθεση-απόσυρση μη κυκλοφορούντων περιουσιακών στοιχείων
-	E3_585_001 ExpenseClassificationTypeStringType = "E3_585_001" // Προμήθειες διαχείρισης ημεδαπής - αλλοδαπής (management fees)
-	E3_585_002 ExpenseClassificationTypeStringType = "E3_585_002" // Δαπάνες από συνδεδεμένες επιχειρήσεις
-	E3_585_003 ExpenseClassificationTypeStringType = "E3_585_003" // Δαπάνες από μη συνεργαζόμενα κράτη ή από κράτη με προνομιακό φορολογικό καθεστώς
-	E3_585_004 ExpenseClassificationTypeStringType = "E3_585_004" // Δαπάνες για ενημερωτικές ημερίδες
-	E3_585_005 ExpenseClassificationTypeStringType = "E3_585_005" // Έξοδα υποδοχής και φιλοξενίας
-	E3_585_006 ExpenseClassificationTypeStringType = "E3_585_006" // Έξοδα ταξιδιών
-	E3_585_007 ExpenseClassificationTypeStringType = "E3_585_007" // Ασφαλιστικές Εισφορές Αυτοαπασχολούμενων
-	E3_585_008 ExpenseClassificationTypeStringType = "E3_585_008" // Έξοδα και προμήθειες παραγγελιοδόχου για λογαριασμό αγροτών
-	E3_585_009 ExpenseClassificationTypeStringType = "E3_585_009" // Λοιπές Αμοιβές για υπηρεσίες ημεδαπής
-	E3_585_010 ExpenseClassificationTypeStringType = "E3_585_010" // Λοιπές Αμοιβές για υπηρεσίες αλλοδαπής
-	E3_585_011 ExpenseClassificationTypeStringType = "E3_585_011" // Ενέργεια
-	E3_585_012 ExpenseClassificationTypeStringType = "E3_585_012" // Ύδρευση
-	E3_585_013 ExpenseClassificationTypeStringType = "E3_585_013" // Τηλεπικοινωνίες
-	E3_585_014 ExpenseClassificationTypeStringType = "E3_585_014" // Ενοίκια
-	E3_585_015 ExpenseClassificationTypeStringType = "E3_585_015" // Διαφήμιση και προβολή
-	E3_585_016 ExpenseClassificationTypeStringType = "E3_585_016" // Λοιπά έξοδα
-	E3_586     ExpenseClassificationTypeStringType = "E3_586"     // Χρεωστικοί τόκοι και συναφή έξοδα
-	E3_587     ExpenseClassificationTypeStringType = "E3_587"     // Αποσβέσεις
-	E3_588     ExpenseClassificationTypeStringType = "E3_588"     // Ασυνήθη έξοδα, ζημιές και πρόστιμα
-	E3_589     ExpenseClassificationTypeStringType = "E3_589"     // Προβλέψεις (εκτός από προβλέψεις για το προσωπικό)
-	E3_882_001 ExpenseClassificationTypeStringType = "E3_882_001" // Αγορές ενσώματων παγίων χρήσης/Χονδρικές
-	E3_882_002 ExpenseClassificationTypeStringType = "E3_882_002" // Αγορές ενσώματων παγίων χρήσης/Λιανικές
-	E3_882_003 ExpenseClassificationTypeStringType = "E3_882_003" // Αγορές ενσώματων παγίων χρήσης/Εξωτερικού Ενδοκοινοτικές
-	E3_882_004 ExpenseClassificationTypeStringType = "E3_882_004" // Αγορές ενσώματων παγίων χρήσης/Εξωτερικού Τρίτες Χώρες
-	E3_883_001 ExpenseClassificationTypeStringType = "E3_883_001" // Αγορές μη ενσώματων παγίων χρήσης/Χονδρικές
-	E3_883_002 ExpenseClassificationTypeStringType = "E3_883_002" // Αγορές μη ενσώματων παγίων χρήσης/Λιανικές
-	E3_883_003 ExpenseClassificationTypeStringType = "E3_883_003" // Αγορές μη ενσώματων παγίων χρήσης/Εξωτερικού Ενδοκοινοτικές
-	E3_883_004 ExpenseClassificationTypeStringType = "E3_883_004" // Αγορές μη ενσώματων παγίων χρήσης/Εξωτερικού Τρίτες Χώρες
-	VAT_361    ExpenseClassificationTypeStringType = "VAT_361"    // Αγορές & δαπάνες στο εσωτερικό της χώρας
-	VAT_362    ExpenseClassificationTypeStringType = "VAT_362"    // Αγορές & εισαγωγές επενδ. Αγαθών (πάγια)
-	VAT_363    ExpenseClassificationTypeStringType = "VAT_363"    // Λοιπές εισαγωγές εκτός επενδ. Αγαθών (πάγια)
-	VAT_364    ExpenseClassificationTypeStringType = "VAT_364"    // Ενδοκοινοτικές αποκτήσεις αγαθών
-	VAT_365    ExpenseClassificationTypeStringType = "VAT_365"    // Ενδοκοινοτικές λήψεις υπηρεσιών άρθρο 14.2.α
-	VAT_366    ExpenseClassificationTypeStringType = "VAT_366"    // Λοιπές πράξεις λήπτη
-	E3_103     ExpenseClassificationTypeStringType = "E3_103"     // Απομείωση εμπορευμάτων
-	E3_203     ExpenseClassificationTypeStringType = "E3_203"     // Απομείωση πρώτων υλών και υλικών
-	E3_303     ExpenseClassificationTypeStringType = "E3_303"     // Απομείωση πρώτων υλών και υλικών
-	E3_208     ExpenseClassificationTypeStringType = "E3_208"     // Απομείωση προϊόντων και παραγωγής σε εξέλιξη
-	E3_308     ExpenseClassificationTypeStringType = "E3_308"     // Απομείωση προϊόντων και παραγωγής σε εξέλιξη
-	E3_314     ExpenseClassificationTypeStringType = "E3_314"     // Απομείωση ζώων - φυτών – εμπορευμάτων
-	E3_106     ExpenseClassificationTypeStringType = "E3_106"     // Ιδιοπαραγωγή παγίων - Αυτοπαραδόσεις - Καταστροφές αποθεμάτων
-	E3_205     ExpenseClassificationTypeStringType = "E3_205"     // Ιδιοπαραγωγή παγίων - Αυτοπαραδόσεις - Καταστροφές αποθεμάτων
-	E3_305     ExpenseClassificationTypeStringType = "E3_305"     // Ιδιοπαραγωγή παγίων - Αυτοπαραδόσεις - Καταστροφές αποθεμάτων
-	E3_210     ExpenseClassificationTypeStringType = "E3_210"     // Ιδιοπαραγωγή παγίων - Αυτοπαραδόσεις - Καταστροφές αποθεμάτων
-	E3_310     ExpenseClassificationTypeStringType = "E3_310"     // Ιδιοπαραγωγή παγίων - Αυτοπαραδόσεις - Καταστροφές αποθεμάτων
-	E3_318     ExpenseClassificationTypeStringType = "E3_318"     // Ιδιοπαραγωγή παγίων - Αυτοπαραδόσεις - Καταστροφές αποθεμάτων
-	E3_598_002 ExpenseClassificationTypeStringType = "E3_598_002" // Αγορές αγαθών που υπάγονται σε ΕΦΚΑ
+	E3_101      ExpenseClassificationTypeStringType = "E3_101"      // Εμπορεύματα έναρξης
+	E3_102_001  ExpenseClassificationTypeStringType = "E3_102_001"  // Αγορές εμπορευμάτων χρήσης (καθαρό ποσό)/Χονδρικές
+	E3_102_002  ExpenseClassificationTypeStringType = "E3_102_002"  // Αγορές εμπορευμάτων χρήσης (καθαρό ποσό)/Λιανικές
+	E3_102_003  ExpenseClassificationTypeStringType = "E3_102_003"  // Αγορές εμπορευμάτων χρήσης (καθαρό ποσό)/Αγαθών του άρθρου 39α παρ.5 του Κώδικα Φ.Π.Α. (ν.2859/2000)
+	E3_102_004  ExpenseClassificationTypeStringType = "E3_102_004"  // Αγορές εμπορευμάτων χρήσης (καθαρό ποσό)/Εξωτερικού Ενδοκοινοτικές
+	E3_102_005  ExpenseClassificationTypeStringType = "E3_102_005"  // Αγορές εμπορευμάτων χρήσης (καθαρό ποσό)/Εξωτερικού Τρίτες Χώρες
+	E3_102_006  ExpenseClassificationTypeStringType = "E3_102_006"  // Αγορές εμπορευμάτων χρήσης (καθαρό ποσό)Λοιπά
+	E3_104      ExpenseClassificationTypeStringType = "E3_104"      // Εμπορεύματα λήξης
+	E3_201      ExpenseClassificationTypeStringType = "E3_201"      // Πρώτες ύλες και υλικά έναρξης/Παραγωγή
+	E3_202_001  ExpenseClassificationTypeStringType = "E3_202_001"  // Αγορές πρώτων υλών και υλικών χρήσης (καθαρό ποσό)/Χονδρικές
+	E3_202_002  ExpenseClassificationTypeStringType = "E3_202_002"  // Αγορές πρώτων υλών και υλικών χρήσης (καθαρό ποσό)/Λιανικές
+	E3_202_003  ExpenseClassificationTypeStringType = "E3_202_003"  // Αγορές πρώτων υλών και υλικών χρήσης (καθαρό ποσό)/Εξωτερικού Ενδοκοινοτικές
+	E3_202_004  ExpenseClassificationTypeStringType = "E3_202_004"  // Αγορές πρώτων υλών και υλικών χρήσης (καθαρό ποσό)/Εξωτερικού Τρίτες Χώρες
+	E3_202_005  ExpenseClassificationTypeStringType = "E3_202_005"  // Αγορές πρώτων υλών και υλικών χρήσης (καθαρό ποσό)/Λοιπά
+	E3_204      ExpenseClassificationTypeStringType = "E3_204"      // Αποθέματα λήξης πρώτων υλών και υλικών/Παραγωγή
+	E3_207      ExpenseClassificationTypeStringType = "E3_207"      // Προϊόντα και παραγωγή σε εξέλιξη έναρξης/Παραγωγή
+	E3_209      ExpenseClassificationTypeStringType = "E3_209"      // Προϊόντα και παραγωγή σε εξέλιξη λήξης/Παραγωγή
+	E3_301      ExpenseClassificationTypeStringType = "E3_301"      // Πρώτες ύλες και υλικά έναρξης/Αγροτική
+	E3_302_001  ExpenseClassificationTypeStringType = "E3_302_001"  // Αγορές πρώτων υλών και υλικών χρήσης (καθαρό ποσό)/Χονδρικές
+	E3_302_002  ExpenseClassificationTypeStringType = "E3_302_002"  // Αγορές πρώτων υλών και υλικών χρήσης (καθαρό ποσό)/Λιανικές
+	E3_302_003  ExpenseClassificationTypeStringType = "E3_302_003"  // Αγορές πρώτων υλών και υλικών χρήσης (καθαρό ποσό)/Εξωτερικού Ενδοκοινοτικές
+	E3_302_004  ExpenseClassificationTypeStringType = "E3_302_004"  // Αγορές πρώτων υλών και υλικών χρήσης (καθαρό ποσό)/Εξωτερικού Τρίτες Χώρες
+	E3_302_005  ExpenseClassificationTypeStringType = "E3_302_005"  // Αγορές πρώτων υλών και υλικών χρήσης (καθαρό ποσό)/Λοιπά
+	E3_304      ExpenseClassificationTypeStringType = "E3_304"      // Αποθέματα λήξης πρώτων υλών και υλικών/Αγροτική
+	E3_307      ExpenseClassificationTypeStringType = "E3_307"      // Προϊόντα και παραγωγή σε εξέλιξη έναρξης/Αγροτική
+	E3_309      ExpenseClassificationTypeStringType = "E3_309"      // Προϊόντα και παραγωγή σε εξέλιξη λήξης/Αγροτική
+	E3_312      ExpenseClassificationTypeStringType = "E3_312"      // Αποθέματα έναρξης (ζώων - φυτών)
+	E3_313_001  ExpenseClassificationTypeStringType = "E3_313_001"  // Αγορές ζώων - φυτών (καθαρό ποσό)/Χονδρικές
+	E3_313_002  ExpenseClassificationTypeStringType = "E3_313_002"  // Αγορές ζώων - φυτών (καθαρό ποσό)/Λιανικές
+	E3_313_003  ExpenseClassificationTypeStringType = "E3_313_003"  // Αγορές ζώων - φυτών (καθαρό ποσό)/Εξωτερικού Ενδοκοινοτικές
+	E3_313_004  ExpenseClassificationTypeStringType = "E3_313_004"  // Αγορές ζώων - φυτών (καθαρό ποσό)/Εξωτερικού Τρίτες Χώρες
+	E3_313_005  ExpenseClassificationTypeStringType = "E3_313_005"  // Αγορές ζώων - φυτών (καθαρό ποσό)/Λοιπά
+	E3_315      ExpenseClassificationTypeStringType = "E3_315"      // Αποθέματα τέλους (ζώων - φυτών)/Αγροτική
+	E3_581_001  ExpenseClassificationTypeStringType = "E3_581_001"  // Παροχές σε εργαζόμενους/Μικτές αποδοχές
+	E3_581_002  ExpenseClassificationTypeStringType = "E3_581_002"  // Παροχές σε εργαζόμενους/Εργοδοτικές εισφορές
+	E3_581_003  ExpenseClassificationTypeStringType = "E3_581_003"  // Παροχές σε εργαζόμενους/Λοιπές παροχές
+	E3_582      ExpenseClassificationTypeStringType = "E3_582"      // Ζημιές επιμέτρησης περιουσιακών στοιχείων
+	E3_583      ExpenseClassificationTypeStringType = "E3_583"      // Χρεωστικές συναλλαγματικές διαφορές
+	E3_584      ExpenseClassificationTypeStringType = "E3_584"      // Ζημιές από διάθεση-απόσυρση μη κυκλοφορούντων περιουσιακών στοιχείων
+	E3_585_001  ExpenseClassificationTypeStringType = "E3_585_001"  // Προμήθειες διαχείρισης ημεδαπής - αλλοδαπής (management fees)
+	E3_585_002  ExpenseClassificationTypeStringType = "E3_585_002"  // Δαπάνες από συνδεδεμένες επιχειρήσεις
+	E3_585_003  ExpenseClassificationTypeStringType = "E3_585_003"  // Δαπάνες από μη συνεργαζόμενα κράτη ή από κράτη με προνομιακό φορολογικό καθεστώς
+	E3_585_004  ExpenseClassificationTypeStringType = "E3_585_004"  // Δαπάνες για ενημερωτικές ημερίδες
+	E3_585_005  ExpenseClassificationTypeStringType = "E3_585_005"  // Έξοδα υποδοχής και φιλοξενίας
+	E3_585_006  ExpenseClassificationTypeStringType = "E3_585_006"  // Έξοδα ταξιδιών
+	E3_585_007  ExpenseClassificationTypeStringType = "E3_585_007"  // Ασφαλιστικές Εισφορές Αυτοαπασχολούμενων
+	E3_585_008  ExpenseClassificationTypeStringType = "E3_585_008"  // Έξοδα και προμήθειες παραγγελιοδόχου για λογαριασμό αγροτών
+	E3_585_009  ExpenseClassificationTypeStringType = "E3_585_009"  // Λοιπές Αμοιβές για υπηρεσίες ημεδαπής
+	E3_585_010  ExpenseClassificationTypeStringType = "E3_585_010"  // Λοιπές Αμοιβές για υπηρεσίες αλλοδαπής
+	E3_585_011  ExpenseClassificationTypeStringType = "E3_585_011"  // Ενέργεια
+	E3_585_012  ExpenseClassificationTypeStringType = "E3_585_012"  // Ύδρευση
+	E3_585_013  ExpenseClassificationTypeStringType = "E3_585_013"  // Τηλεπικοινωνίες
+	E3_585_014  ExpenseClassificationTypeStringType = "E3_585_014"  // Ενοίκια
+	E3_585_015  ExpenseClassificationTypeStringType = "E3_585_015"  // Διαφήμιση και προβολή
+	E3_585_016  ExpenseClassificationTypeStringType = "E3_585_016"  // Λοιπά έξοδα
+	E3_586      ExpenseClassificationTypeStringType = "E3_586"      // Χρεωστικοί τόκοι και συναφή έξοδα
+	E3_587      ExpenseClassificationTypeStringType = "E3_587"      // Αποσβέσεις
+	E3_588      ExpenseClassificationTypeStringType = "E3_588"      // Ασυνήθη έξοδα, ζημιές και πρόστιμα
+	E3_589      ExpenseClassificationTypeStringType = "E3_589"      // Προβλέψεις (εκτός από προβλέψεις για το προσωπικό)
+	E3_882_001  ExpenseClassificationTypeStringType = "E3_882_001"  // Αγορές ενσώματων παγίων χρήσης/Χονδρικές
+	E3_882_002  ExpenseClassificationTypeStringType = "E3_882_002"  // Αγορές ενσώματων παγίων χρήσης/Λιανικές
+	E3_882_003  ExpenseClassificationTypeStringType = "E3_882_003"  // Αγορές ενσώματων παγίων χρήσης/Εξωτερικού Ενδοκοινοτικές
+	E3_882_004  ExpenseClassificationTypeStringType = "E3_882_004"  // Αγορές ενσώματων παγίων χρήσης/Εξωτερικού Τρίτες Χώρες
+	E3_883_001  ExpenseClassificationTypeStringType = "E3_883_001"  // Αγορές μη ενσώματων παγίων χρήσης/Χονδρικές
+	E3_883_002  ExpenseClassificationTypeStringType = "E3_883_002"  // Αγορές μη ενσώματων παγίων χρήσης/Λιανικές
+	E3_883_003  ExpenseClassificationTypeStringType = "E3_883_003"  // Αγορές μη ενσώματων παγίων χρήσης/Εξωτερικού Ενδοκοινοτικές
+	E3_883_004  ExpenseClassificationTypeStringType = "E3_883_004"  // Αγορές μη ενσώματων παγίων χρήσης/Εξωτερικού Τρίτες Χώρες
+	VAT_361     ExpenseClassificationTypeStringType = "VAT_361"     // Αγορές & δαπάνες στο εσωτερικό της χώρας
+	VAT_362     ExpenseClassificationTypeStringType = "VAT_362"     // Αγορές & εισαγωγές επενδύσεις Αγαθών (πάγια)
+	VAT_363     ExpenseClassificationTypeStringType = "VAT_363"     // Λοιπές εισαγωγές εκτός επενδύσεις Αγαθών (πάγια)
+	VAT_364     ExpenseClassificationTypeStringType = "VAT_364"     // Ενδοκοινοτικές αποκτήσεις αγαθών
+	VAT_365     ExpenseClassificationTypeStringType = "VAT_365"     // Ενδοκοινοτικές λήψεις υπηρεσιών άρθρο 14.2.α
+	VAT_366     ExpenseClassificationTypeStringType = "VAT_366"     // Λοιπές πράξεις λήπτη
+	E3_103      ExpenseClassificationTypeStringType = "E3_103"      // Απομείωση εμπορευμάτων
+	E3_203      ExpenseClassificationTypeStringType = "E3_203"      // Απομείωση πρώτων υλών και υλικών
+	E3_303      ExpenseClassificationTypeStringType = "E3_303"      // Απομείωση πρώτων υλών και υλικών
+	E3_208      ExpenseClassificationTypeStringType = "E3_208"      // Απομείωση προϊόντων και παραγωγής σε εξέλιξη
+	E3_308      ExpenseClassificationTypeStringType = "E3_308"      // Απομείωση προϊόντων και παραγωγής σε εξέλιξη
+	E3_314      ExpenseClassificationTypeStringType = "E3_314"      // Απομείωση ζώων - φυτών – εμπορευμάτων
+	E3_106      ExpenseClassificationTypeStringType = "E3_106"      // Ιδιοπαραγωγή παγίων - Αυτοπαραδόσεις - Καταστροφές αποθεμάτων
+	E3_205      ExpenseClassificationTypeStringType = "E3_205"      // Ιδιοπαραγωγή παγίων - Αυτοπαραδόσεις - Καταστροφές αποθεμάτων
+	E3_305      ExpenseClassificationTypeStringType = "E3_305"      // Ιδιοπαραγωγή παγίων - Αυτοπαραδόσεις - Καταστροφές αποθεμάτων
+	E3_210      ExpenseClassificationTypeStringType = "E3_210"      // Ιδιοπαραγωγή παγίων - Αυτοπαραδόσεις - Καταστροφές αποθεμάτων
+	E3_310      ExpenseClassificationTypeStringType = "E3_310"      // Ιδιοπαραγωγή παγίων - Αυτοπαραδόσεις - Καταστροφές αποθεμάτων
+	E3_318      ExpenseClassificationTypeStringType = "E3_318"      // Ιδιοπαραγωγή παγίων - Αυτοπαραδόσεις - Καταστροφές αποθεμάτων
+	E3_598_002  ExpenseClassificationTypeStringType = "E3_598_002"  // Αγορές αγαθών που υπάγονται σε ΕΦΚΑ
+	NOT_VAT_295 ExpenseClassificationTypeStringType = "NOT_VAT_295" // Μη συμμετοχή στο ΦΠΑ (έξοδα – εισροές)
 )
 
 // endregion

@@ -2,8 +2,9 @@ package mydataInvoices
 
 import (
 	"errors"
-	"github.com/buffos/go-aade/mydata/mydatavalues"
 	"time"
+
+	"github.com/buffos/go-aade/mydata/mydatavalues"
 )
 
 type InvoiceRowType struct {
@@ -37,6 +38,7 @@ type InvoiceRowType struct {
 	ItemCode                     *string                                  `xml:"itemCode"`                     // Κωδικός Είδους.
 	OtherMeasurementUnitQuantity *int                                     `xml:"otherMeasurementUnitQuantity"` // Ποσότητα Εναλλακτικής Μονάδας Μέτρησης.Μόνο όταν measurementUnit = 7
 	OtherMeasurementUnitTitle    *string                                  `xml:"otherMeasurementUnitTitle"`    // Τίτλος Εναλλακτικής Μονάδας Μέτρησης.Μόνο όταν measurementUnit = 7
+	NotVat195                    *bool                                    `xml:"notVat195"`                    // Ένδειξη μη συμμετοχής στο ΦΠΑ (έσοδα - έξοδα). Αποδεκτό μόνο για παραστατικά τύπων μεταξύ 1.1 - 11.5
 }
 
 //goland:noinspection GoUnusedExportedFunction
@@ -59,8 +61,10 @@ func NewInvoiceRow(netValue float64, vatCat mydatavalues.InvoiceVATCategory) *In
 		vatPercent = 0
 	case mydatavalues.InvoiceVATExempt:
 		vatPercent = 0
-	case mydatavalues.InvoiceVAT3Percent:
+	case mydatavalues.InvoiceVAT3PercentArticle31:
 		vatPercent = 0.03
+	case mydatavalues.InvoiceVAT4PercentArticle31:
+		vatPercent = 0.04
 	}
 	vatAmount := roundToMoney(netValue * vatPercent)
 	i := &InvoiceRowType{}

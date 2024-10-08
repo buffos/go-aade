@@ -2,32 +2,36 @@ package mydataInvoices
 
 import (
 	"errors"
-	"github.com/buffos/go-aade/mydata/mydatavalues"
 	"time"
+
+	"github.com/buffos/go-aade/mydata/mydatavalues"
 )
 
 type InvoiceHeaderType struct {
-	Series                  string                                 `xml:"series"`                  // * Σειρά παραστατικού (max 50 chars)
-	Aa                      string                                 `xml:"aa"`                      // * ΑΑ παραστατικού (max 50 chars)
-	IssueDate               string                                 `xml:"issueDate"`               // * Ημερομηνία έκδοσης
-	InvoiceType             *mydatavalues.InvoiceType              `xml:"invoiceType"`             // * Είδος παραστατικού
-	VatPaymentSuspension    *bool                                  `xml:"vatPaymentSuspension"`    // Αναστολή καταβολής ΦΠΑ
-	Currency                *string                                `xml:"currency"`                // Νόμισμα
-	ExchangeRate            *float64                               `xml:"exchangeRate"`            // Ισοτιμία
-	SelfPricing             *bool                                  `xml:"selfPricing"`             // Αυτοτιμολόγηση
-	CorrelatedInvoices      []*uint                                `xml:"correlatedInvoices"`      // Συσχετιζόμενα παραστατικά
-	DispatchDate            *string                                `xml:"dispatchDate"`            // Ημερομηνία αποστολής
-	DispatchTime            *string                                `xml:"dispatchTime"`            // Ώρα αποστολής
-	VehicleNumber           *string                                `xml:"vehicleNumber"`           // Αριθμός οχήματος
-	MovePurpose             *mydatavalues.InvoicePurposeOfMovement `xml:"movePurpose"`             // Σκοπός διακίνησης 1-8
-	FuelInvoice             *bool                                  `xml:"fuelInvoice"`             // Παραστατικό καυσίμων
-	SpecialInvoiceCategory  *mydatavalues.InvoiceSpecialCategory   `xml:"specialInvoiceCategory"`  // Ειδική κατηγορία παραστατικού 1-4
-	InvoiceVariationType    *mydatavalues.InvoiceVariationType     `xml:"invoiceVariationType"`    // Τύπος απόκλισης παραστατικού 1-4
-	OtherCorrelatedEntities *EntityType                            `xml:"otherCorrelatedEntities"` // Λοιπές συσχετιζόμενες οντότητες
-	OtherDeliveryNoteHeader *OtherDeliveryNoteHeaderType           `xml:"otherDeliveryNoteHeader"` // Λοιπές συσχετιζόμενες οντότητες
-	IsDeliveryNote          *bool                                  `xml:"isDeliveryNote"`          // Παραστατικό παράδοσης?
-	OtherMovePurposeTitle   *string                                `xml:"otherMovePurposeTitle"`   // Άλλος σκοπός διακίνησης Αποδεκτό μόνο για την περίπτωση που movePurpose = 19
-	ThirdPartyCollection    *bool                                  `xml:"thirdPartyCollection"`    // Συλλογή από τρίτο πρόσωπο Αποδεκτό μόνο για παραστατικά τύπου 8.4 και 8.5
+	Series                    string                                 `xml:"series"`                    // * Σειρά παραστατικού (max 50 chars)
+	Aa                        string                                 `xml:"aa"`                        // * ΑΑ παραστατικού (max 50 chars)
+	IssueDate                 string                                 `xml:"issueDate"`                 // * Ημερομηνία έκδοσης
+	InvoiceType               *mydatavalues.InvoiceType              `xml:"invoiceType"`               // * Είδος παραστατικού
+	VatPaymentSuspension      *bool                                  `xml:"vatPaymentSuspension"`      // Αναστολή καταβολής ΦΠΑ
+	Currency                  *string                                `xml:"currency"`                  // Νόμισμα. Ο κωδικός νομίσματος προέρχεται από το πρότυπο ISO 4217.
+	ExchangeRate              *float64                               `xml:"exchangeRate"`              // Ισοτιμία. Συμπληρώνεται μόνο αν το νόμισμα δεν έχει τιμή EUR.
+	SelfPricing               *bool                                  `xml:"selfPricing"`               // Αυτοτιμολόγηση
+	CorrelatedInvoices        []*uint                                `xml:"correlatedInvoices"`        // Συσχετιζόμενα παραστατικά
+	DispatchDate              *string                                `xml:"dispatchDate"`              // Ημερομηνία αποστολής
+	DispatchTime              *string                                `xml:"dispatchTime"`              // Ώρα αποστολής
+	VehicleNumber             *string                                `xml:"vehicleNumber"`             // Αριθμός οχήματος
+	MovePurpose               *mydatavalues.InvoicePurposeOfMovement `xml:"movePurpose"`               // Σκοπός διακίνησης 1-8
+	FuelInvoice               *bool                                  `xml:"fuelInvoice"`               // Παραστατικό καυσίμων
+	SpecialInvoiceCategory    *mydatavalues.InvoiceSpecialCategory   `xml:"specialInvoiceCategory"`    // Ειδική κατηγορία παραστατικού 1-4
+	InvoiceVariationType      *mydatavalues.InvoiceVariationType     `xml:"invoiceVariationType"`      // Τύπος απόκλισης παραστατικού 1-4
+	OtherCorrelatedEntities   []*EntityType                          `xml:"otherCorrelatedEntities"`   // Λοιπές συσχετιζόμενες οντότητες
+	OtherDeliveryNoteHeader   *OtherDeliveryNoteHeaderType           `xml:"otherDeliveryNoteHeader"`   // Λοιπές συσχετιζόμενες οντότητες
+	IsDeliveryNote            *bool                                  `xml:"isDeliveryNote"`            // Ορίζει αν το παραστατικό είναι και δελτίο αποστολής και θα πρέπει να αποσταλούν επιπλέον στοιχεία διακίνησης.
+	OtherMovePurposeTitle     *string                                `xml:"otherMovePurposeTitle"`     // Άλλος σκοπός διακίνησης Αποδεκτό μόνο για την περίπτωση που movePurpose = 19
+	ThirdPartyCollection      *bool                                  `xml:"thirdPartyCollection"`      // Συλλογή από τρίτο πρόσωπο Αποδεκτό μόνο για παραστατικά τύπου 8.4 και 8.5
+	MultipleConnectedMarks    *[]uint64                              `xml:"multipleConnectedMarks"`    // Πολλαπλές σημειώσεις συνδεδεμένες με το παραστατικό (Δεν είναι αποδεκτό για τα παραστατικά των τύπων 1.6, 2.4 και 5.1)
+	TableAA                   *string                                `xml:"tableAA"`                   // AA ΤΡΑΠΕΖΙOY (για Δελτία Παραγγελίας Εστίασης). Μόνο για παραστατικά τύπου 8.6 και μέγιστο μήκος 50 χαρακτήρων
+	TotalCancelDeliveryOrders *bool                                  `xml:"totalCancelDeliveryOrders"` // Ένδειξη συνολικής αναίρεσης Δελτίων Παραγγελίας (Αποδεκτό μόνο για παραστατικά τύπου 8.6)
 }
 
 //goland:noinspection GoUnusedExportedFunction
@@ -129,14 +133,17 @@ func (i *InvoiceHeaderType) SetInvoiceVariationType(value mydatavalues.InvoiceVa
 
 // SetOtherCorrelatedEntity sets the invoice header's other correlated entities.
 func (i *InvoiceHeaderType) SetOtherCorrelatedEntity(category mydatavalues.EntityCategory, vat string, country string, branch uint64) *InvoiceHeaderType {
-	i.OtherCorrelatedEntities = &EntityType{
+	if i.OtherCorrelatedEntities == nil {
+		i.OtherCorrelatedEntities = make([]*EntityType, 0)
+	}
+	i.OtherCorrelatedEntities = append(i.OtherCorrelatedEntities, &EntityType{
 		Type: &category,
 		entityData: &PartyType{
 			VatNumber: &vat,
 			Country:   &country,
 			Branch:    &branch,
 		},
-	}
+	})
 	return i
 }
 

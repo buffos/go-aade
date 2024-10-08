@@ -2,13 +2,14 @@ package mydata
 
 import (
 	"fmt"
+	"testing"
+	"time"
+
 	"github.com/buffos/go-aade/mydata/invoicesfactory"
 	"github.com/buffos/go-aade/mydata/mydataInvoices"
 	"github.com/buffos/go-aade/mydata/mydatavalues"
 	"github.com/davecgh/go-spew/spew"
 	"github.com/stretchr/testify/require"
-	"testing"
-	"time"
 )
 
 func TestSendInvoice(t *testing.T) {
