@@ -13,3 +13,24 @@ type RequestedDoc struct {
 	ExpensesClassificationDoc *ExpensesClassificationsDoc `xml:"expensesClassificationDoc"`
 	PaymentMethodsDoc         *PaymentMethodsDoc          `xml:"paymentMethodsDoc"`
 }
+
+func (d *RequestedDoc) Print() {
+	if d.ContinuationToken != nil {
+		d.ContinuationToken.Print()
+	}
+	if d.InvoicesDoc != nil {
+		d.InvoicesDoc.Print()
+	}
+	if d.CancelledInvoicesDoc != nil {
+		d.CancelledInvoicesDoc.Print()
+	}
+	if d.IncomeClassificationDoc != nil {
+		d.IncomeClassificationDoc.Print()
+	}
+	if d.ExpensesClassificationDoc != nil {
+		d.ExpensesClassificationDoc.Print()
+	}
+	if d.PaymentMethodsDoc != nil {
+		d.PaymentMethodsDoc.Print()
+	}
+}

@@ -9,6 +9,12 @@ type ResponseDoc struct {
 	Response []*Response `xml:"response"`
 }
 
+func (rDoc ResponseDoc) Print() {
+	for _, resp := range rDoc.Response {
+		resp.Print()
+	}
+}
+
 func (rDoc ResponseDoc) String() string {
 	str := ""
 	for i, resp := range rDoc.Response {
@@ -41,6 +47,10 @@ func (r Response) String() string {
 			"AuthenticationCode:%s\n"+
 			"CancellationMark:%d",
 		r.StatusCode, r.Index, r.InvoiceUID, r.InvoiceMark, r.QrCodeUrl, r.ClassificationMark, r.AuthenticationCode, r.CancellationMark)
+}
+
+func (r Response) Print() {
+	fmt.Printf(r.String())
 }
 
 type Error struct {

@@ -2,6 +2,7 @@ package mydataInvoices
 
 import (
 	"errors"
+	"fmt"
 	"time"
 
 	"github.com/buffos/go-aade/mydata/mydatavalues"
@@ -32,6 +33,81 @@ type InvoiceHeaderType struct {
 	MultipleConnectedMarks    *[]uint64                              `xml:"multipleConnectedMarks"`    // Πολλαπλές σημειώσεις συνδεδεμένες με το παραστατικό (Δεν είναι αποδεκτό για τα παραστατικά των τύπων 1.6, 2.4 και 5.1)
 	TableAA                   *string                                `xml:"tableAA"`                   // AA ΤΡΑΠΕΖΙOY (για Δελτία Παραγγελίας Εστίασης). Μόνο για παραστατικά τύπου 8.6 και μέγιστο μήκος 50 χαρακτήρων
 	TotalCancelDeliveryOrders *bool                                  `xml:"totalCancelDeliveryOrders"` // Ένδειξη συνολικής αναίρεσης Δελτίων Παραγγελίας (Αποδεκτό μόνο για παραστατικά τύπου 8.6)
+}
+
+func (i *InvoiceHeaderType) Print() {
+	if i.Series != "" {
+		fmt.Println("Σειρά παραστατικού:", i.Series)
+	}
+	if i.Aa != "" {
+		fmt.Println("ΑΑ παραστατικού:", i.Aa)
+	}
+	if i.IssueDate != "" {
+		fmt.Println("Ημερομηνία έκδοσης:", i.IssueDate)
+	}
+	if i.InvoiceType != nil {
+		fmt.Println("Είδος παραστατικού:", i.InvoiceType)
+	}
+	if i.VatPaymentSuspension != nil {
+		fmt.Println("Αναστολή καταβολής ΦΠΑ:", *i.VatPaymentSuspension)
+	}
+	if i.Currency != nil {
+		fmt.Println("Νόμισμα:", *i.Currency)
+	}
+	if i.ExchangeRate != nil {
+		fmt.Println("Ισοτιμία:", *i.ExchangeRate)
+	}
+	if i.SelfPricing != nil {
+		fmt.Println("Αυτοτιμολόγηση:", *i.SelfPricing)
+	}
+	if i.CorrelatedInvoices != nil {
+		fmt.Println("Συσχετιζόμενα παραστατικά:", i.CorrelatedInvoices)
+	}
+	if i.DispatchDate != nil {
+		fmt.Println("Ημερομηνία αποστολής:", *i.DispatchDate)
+	}
+	if i.DispatchTime != nil {
+		fmt.Println("Ώρα αποστολής:", *i.DispatchTime)
+	}
+	if i.VehicleNumber != nil {
+		fmt.Println("Αριθμός οχήματος:", *i.VehicleNumber)
+	}
+	if i.MovePurpose != nil {
+		fmt.Println("Σκοπός διακίνησης:", i.MovePurpose.String())
+	}
+	if i.FuelInvoice != nil {
+		fmt.Println("Παραστατικό καυσίμων:", *i.FuelInvoice)
+	}
+	if i.SpecialInvoiceCategory != nil {
+		fmt.Println("Ειδική κατηγορία παραστατικού:", i.SpecialInvoiceCategory.String())
+	}
+	if i.InvoiceVariationType != nil {
+		fmt.Println("Τύπος απόκλισης παραστατικού:", i.InvoiceVariationType.String())
+	}
+	if i.OtherCorrelatedEntities != nil {
+		fmt.Println("Λοιπές συσχετιζόμενες οντότητες:", i.OtherCorrelatedEntities)
+	}
+	if i.OtherDeliveryNoteHeader != nil {
+		i.OtherDeliveryNoteHeader.Print()
+	}
+	if i.IsDeliveryNote != nil {
+		fmt.Println("Ορίζει αν το παραστατικό είναι και δελτίο αποστολής και θα πρέπει να αποσταλούν επιπλέον στοιχεία διακίνησης:", *i.IsDeliveryNote)
+	}
+	if i.OtherMovePurposeTitle != nil {
+		fmt.Println("Άλλος σκοπός διακίνησης:", *i.OtherMovePurposeTitle)
+	}
+	if i.ThirdPartyCollection != nil {
+		fmt.Println("Συλλογή από τρίτο πρόσωπο:", *i.ThirdPartyCollection)
+	}
+	if i.MultipleConnectedMarks != nil {
+		fmt.Println("Πολλαπλές σημειώσεις συνδεδεμένες με το παραστατικό:", i.MultipleConnectedMarks)
+	}
+	if i.TableAA != nil {
+		fmt.Println("AA ΤΡΑΠΕΖΙOY (για Δελτία Παραγγελίας Εστίασης):", *i.TableAA)
+	}
+	if i.TotalCancelDeliveryOrders != nil {
+		fmt.Println("Ένδειξη συνολικής αναίρεσης Δελτίων Παραγγελίας:", *i.TotalCancelDeliveryOrders)
+	}
 }
 
 //goland:noinspection GoUnusedExportedFunction

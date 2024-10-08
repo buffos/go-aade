@@ -1,12 +1,13 @@
 package mydataInvoices
 
-import "github.com/buffos/go-aade/mydata/mydatavalues"
+import (
+	"fmt"
+
+	"github.com/buffos/go-aade/mydata/mydatavalues"
+)
 
 type BookInfo struct {
-	ContinuationToken struct {
-		NextPartitionKey string `xml:"nextPartitionKey"`
-		NextRowKey       string `xml:"nextRowKey"`
-	} `xml:"continuationToken"` // Στοιχείο για την τμηματική λήψη	αποτελεσμάτων
+	ContinuationToken *ContinuationToken             `xml:"continuationToken"` // Στοιχείο για την τμηματική λήψη	αποτελεσμάτων
 	IssueDate         string                         `xml:"issueDate"`         // Ημερομηνία έκδοσης
 	InvType           mydatavalues.InvoiceType       `xml:"invType"`           // Τύπος Παραστατικού
 	SelfPricing       bool                           `xml:"selfPricing"`       // Αυτοτιμολόγηση
@@ -25,9 +26,73 @@ type BookInfo struct {
 	MaxMark           string                         `xml:"maxMark"`           // Μέγιστο ΜΑΡΚ πλήθους
 }
 
+func (b *BookInfo) Print() {
+	if b.ContinuationToken != nil {
+		b.ContinuationToken.Print()
+	}
+
+	if b.IssueDate != "" {
+		fmt.Println("Ημερομηνία έκδοσης:", b.IssueDate)
+	}
+	if b.InvType != "" {
+		fmt.Println("Τύπος Παραστατικού:", b.InvType)
+	}
+	if b.SelfPricing {
+		fmt.Println("Αυτοτιμολόγηση:", b.SelfPricing)
+	}
+	if b.InvoiceDetailType != 0 {
+		fmt.Println("Επισήμανση:", b.InvoiceDetailType.String())
+	}
+	if b.NetValue != 0 {
+		fmt.Println("Καθαρή αξία:", b.NetValue)
+	}
+	if b.VatAmount != 0 {
+		fmt.Println("Ποσό ΦΠΑ:", b.VatAmount)
+	}
+	if b.WithheldAmount != 0 {
+		fmt.Println("Ποσό Παρακράτησης Φόρου:", b.WithheldAmount)
+	}
+	if b.OtherTaxesAmount != 0 {
+		fmt.Println("Ποσό Λοιπών Φόρων:", b.OtherTaxesAmount)
+	}
+	if b.StampDutyAmount != 0 {
+		fmt.Println("Ποσό Χαρτοσήμου:", b.StampDutyAmount)
+	}
+	if b.FeesAmount != 0 {
+		fmt.Println("Ποσό Τελών:", b.FeesAmount)
+	}
+	if b.DeductionsAmount != 0 {
+		fmt.Println("Ποσό Κρατήσεων:", b.DeductionsAmount)
+	}
+	if b.ThirdPartyAmount != 0 {
+		fmt.Println("Ποσό Περί Τρίτων:", b.ThirdPartyAmount)
+	}
+	if b.GrossValue != 0 {
+		fmt.Println("Συνολική Αξία:", b.GrossValue)
+	}
+	if b.Count != 0 {
+		fmt.Println("Πλήθος Παραστατικών:", b.Count)
+	}
+	if b.MinMark != "" {
+		fmt.Println("Ελάχιστο ΜΑΡΚ πλήθους:", b.MinMark)
+	}
+	if b.MaxMark != "" {
+		fmt.Println("Μέγιστο ΜΑΡΚ πλήθους:", b.MaxMark)
+	}
+}
+
 type RequestedBookInfo struct {
 	Xmlns     string     `xml:"xmlns,attr"`
 	XmlnsICLS string     `xml:"xmlns:icls,attr"`
 	XmlnsECLS string     `xml:"xmlns:ecls,attr"`
 	BooksInfo []BookInfo `xml:"bookInfo"`
+}
+
+func (b *RequestedBookInfo) Print() {
+	fmt.Println("Καταχωρήσεις βιβλίου εσόδων - εξόδων:")
+
+	for _, book := range b.BooksInfo {
+		book.Print()
+		fmt.Println()
+	}
 }

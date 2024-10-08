@@ -2,8 +2,10 @@ package mydataInvoices
 
 import (
 	"errors"
-	"github.com/buffos/go-aade/mydata/mydatavalues"
+	"fmt"
 	"time"
+
+	"github.com/buffos/go-aade/mydata/mydatavalues"
 )
 
 type Invoice struct {
@@ -21,6 +23,54 @@ type Invoice struct {
 	InvoiceSummary        *InvoiceSummaryType                   `xml:"invoiceSummary"`        // * Περίληψη Παραστατικού
 	QrCodeUrl             *string                               `xml:"qrCodeUrl"`             // Κωδικοποιημένο αλφαριθμητικό για να χρησιμοποιηθεί από τα προγράμματα για τη δημιουργία QR Code τύπου Url (από υπηρεσία)
 	OtherTransportDetails *TransportDetailType                  `xml:"otherTransportDetails"` // Λοιπές λεπτομέρειες διακίνησης
+}
+
+func (i *Invoice) Print() {
+	fmt.Println("Τιμολόγιο:")
+	if i.UID != nil {
+		fmt.Println("UID (από υπηρεσία):", *i.UID)
+	}
+	if i.Mark != nil {
+		fmt.Println("Mark (από υπηρεσία):", *i.Mark)
+	}
+	if i.CancelledByMark != nil {
+		fmt.Println("CancelledByMark (από υπηρεσία):", *i.CancelledByMark)
+	}
+	if i.AuthenticationCode != nil {
+		fmt.Println("AuthenticationCode (από υπηρεσία):", *i.AuthenticationCode)
+	}
+	if i.TransmissionFailure != nil {
+		fmt.Println("Αδυναμία επικοινωνίας παρόχου ή διαβίβασης δεδομένων:", i.TransmissionFailure.String())
+	}
+	if i.Issuer != nil {
+		i.Issuer.Print()
+	}
+	if i.Counterpart != nil {
+		i.Counterpart.Print()
+	}
+	if i.InvoiceHeader != nil {
+		i.InvoiceHeader.Print()
+	}
+	if i.PaymentMethods != nil {
+		i.PaymentMethods.Print()
+	}
+	if i.InvoiceDetails != nil {
+		for _, detail := range i.InvoiceDetails {
+			detail.Print()
+		}
+	}
+	if i.TaxesTotals != nil {
+		i.TaxesTotals.Print()
+	}
+	if i.InvoiceSummary != nil {
+		i.InvoiceSummary.Print()
+	}
+	if i.QrCodeUrl != nil {
+		fmt.Println("QR Code Url (από υπηρεσία):", *i.QrCodeUrl)
+	}
+	if i.OtherTransportDetails != nil {
+		i.OtherTransportDetails.Print()
+	}
 }
 
 //goland:noinspection GoUnusedExportedFunction

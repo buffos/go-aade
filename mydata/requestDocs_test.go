@@ -1,12 +1,12 @@
 package mydata
 
 import (
-	"github.com/buffos/go-aade/mydata/mydataInvoices"
-	"github.com/davecgh/go-spew/spew"
-	"github.com/stretchr/testify/require"
 	"net/http"
 	"testing"
 	"time"
+
+	"github.com/buffos/go-aade/mydata/mydataInvoices"
+	"github.com/stretchr/testify/require"
 )
 
 //Mark: "400001917182008",
@@ -23,6 +23,6 @@ func TestRequestDocs(t *testing.T) {
 	require.Equal(t, http.StatusOK, code, "status code should be 200")
 
 	if docs != nil {
-		spew.Dump(docs)
+		docs.Print()
 	}
 }

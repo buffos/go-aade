@@ -3,6 +3,8 @@ package mydataInvoices
 import (
 	"encoding/xml"
 	"errors"
+	"fmt"
+
 	"github.com/buffos/go-aade/mydata/mydatavalues"
 )
 
@@ -14,6 +16,28 @@ type ExpensesClassificationType struct {
 	VatCategory            *mydatavalues.InvoiceVATCategory                       `xml:"vatCategory"`            // Κατηγορία ΦΠΑ
 	VatExemptionCategory   *mydatavalues.VATExceptionReasonType                   `xml:"vatExemptionCategory"`   // Κατηγορία Αιτίας Απαλλαγής ΦΠΑ
 	ID                     *byte                                                  `xml:"id"`                     // Αύξων αριθμός χαρακτηρισμού
+}
+
+func (e *ExpensesClassificationType) Print() {
+	if e.ClassificationType != nil {
+		fmt.Println("Κωδικός Χαρακτηρισμού:", *e.ClassificationType)
+	}
+	if e.ClassificationCategory != nil {
+		fmt.Println("Κατηγορία Χαρακτηρισμού:", *e.ClassificationCategory)
+	}
+	fmt.Println("Ποσό:", e.Amount)
+	if e.VatAmount != nil {
+		fmt.Println("Ποσό ΦΠΑ:", *e.VatAmount)
+	}
+	if e.VatCategory != nil {
+		fmt.Println("Κατηγορία ΦΠΑ:", e.VatCategory.String())
+	}
+	if e.VatExemptionCategory != nil {
+		fmt.Println("Κατηγορία Αιτίας Απαλλαγής ΦΠΑ:", e.VatExemptionCategory.String())
+	}
+	if e.ID != nil {
+		fmt.Println("ID:", *e.ID)
+	}
 }
 
 // NewExpenseClassification returns a new ExpensesClassificationType for E3 classifications

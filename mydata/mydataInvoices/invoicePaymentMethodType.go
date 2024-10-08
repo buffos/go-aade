@@ -1,5 +1,7 @@
 package mydataInvoices
 
+import "fmt"
+
 type PaymentMethodType struct {
 	InvoiceMark          *int64                    `xml:"invoiceMark"`
 	PaymentMethodMark    *int64                    `xml:"paymentMethodMark"`    // Μοναδικός Αριθμός Καταχώρησης Τρόπου Πληρωμής
@@ -7,8 +9,30 @@ type PaymentMethodType struct {
 	PaymentMethodDetails *PaymentMethodDetailsType `xml:"paymentMethodDetails"` // Στοιχεία Τρόπου Πληρωμής
 }
 
+func (p *PaymentMethodType) Print() {
+	if p.InvoiceMark != nil {
+		fmt.Println("InvoiceMark:", *p.InvoiceMark)
+	}
+	if p.PaymentMethodMark != nil {
+		fmt.Println("PaymentMethodMark:", *p.PaymentMethodMark)
+	}
+	if p.EntityVatNumber != nil {
+		fmt.Println("EntityVatNumber:", *p.EntityVatNumber)
+	}
+	if p.PaymentMethodDetails != nil {
+		p.PaymentMethodDetails.Print()
+	}
+}
+
 type PaymentMethodsDoc struct {
 	PaymentMethods []*PaymentMethodType `xml:"paymentMethods"`
+}
+
+func (p *PaymentMethodsDoc) Print() {
+	fmt.Println("Τρόποι πληρωμής τιμολογίου")
+	for _, method := range p.PaymentMethods {
+		method.Print()
+	}
 }
 
 // 1. Το πεδίο paymentMethodMark συμπληρώνεται από την υπηρεσία

@@ -9,6 +9,12 @@ type InvoicesDoc struct {
 	Invoices  []*Invoice `xml:"invoice"`
 }
 
+func (i *InvoicesDoc) Print() {
+	for _, invoice := range i.Invoices {
+		invoice.Print()
+	}
+}
+
 //goland:noinspection GoUnusedExportedFunction
 func NewInvoices() *InvoicesDoc {
 	return &InvoicesDoc{

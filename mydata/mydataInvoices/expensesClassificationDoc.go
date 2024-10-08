@@ -2,6 +2,8 @@ package mydataInvoices
 
 import (
 	"errors"
+	"fmt"
+
 	"github.com/buffos/go-aade/mydata/mydatavalues"
 )
 
@@ -13,6 +15,12 @@ type ExpensesClassificationsDoc struct {
 	ExpensesInvoiceClassification []*ExpensesInvoiceClassification `xml:"expensesInvoiceClassification"` // Χαρακτηρισμοί Εξόδων Πρότυπων Παραστατικών ΑΑΔΕ
 }
 
+func (d *ExpensesClassificationsDoc) Print() {
+	for _, classification := range d.ExpensesInvoiceClassification {
+		classification.Print()
+	}
+}
+
 type ExpensesInvoiceClassification struct {
 	InvoiceMark                           uint64                                   `xml:"invoiceMark"`                           // Μοναδικός Αριθμός Καταχώρησης Παραστατικού
 	ClassificationMark                    *uint64                                  `xml:"classificationMark"`                    // Αποδεικτικό Λήψης Χαρακτηρισμού Εσόδων. Συμπληρώνεται από την Υπηρεσία
@@ -22,9 +30,32 @@ type ExpensesInvoiceClassification struct {
 	ClassificationPostMode                *byte                                    `xml:"classificationPostMode"`                // Μέθοδος Υποβολής Χαρακτηρισμού (1: Σημαίνει οτι ο χαρακτηρισμός αφορά ολόκληρο το παραστατικό 0: Ο χαρακτηρισμός αφορά μια γραμμή μόνο)
 }
 
+func (d *ExpensesInvoiceClassification) Print() {
+	fmt.Printf("Κατηγορία Εξόδων Τιμολογίου: %d", d.InvoiceMark)
+	if d.ClassificationMark != nil {
+		fmt.Println("Αποδεικτικό Λήψης Χαρακτηρισμού Εσόδων:", *d.ClassificationMark)
+	}
+	if d.EntityVatNumber != nil {
+		fmt.Println("ΑΦΜ Οντότητας Αναφοράς:", *d.EntityVatNumber)
+	}
+	if d.TransactionMode != nil {
+		fmt.Println("Αιτιολογία Συναλλαγής:", *d.TransactionMode)
+	}
+	for _, classificationDetails := range d.InvoicesExpensesClassificationDetails {
+		classificationDetails.Print()
+	}
+}
+
 type InvoicesExpensesClassificationDetails struct {
 	LineNumber                       int                           `xml:"lineNumber"`                       // Αριθμός Γραμμής Παραστατικού
 	ExpensesClassificationDetailData []*ExpensesClassificationType `xml:"expensesClassificationDetailData"` // Στοιχεία Χαρακτηρισμού Εσόδων
+}
+
+func (d *InvoicesExpensesClassificationDetails) Print() {
+	fmt.Println("Αριθμός Γραμμής Παραστατικού:", d.LineNumber)
+	for _, classification := range d.ExpensesClassificationDetailData {
+		classification.Print()
+	}
 }
 
 func NewExpensesClassificationDoc() *ExpensesClassificationsDoc {

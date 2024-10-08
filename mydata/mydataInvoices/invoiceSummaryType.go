@@ -1,6 +1,10 @@
 package mydataInvoices
 
-import "github.com/buffos/go-aade/mydata/mydatavalues"
+import (
+	"fmt"
+
+	"github.com/buffos/go-aade/mydata/mydatavalues"
+)
 
 type InvoiceSummaryType struct {
 	TotalNetValue          float64                       `xml:"totalNetValue"`          // * Σύνολο Καθαρής Αξίας
@@ -13,6 +17,25 @@ type InvoiceSummaryType struct {
 	TotalGrossValue        float64                       `xml:"totalGrossValue"`        // * Σύνολο Αξίας
 	IncomeClassification   []*IncomeClassificationType   `xml:"incomeClassification"`   // Χαρακτηρισμοί Εσόδων
 	ExpensesClassification []*ExpensesClassificationType `xml:"expensesClassification"` // Χαρακτηρισμοί Εξόδων
+}
+
+func (i *InvoiceSummaryType) Print() {
+	fmt.Println("Σύνολο Καθαρής Αξίας:", i.TotalNetValue)
+	fmt.Println("Σύνολο ΦΠΑ:", i.TotalVatAmount)
+	fmt.Println("Σύνολο Παρακράτησης Φόρου:", i.TotalWithheldAmount)
+	fmt.Println("Σύνολο Τελών:", i.TotalFeesAmount)
+	fmt.Println("Σύνολο Χαρτοσήμου:", i.TotalStampDutyAmount)
+	fmt.Println("Σύνολο Λοιπών Φόρων:", i.TotalOtherTaxesAmount)
+	fmt.Println("Σύνολο Κρατήσεων:", i.TotalDeductionsAmount)
+	fmt.Println("Σύνολο Αξίας:", i.TotalGrossValue)
+	fmt.Println("Χαρακτηρισμοί Εσόδων:")
+	for _, ic := range i.IncomeClassification {
+		ic.Print()
+	}
+	fmt.Println("Χαρακτηρισμοί Εξόδων:")
+	for _, ec := range i.ExpensesClassification {
+		ec.Print()
+	}
 }
 
 // region InvoiceSummaryType functions

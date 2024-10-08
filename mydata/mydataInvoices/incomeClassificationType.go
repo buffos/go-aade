@@ -3,6 +3,8 @@ package mydataInvoices
 import (
 	"encoding/xml"
 	"errors"
+	"fmt"
+
 	"github.com/buffos/go-aade/mydata/mydatavalues"
 )
 
@@ -11,6 +13,19 @@ type IncomeClassificationType struct {
 	ClassificationCategory *mydatavalues.IncomeClassificationCategoryStringType `xml:"classificationCategory"` // Κατηγορία Χαρακτηρισμού
 	Amount                 float64                                              `xml:"amount"`                 // * Ποσό
 	ID                     *byte                                                `xml:"id"`                     // Αύξων αριθμός χαρακτηρισμού
+}
+
+func (i *IncomeClassificationType) Print() {
+	if i.ClassificationType != nil {
+		fmt.Println("ClassificationType:", *i.ClassificationType)
+	}
+	if i.ClassificationCategory != nil {
+		fmt.Println("ClassificationCategory:", *i.ClassificationCategory)
+	}
+	fmt.Println("Amount:", i.Amount)
+	if i.ID != nil {
+		fmt.Println("ID:", *i.ID)
+	}
 }
 
 //goland:noinspection GoUnusedExportedFunction

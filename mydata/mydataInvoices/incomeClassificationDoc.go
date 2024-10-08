@@ -1,6 +1,10 @@
 package mydataInvoices
 
-import "github.com/buffos/go-aade/mydata/mydatavalues"
+import (
+	"fmt"
+
+	"github.com/buffos/go-aade/mydata/mydatavalues"
+)
 
 type IncomeClassificationsDoc struct {
 	Xmlns                       string                         `xml:"xmlns,attr"`
@@ -8,6 +12,13 @@ type IncomeClassificationsDoc struct {
 	XmlnsXsi                    string                         `xml:"xmlns:xsi,attr"`
 	XmlnsIcls                   string                         `xml:"xmlns:icls,attr"`
 	IncomeInvoiceClassification []*IncomeInvoiceClassification `xml:"incomeInvoiceClassification"` // Χαρακτηρισμοί Εσόδων Πρότυπων Παραστατικών ΑΑΔΕ
+}
+
+func (i *IncomeClassificationsDoc) Print() {
+	fmt.Println("IncomeClassificationsDoc Length:", len(i.IncomeInvoiceClassification))
+	for _, invoiceClassification := range i.IncomeInvoiceClassification {
+		invoiceClassification.Print()
+	}
 }
 
 type IncomeInvoiceClassification struct {
@@ -18,9 +29,38 @@ type IncomeInvoiceClassification struct {
 	InvoicesIncomeClassificationDetails []*InvoicesIncomeClassificationDetails `xml:"invoicesIncomeClassificationDetails"` // Στοιχεία Χαρακτηρισμού Εσόδων
 }
 
+func (i *IncomeInvoiceClassification) Print() {
+	fmt.Printf("Κατηγορία Εσόδων Τιμολογίου: %d", i.InvoiceMark)
+	if i.ClassificationMark != nil {
+		fmt.Println("ClassificationMark:", *i.ClassificationMark)
+	}
+	if i.EntityVatNumber != nil {
+		fmt.Println("EntityVatNumber:", *i.EntityVatNumber)
+	}
+	if i.TransactionMode != nil {
+		if *i.TransactionMode == 1 {
+			fmt.Println("TransactionMode: Reject")
+		} else if *i.TransactionMode == 2 {
+			fmt.Println("TransactionMode: Deviation")
+		} else {
+			fmt.Println("TransactionMode: Unknown")
+		}
+	}
+	for _, detail := range i.InvoicesIncomeClassificationDetails {
+		detail.Print()
+	}
+}
+
 type InvoicesIncomeClassificationDetails struct {
 	LineNumber                     int                         `xml:"lineNumber"`                     // Αριθμός Γραμμής Παραστατικού
 	IncomeClassificationDetailData []*IncomeClassificationType `xml:"incomeClassificationDetailData"` // Στοιχεία Χαρακτηρισμού Εσόδων
+}
+
+func (i *InvoicesIncomeClassificationDetails) Print() {
+	fmt.Println("LineNumber:", i.LineNumber)
+	for _, detail := range i.IncomeClassificationDetailData {
+		detail.Print()
+	}
 }
 
 func NewIncomeClassificationDoc() *IncomeClassificationsDoc {

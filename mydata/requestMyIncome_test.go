@@ -1,12 +1,13 @@
 package mydata
 
 import (
-	"github.com/buffos/go-aade/mydata/mydataInvoices"
-	"github.com/davecgh/go-spew/spew"
-	"github.com/stretchr/testify/require"
 	"net/http"
 	"testing"
 	"time"
+
+	"github.com/buffos/go-aade/mydata/mydataInvoices"
+	"github.com/davecgh/go-spew/spew"
+	"github.com/stretchr/testify/require"
 )
 
 func TestRequestMyIncome(t *testing.T) {
@@ -20,7 +21,6 @@ func TestRequestMyIncome(t *testing.T) {
 
 	require.NoError(t, err)
 	require.Equal(t, http.StatusOK, code, "status code should be 200")
-
 	require.NotEmpty(t, docs.Xmlns, "books xmlns should not be empty")
 }
 

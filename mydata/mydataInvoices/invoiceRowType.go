@@ -2,6 +2,7 @@ package mydataInvoices
 
 import (
 	"errors"
+	"fmt"
 	"time"
 
 	"github.com/buffos/go-aade/mydata/mydatavalues"
@@ -39,6 +40,102 @@ type InvoiceRowType struct {
 	OtherMeasurementUnitQuantity *int                                     `xml:"otherMeasurementUnitQuantity"` // Ποσότητα Εναλλακτικής Μονάδας Μέτρησης.Μόνο όταν measurementUnit = 7
 	OtherMeasurementUnitTitle    *string                                  `xml:"otherMeasurementUnitTitle"`    // Τίτλος Εναλλακτικής Μονάδας Μέτρησης.Μόνο όταν measurementUnit = 7
 	NotVat195                    *bool                                    `xml:"notVat195"`                    // Ένδειξη μη συμμετοχής στο ΦΠΑ (έσοδα - έξοδα). Αποδεκτό μόνο για παραστατικά τύπων μεταξύ 1.1 - 11.5
+}
+
+func (i *InvoiceRowType) Print() {
+	if i.LineNumber != nil {
+		fmt.Println("ΑΑ γραμμής:", *i.LineNumber)
+	}
+	if i.RecType != nil {
+		fmt.Println("Είδος Γραμμής:", i.RecType.String())
+	}
+	if i.FuelCode != nil {
+		fmt.Println("Κωδικός Καυσίμου:", i.FuelCode.String())
+	}
+	if i.Quantity != nil {
+		fmt.Println("Ποσότητα:", *i.Quantity)
+	}
+	if i.MeasurementUnit != nil {
+		fmt.Println("Είδος Ποσότητας:", i.MeasurementUnit.String())
+	}
+	if i.InvoiceDetailType != nil {
+		fmt.Println("Επισήμανση:", i.InvoiceDetailType.String())
+	}
+	if i.NetValue != nil {
+		fmt.Println("Καθαρή Αξία:", *i.NetValue)
+	}
+	if i.VatCategory != nil {
+		fmt.Println("Κατηγορία ΦΠΑ:", i.VatCategory.String())
+	}
+	if i.VatAmount != nil {
+		fmt.Println("Ποσό ΦΠΑ:", *i.VatAmount)
+	}
+	if i.VatExemptionCategory != nil {
+		fmt.Println("Κατηγορία Αιτίας Απαλλαγής ΦΠΑ:", i.VatExemptionCategory.String())
+	}
+	if i.Dienergia != nil {
+		fmt.Println("Διενέργεια:", i.Dienergia)
+	}
+	if i.DiscountOption != nil {
+		fmt.Println("Δικαίωμα έκπτωσης:", *i.DiscountOption)
+	}
+	if i.WithheldAmount != nil {
+		fmt.Println("Ποσό παρακράτησης φόρου:", *i.WithheldAmount)
+	}
+	if i.WithheldPercentCategory != nil {
+		fmt.Println("Κατηγορία ποσοστού παρακράτησης φόρου:", i.WithheldPercentCategory.String())
+	}
+	if i.StampDutyAmount != nil {
+		fmt.Println("Ποσό Χαρτοσήμου:", *i.StampDutyAmount)
+	}
+	if i.StampDutyPercentCategory != nil {
+		fmt.Println("Κατηγορία ποσοστού χαρτοσήμου:", i.StampDutyPercentCategory.String())
+	}
+	if i.FeesAmount != nil {
+		fmt.Println("Ποσό Τελών:", *i.FeesAmount)
+	}
+	if i.FeesPercentCategory != nil {
+		fmt.Println("Κατηγορία ποσοστού τελών:", i.FeesPercentCategory.String())
+	}
+	if i.OtherTaxesAmount != nil {
+		fmt.Println("Ποσό Λοιπών Φόρων:", *i.OtherTaxesAmount)
+	}
+	if i.OtherTaxesPercentCategory != nil {
+		fmt.Println("Κατηγορία ποσοστού λοιπών φόρων:", i.OtherTaxesPercentCategory.String())
+	}
+	if i.DeductionsAmount != nil {
+		fmt.Println("Ποσό Κρατήσεων:", *i.DeductionsAmount)
+	}
+	if i.LineComments != nil {
+		fmt.Println("Σχόλια γραμμής:", *i.LineComments)
+	}
+	for _, income := range i.IncomeClassification {
+		income.Print()
+	}
+	for _, expense := range i.ExpensesClassification {
+		expense.Print()
+	}
+	if i.Quantity15 != nil {
+		fmt.Println("Ποσότητα Θερμοκρασίας 15 βαθμών:", *i.Quantity15)
+	}
+	if i.ItemDescr != nil {
+		fmt.Println("Περιγραφή Είδους:", *i.ItemDescr)
+	}
+	if i.TaricNo != nil {
+		fmt.Println("Κωδικός ΤΑΡΙΚ:", *i.TaricNo)
+	}
+	if i.ItemCode != nil {
+		fmt.Println("Κωδικός Είδους:", *i.ItemCode)
+	}
+	if i.OtherMeasurementUnitQuantity != nil {
+		fmt.Println("Ποσότητα Εναλλακτικής Μονάδας Μέτρησης:", *i.OtherMeasurementUnitQuantity)
+	}
+	if i.OtherMeasurementUnitTitle != nil {
+		fmt.Println("Τίτλος Εναλλακτικής Μονάδας Μέτρησης:", *i.OtherMeasurementUnitTitle)
+	}
+	if i.NotVat195 != nil {
+		fmt.Println("Ένδειξη μη συμμετοχής στο ΦΠΑ:", *i.NotVat195)
+	}
 }
 
 //goland:noinspection GoUnusedExportedFunction

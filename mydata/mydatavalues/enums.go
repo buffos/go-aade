@@ -1,6 +1,9 @@
 package mydatavalues
 
-import "math"
+import (
+	"fmt"
+	"math"
+)
 
 const (
 	Xmlns     = "http://www.aade.gr/myDATA/invoice/v1.0"
@@ -18,6 +21,19 @@ const (
 	FailureConnectionProviderToMyData                                    // Αποτυχία σύνδεσης παρόχου με το myDATA
 	FailureConnectionToMyDataFromERP                                     // Αποτυχία σύνδεσης με το myDATA από το ERP
 )
+
+func (t TransmissionFailureType) String() string {
+	switch t {
+	case FailureConnectionToProvider:
+		return "Αποτυχία σύνδεσης με τον Πάροχο"
+	case FailureConnectionProviderToMyData:
+		return "Αποτυχία σύνδεσης παρόχου με το myDATA"
+	case FailureConnectionToMyDataFromERP:
+		return "Αποτυχία σύνδεσης με το myDATA από το ERP"
+	default:
+		return fmt.Sprintf("Unknown transmission failure type: %d", t)
+	}
+}
 
 // endregion
 
@@ -37,6 +53,29 @@ const (
 	IRIS                                             // Αμεσες πληρωμές μέσω ΙΡΙΣ
 )
 
+func (p InvoicePaymentType) String() string {
+	switch p {
+	case BankAccountLocal:
+		return "Επαγγελματικός Λογαριασμός Πληρωμών Ημεδαπής"
+	case BankAccountForeign:
+		return "Επαγγελματικός Λογαριασμός Πληρωμών Αλλοδαπής"
+	case Cash:
+		return "Μετρητά"
+	case Cheque:
+		return "Επιταγή"
+	case Credit:
+		return "Επί πιστώσει"
+	case WebBanking:
+		return "Ηλεκτρονική Τραπεζική Πληρωμή"
+	case POS:
+		return "Point of Sale"
+	case IRIS:
+		return "Αμεσες πληρωμές μέσω ΙΡΙΣ"
+	default:
+		return fmt.Sprintf("Unknown invoice payment type: %d", p)
+	}
+}
+
 // endregion
 
 // region Είδος Ποσότητας
@@ -53,6 +92,27 @@ const (
 	CubicMeters                                            // Μ3
 	Pieces_Miscellaneous                                   // Τεμάχια λοιπές περιπτώσεις
 )
+
+func (u InvoiceMeasurementUnit) String() string {
+	switch u {
+	case Pieces:
+		return "Τεμάχια"
+	case Kilograms:
+		return "Κιλά"
+	case Liters:
+		return "Λίτρα"
+	case Meters:
+		return "Μέτρα"
+	case SquareMeters:
+		return "Μ2"
+	case CubicMeters:
+		return "Μ3"
+	case Pieces_Miscellaneous:
+		return "Τεμάχια λοιπές περιπτώσεις"
+	default:
+		return fmt.Sprintf("Unknown invoice measurement unit: %d", u)
+	}
+}
 
 // endregion
 
@@ -83,6 +143,51 @@ const (
 	MovePurposeOther                                                                   //Λοιπές Διακινήσεις
 )
 
+func (p InvoicePurposeOfMovement) String() string {
+	switch p {
+	case MovePurposeSales:
+		return "Πώληση"
+	case MovePurposeSalesOnBehalf:
+		return "Πώληση εκ μέρους τρίτων"
+	case MovePurposeSample:
+		return "Δειγματισμός"
+	case MovePurposeExhibition:
+		return "Έκθεση"
+	case MovePurposeReturn:
+		return "Επιστροφή"
+	case MovePurposeKeep:
+		return "Φύλαξη"
+	case MovePurposeAssembly:
+		return "Συναρμολόγηση"
+	case MovePurposeBetweenEntities:
+		return "Μεταξύ Εγκαταστάσεων Οντότητας"
+	case MovePurposePurchase:
+		return "Αγορά"
+	case MovePurposeSupplyOfShipsAndAircraft:
+		return "Εφοδιασμός πλοίων και αεροσκαφών"
+	case MovePurposeFreeDisposal:
+		return "Δωρεάν διάθεση"
+	case MovePurposeGuarantee:
+		return "Εγγύηση"
+	case MovePurposeLeasing:
+		return "Χρησιδανεισμός"
+	case MovePurposeStorageToThirdParties:
+		return "Αποθήκευση σε Τρίτους"
+	case MovePurposeReturnFromStorage:
+		return "Επιστροφή από Φύλαξη"
+	case MovePurposeRecycling:
+		return "Ανακύκλωση"
+	case MovePurposeDestructionOfUnusedMaterial:
+		return "Καταστροφή άχρηστου υλικού"
+	case MovePurposeIntraCommunityTransferOfFixedAssets:
+		return "Διακίνηση Παγίων (Ενδοδιακίνηση)"
+	case MovePurposeOther:
+		return "Λοιπές Διακινήσεις"
+	default:
+		return fmt.Sprintf("Unknown invoice purpose of movement: %d", p)
+	}
+}
+
 // endregion
 
 // region Επισήμανση Παραστατικού
@@ -94,6 +199,17 @@ const (
 	InvoiceDetailSalesClearanceOfThirdParties InvoiceDetailType = iota + 1 // Εκκαθάριση Πωλήσεων Τρίτων
 	InvoiceDetailPaymentFromThirdPartySales                                // Αμοιβή από Πωλήσεις Τρίτων
 )
+
+func (t InvoiceDetailType) String() string {
+	switch t {
+	case InvoiceDetailSalesClearanceOfThirdParties:
+		return "Εκκαθάριση Πωλήσεων Τρίτων"
+	case InvoiceDetailPaymentFromThirdPartySales:
+		return "Αμοιβή από Πωλήσεις Τρίτων"
+	default:
+		return fmt.Sprintf("Unknown invoice detail type: %d", t)
+	}
+}
 
 // endregion
 
@@ -112,6 +228,27 @@ const (
 	NegativeSignature                                        // Αρνητικό πρόσημο αξιών
 )
 
+func (t InvoiceLineType) String() string {
+	switch t {
+	case SpecialLineOfWithholdingTaxes:
+		return "Ειδική Γραμμή Κρατήσεων Φόρου"
+	case VATEnd:
+		return "Γραμμή Τέλους με Φ.Π.Α."
+	case MiscTaxesWithVAT:
+		return "Γραμμή Λοιπών Φόρων με Φ.Π.Α."
+	case SpecialLinePaperStamp:
+		return "Ειδική Γραμμή Χαρτοσήμου"
+	case SpecialLineDeductions:
+		return "Ειδική Γραμμή Κρατήσεων"
+	case GiftCode:
+		return "Δωροεπιταγή"
+	case NegativeSignature:
+		return "Αρνητικό πρόσημο αξιών"
+	default:
+		return fmt.Sprintf("Unknown invoice line type: %d", t)
+	}
+}
+
 // endregion
 
 // region Τύπος Απόκλισης Παραστατικού
@@ -125,6 +262,21 @@ const (
 	DeviationInvoiceFromReceiver                                 // Διαβίβαση δεδομένων από παραλήπτη λόγω απόκλισης του εκδότη
 	DeviationInvoiceAgreedIssuer                                 // Διαβίβαση δεδομένων από εκδότη που συμφωνεί με την επισήμανση του λήπτη για απόκλιση
 )
+
+func (t InvoiceVariationType) String() string {
+	switch t {
+	case MissingInvoiceFromReceiver:
+		return "Διαβίβαση δεδομένων από παραλήπτη λόγω παράλειψης του εκδότη"
+	case MissingInvoiceAgreedIssuer:
+		return "Διαβίβαση δεδομένων από εκδότη που συμφωνεί με την επισήμανση του λήπτη για παράλειψη"
+	case DeviationInvoiceFromReceiver:
+		return "Διαβίβαση δεδομένων από παραλήπτη λόγω απόκλισης του εκδότη"
+	case DeviationInvoiceAgreedIssuer:
+		return "Διαβίβαση δεδομένων από εκδότη που συμφωνεί με την επισήμανση του λήπτη για απόκλιση"
+	default:
+		return fmt.Sprintf("Unknown invoice variation type: %d", t)
+	}
+}
 
 // endregion
 
@@ -148,6 +300,37 @@ const (
 	FoodServiceTransactions                                               // Συναλλαγές Εστίασης
 )
 
+func (c InvoiceSpecialCategory) String() string {
+	switch c {
+	case Subsidy:
+		return "Επιδοτήσεις – Επιχορηγήσεις"
+	case HotelIncomeRoomCharges:
+		return "Έσοδα Ξενοδοχείων – Χρεώσεις Δωματίων"
+	case AccountingEntry:
+		return "Λογιστική Εγγραφή"
+	case TaxFree:
+		return "Χωρίς Φόρο. Έγκυρη τιμή μόνο για	διαβίβαση μέσω erp ή έκδοση μέσω παρόχου ή τιμολόγιο"
+	case ComplexTransactionsHomeForeign:
+		return "Σύνθετες συναλλαγές ημεδαπής – αλλοδαπής"
+	case BeneficiaryOfArticle3:
+		return "Δικαιούχοι του άρθρου 3 της υπό στοιχεία 139818 ΕΞ2022/28.09.2022 (Β’5083)"
+	case BuyingAgriculturalProductsArticle41:
+		return "Αγορά γεωργικών προϊόντων άρθρο 41 του ΦΠΑ"
+	case RetailFHM_AADE_1:
+		return "Λιανικές πωλήσεις, μόνο για ανάγνωση"
+	case RetailFHM_AADE_2:
+		return "Λιανικές πωλήσεις, μόνο για ανάγνωση"
+	case RetailFHM_Divergent:
+		return "Έσοδα Λιανικών ΦΗΜ Επιχείρησης Απόκλιση"
+	case WelfareHeating:
+		return "Επιδότηση θέρμανσης"
+	case FoodServiceTransactions:
+		return "Συναλλαγές Εστίασης"
+	default:
+		return fmt.Sprintf("Unknown invoice special category: %d", c)
+	}
+}
+
 // endregion
 
 // region Είδος Φόρου
@@ -162,6 +345,23 @@ const (
 	TaxTypeStamp                             // Χαρτόσημο
 	TaxTypeDeductions                        // Κρατήσεις
 )
+
+func (t TaxType) String() string {
+	switch t {
+	case TaxTypeWithHoldingTax:
+		return "Παρακρατούμενος Φόρος"
+	case TaxTypeFees:
+		return "Τέλη"
+	case TaxTypeMiscellaneous:
+		return "Λοιποί Φόροι"
+	case TaxTypeStamp:
+		return "Χαρτόσημο"
+	case TaxTypeDeductions:
+		return "Κρατήσεις"
+	default:
+		return fmt.Sprintf("Unknown tax type: %d", t)
+	}
+}
 
 // endregion
 
@@ -330,6 +530,75 @@ const (
 	Article47d                                             // Χωρίς ΦΠΑ – άρθρο 47δ, του Κώδικα ΦΠΑ (OSS ενωσιακό καθεστώς)
 )
 
+func (v VATExceptionReasonType) String() string {
+	switch v {
+	case Article2And3:
+		return "Χωρίς ΦΠΑ – άρθρο 2 και 3 του Κώδικα ΦΠΑ"
+	case Article5:
+		return "Χωρίς ΦΠΑ – άρθρο 5 του Κώδικα ΦΠΑ"
+	case Article13:
+		return "Χωρίς ΦΠΑ – άρθρο 13 του Κώδικα ΦΠΑ"
+	case Article14:
+		return "Χωρίς ΦΠΑ – άρθρο 14 του Κώδικα ΦΠΑ"
+	case Article16:
+		return "Χωρίς ΦΠΑ – άρθρο 16 του Κώδικα ΦΠΑ"
+	case Article19:
+		return "Χωρίς ΦΠΑ – άρθρο 19 του Κώδικα ΦΠΑ"
+	case Article22:
+		return "Χωρίς ΦΠΑ – άρθρο 22 του Κώδικα ΦΠΑ"
+	case Article24:
+		return "Χωρίς ΦΠΑ – άρθρο 24 του Κώδικα ΦΠΑ"
+	case Article25:
+		return "Χωρίς ΦΠΑ – άρθρο 25 του Κώδικα ΦΠΑ"
+	case Article26:
+		return "Χωρίς ΦΠΑ – άρθρο 26 του Κώδικα ΦΠΑ"
+	case Article27:
+		return "Χωρίς ΦΠΑ – άρθρο 27 του Κώδικα ΦΠΑ"
+	case Article27ForShips:
+		return "Χωρίς ΦΠΑ – άρθρο 27 παρ. 1 εδ. γ του Κώδικα ΦΠΑ για πλοία ανοιχτής θαλάσσης"
+	case Article271cForShips:
+		return "Χωρίς ΦΠΑ – άρθρο 27 παρ. 1 εδ. γ του Κώδικα ΦΠΑ για πλοία"
+	case Article28:
+		return "Χωρίς ΦΠΑ – άρθρο 28 του Κώδικα ΦΠΑ"
+	case Article39:
+		return "Χωρίς ΦΠΑ – άρθρο 39 του Κώδικα ΦΠΑ"
+	case Article39a:
+		return "Χωρίς ΦΠΑ – άρθρο 39α του Κώδικα ΦΠΑ"
+	case Article40:
+		return "Χωρίς ΦΠΑ – άρθρο 40 του Κώδικα ΦΠΑ"
+	case Article41:
+		return "Χωρίς ΦΠΑ – άρθρο 41 του Κώδικα ΦΠΑ"
+	case Article47:
+		return "Χωρίς ΦΠΑ – άρθρο 47 του Κώδικα ΦΠΑ"
+	case Article43VatIncluded:
+		return "ΦΠΑ εμπεριεχόμενος - άρθρο 43 του Κώδικα ΦΠΑ"
+	case Article44VatIncluded:
+		return "ΦΠΑ εμπεριεχόμενος - άρθρο 44 του Κώδικα ΦΠΑ"
+	case Article45VatIncluded:
+		return "ΦΠΑ εμπεριεχόμενος - άρθρο 45 του Κώδικα ΦΠΑ"
+	case Article46VatIncluded:
+		return "ΦΠΑ εμπεριεχόμενος - άρθρο 46 του Κώδικα ΦΠΑ"
+	case Article6:
+		return "Χωρίς ΦΠΑ – άρθρο 6 του Κώδικα ΦΠΑ"
+	case Pol1029of1995:
+		return "Χωρίς ΦΠΑ - ΠΟΛ.1029/1995"
+	case Pol1167Of2015:
+		return "Χωρίς ΦΠΑ - ΠΟΛ.1167/2015"
+	case MiscException:
+		return "Λοιπές Εξαιρέσεις"
+	case Article24CaseBPar1:
+		return "Χωρίς ΦΠΑ – άρθρο 24 περίπτωση β παράγραφος 1 του Κώδικα ΦΠΑ"
+	case Article47b:
+		return "Χωρίς ΦΠΑ – άρθρο 47β, του Κώδικα ΦΠΑ (OSS μη ενωσιακό καθεστώς)"
+	case Article47c:
+		return "Χωρίς ΦΠΑ – άρθρο 47γ, του Κώδικα ΦΠΑ (OSS ενωσιακό καθεστώς)"
+	case Article47d:
+		return "Χωρίς ΦΠΑ – άρθρο 47δ, του Κώδικα ΦΠΑ (OSS ενωσιακό καθεστώς)"
+	default:
+		return "Unknown"
+	}
+}
+
 // endregion
 
 // region Κατηγορία Παρακρατούμενων Φόρων
@@ -357,6 +626,49 @@ const (
 	WithHoldingTaxMiscWithholdingTaxes                                                 // Λοιπές Παρακρατήσεις
 	WithHoldingTaxTaxDividends                                                         // Φόρος Μερισμάτων 5%
 )
+
+func (w WithholdingTaxCategoryType) String() string {
+	switch w {
+	case WithHoldingTaxInterest:
+		return "Τόκοι 15%"
+	case WithHoldingTaxRights:
+		return "Δικαιώματα 20%"
+	case WithHoldingTaxManagementAdvisoryFees:
+		return "Αμοιβές Συμβουλών Διοίκησης 20%"
+	case WithHoldingTaxConstruction:
+		return "Τεχνικά Έργα 3%"
+	case WithHoldingTaxGasAndTobacco:
+		return "Υγρά καύσιμα και προϊόντα καπνοβιομηχανίας 1%"
+	case WithHoldingTaxVariousGoods:
+		return "Λοιπά Αγαθά 4%"
+	case WithHoldingTaxServices:
+		return "Παροχή Υπηρεσιών 8%"
+	case WithHoldingTaxArchitectsDesignFees:
+		return "Προκαταβλητέος Φόρος Αρχιτεκτόνων και Μηχανικών επί Συμβατικών Αμοιβών, για Εκπόνηση Μελετών και Σχεδίων 4%"
+	case WithHoldingTaxArchitectsOtherFees:
+		return "Προκαταβλητέος Φόρος Αρχιτεκτόνων και Μηχανικών επί Συμβατικών Αμοιβών, που αφορούν οποιασδήποτε άλλης φύσης έργα 10%"
+	case WithHoldingTaxLayerFees:
+		return "Προκαταβλητέος Φόρος στις Αμοιβές Δικηγόρων 15%"
+	case WithHoldingTaxFMY:
+		return "Παρακράτηση Φόρου Μισθωτών Υπηρεσιών παρ. 1 αρ. 15 ν. 4172/2013"
+	case WithHoldingTaxFMYCase2MerchantMarineOfficers:
+		return "Παρακράτηση Φόρου Μισθωτών Υπηρεσιών παρ. 2 αρ. 15 ν. 4172/2013 Αξιωματικών Εμπορικού Ναυτικού"
+	case WithHoldingTaxFMYJuniorCrewNave:
+		return "Παρακράτηση Φόρου Μισθωτών Υπηρεσιών παρ. 2 αρ. 15 ν. 4172/2013 Κατώτερο Πλήρωμα Εμπορικού Ναυτικού"
+	case WithHoldingTaxSolidarityCompensations:
+		return "Παρακράτηση Ειδικής Εισφοράς Αλληλεγγύης"
+	case WithHoldingTaxCompensationTaxFromTermination:
+		return "Παρακράτηση Φόρου Αποζημίωσης λόγω Διακοπής Σχέσης Εργασίας"
+	case WithHoldingTaxNoDoubleTaxing:
+		return "Παρακρατήσεις συναλλαγών αλλοδαπής βάσει συμβάσεων αποφυγής διπλής φορολογίας"
+	case WithHoldingTaxMiscWithholdingTaxes:
+		return "Λοιπές Παρακρατήσεις"
+	case WithHoldingTaxTaxDividends:
+		return "Φόρος Μερισμάτων 5%"
+	default:
+		return "Unknown"
+	}
+}
 
 // endregion
 
@@ -398,6 +710,73 @@ const (
 	VillasTax2                                                          // Αυτοεξυπηρετούμενα καταλύματα – τουριστικές επιπλωμένες επαύλεις (βίλες) 4,00€
 )
 
+func (m MiscTaxCategoryType) String() string {
+	switch m {
+	case Fire15Percent:
+		return "Ασφάλιστρα κλάδου πυρός 20% - 15%"
+	case Fire5Percent:
+		return "Ασφάλιστρα κλάδου πυρός 20% - 5%"
+	case LifeInsurance:
+		return "Ασφάλιστρα κλάδου ζωής 4%"
+	case VariousInsurance:
+		return "Ασφάλιστρα λοιπών κλάδων 15%"
+	case ExemptedInsuranceTax:
+		return "Απαλλασσόμενα φόρου ασφαλίστρων 0%"
+	case Hotel1OR2Stars:
+		return "Φόρος Διαμονής Ξενοδοχείων 1 ή 2 αστέρων 0,5 ευρώ"
+	case Hotel3Stars:
+		return "Φόρος Διαμονής Ξενοδοχείων 3 αστέρων 1,5 ευρώ"
+	case Hotel4Stars:
+		return "Φόρος Διαμονής Ξενοδοχείων 4 αστέρων 3 ευρώ"
+	case Hotel5Stars:
+		return "Φόρος Διαμονής Ξενοδοχείων 5 αστέρων 4 ευρώ"
+	case RoomsToLet:
+		return "Φόρος Διαμονής Ενοικιαζομένων Δωματίων 0,5 ευρώ"
+	case SpecialTvAdsTax:
+		return "Ειδικός Φόρος Τηλεοπτικών Διαφημίσεων 5%"
+	case LuxuryTax10PercentFromThirdCountries:
+		return "Πολυτελή Είδη 10% από Τρίτες Χώρες"
+	case LuxuryTax10PercentFromGreece:
+		return "Πολυτελή Είδη 10%, προ ΦΠΑ από Ελλάδα"
+	case CasinoTickets:
+		return "Δικαίωμα του Δημοσίου στα εισιτήρια των καζίνο 80%"
+	case FireInsuranceTaxes20Percent:
+		return "Ασφάλιστρα κλάδου πυρός 20%"
+	case CustomsTaxes:
+		return "Δασμοί"
+	case VariousTaxes:
+		return "Λοιποί Φόροι"
+	case ChargesOnVariousTaxes:
+		return "Επιβαρύνσεις Λοιπών Φόρων"
+	case EFK:
+		return "Ειδικός Φόρος Κατανάλωσης"
+	case Hotel1Or2StarTax:
+		return "Φόρος Διαμονής Ξενοδοχείων 1 αστέρα 1,5 ευρώ ανά δωμάτιο"
+	case Hotel3StarTax:
+		return "Φόρος Διαμονής Ξενοδοχείων 3 αστέρων 3,0 ευρώ ανά δωμάτιο"
+	case Hotel4StarTax:
+		return "Φόρος Διαμονής Ξενοδοχείων 4 αστέρων 7,0 ευρώ ανά δωμάτιο"
+	case Hotel5StarTax:
+		return "Φόρος Διαμονής Ξενοδοχείων 5 αστέρων 10,0 ευρώ ανά δωμάτιο"
+	case RentRoomsTax:
+		return "Φόρος Διαμονής Ενοικιαζομένων επιπλωμένες Δωματίων 1,5 ευρώ ανά δωμάτιο"
+	case ShortTermRentTax:
+		return "Φόρος Διαμονής Μικρών Ενοικιαζομένων Δωματίων 1,5 ευρώ ανά δωμάτιο"
+	case ShortTermRentOver80sqmTax:
+		return "Ακίνητα βραχυχρόνιας μίσθωσης μονοκατοικίες άνω των 80 τ.μ. 10,00€"
+	case VillasTax:
+		return "Αυτοεξυπηρετούμενα καταλύματα – τουριστικές επιπλωμένες επαύλεις (βίλες) 10,00€"
+	case ShortTermRentTax2:
+		return "Φόρος Διαμονής Μικρών Ενοικιαζομένων Δωματίων 0,5 ευρώ ανά δωμάτιο"
+	case ShortTermRentOver80sqmTax2:
+		return "Ακίνητα βραχυχρόνιας μίσθωσης μονοκατοικίες άνω των 80 τ.μ. 4,00€"
+	case VillasTax2:
+		return "Αυτοεξυπηρετούμενα καταλύματα – τουριστικές επιπλωμένες επαύλεις (βίλες) 4,00€"
+	default:
+		return "Unknown"
+	}
+}
+
 // endregion
 
 // region Κατηγορία Συντελεστή Χαρτοσήμου
@@ -411,6 +790,21 @@ const (
 	Coefficient36Percent                                   // Συντελεστής 3.6%
 	VariousCases                                           // Λοιπές Περιπτώσεις
 )
+
+func (p PaperStampCategoryType) String() string {
+	switch p {
+	case Coefficient12Percent:
+		return "1.2%"
+	case Coefficient24Percent:
+		return "2.4%"
+	case Coefficient36Percent:
+		return "3.6%"
+	case VariousCases:
+		return "Λοιπές Περιπτώσεις"
+	default:
+		return "Unknown"
+	}
+}
 
 // endregion
 
@@ -444,6 +838,57 @@ const (
 	FeeOnVariousProfits                                     // Τέλος επί των ακαθάριστων εσόδων των λοιπών επιχειρήσεων
 )
 
+func (f FeeCategoriesType) String() string {
+	switch f {
+	case MonthlyBillsUpTo50Euros:
+		return "Για μηνιαίο λογαριασμό μέχρι και 50 ευρώ 12%"
+	case MonthlyBillsUpTo100Euros:
+		return "Για μηνιαίο λογαριασμό από 50,01 μέχρι και 100 ευρώ 15%"
+	case MonthlyBillsUpTo150Euros:
+		return "Για μηνιαίο λογαριασμό από 100,01 μέχρι και 150 ευρώ 18%"
+	case MonthlyBillAbove150:
+		return "Για μηνιαίο λογαριασμό από 150,01 ευρώ και άνω 20%"
+	case CartMobilePhone12Percent:
+		return "Τέλος καρτοκινητής επί της αξίας του χρόνου ομιλίας (12%)"
+	case SubscriptionTV:
+		return "Τέλος στη συνδρομητική τηλεόραση 10%"
+	case Telephony:
+		return "Τέλος συνδρομητών σταθερής τηλεφωνίας 5%"
+	case PlasticBags:
+		return "Περιβαλλοντικό Τέλος & πλαστικής σακούλας 0,07 ευρώ ανά τεμάχιο"
+	case Dakoktonia2Percent:
+		return "Εισφορά δακοκτονίας 2%"
+	case MiscFees:
+		return "Λοιπά τέλη"
+	case FeesOnMiscTaxes:
+		return "Τέλη Λοιπών Φόρων"
+	case Dakoktonia:
+		return "Εισφορά δακοκτονίας"
+	case MonthlyBill:
+		return "Για μηνιαίο λογαριασμό κάθε σύνδεσης (10%)"
+	case CartMobilePhone10Percent:
+		return "Τέλος καρτοκινητής επί της αξίας του χρόνου ομιλίας (2%)"
+	case CartMobilePhoneForYoung:
+		return "Τέλος κινητής και καρτοκινητής για φυσικά πρόσωπα ηλικίας 15 έως και 29 ετών (0%)"
+	case PlasticFee:
+		return "Εισφορά προστασίας περιβάλλοντος πλαστικών προϊόντων 0,04 λεπτά ανά τεμάχιο"
+	case RecyclingFee:
+		return "Τέλος ανακύκλωσης 0,08 λεπτά ανά τεμάχιο"
+	case TransientAccommodationFees:
+		return "Τέλος διαμονής παρεπιδημούντων"
+	case FeeOnRestaurants:
+		return "Tέλος επί των ακαθάριστων εσόδων των εστιατορίων και συναφών καταστημάτων"
+	case FeeOnEntertainmentServices:
+		return "Τέλος επί των ακαθάριστων εσόδων των κέντρων διασκέδασης"
+	case FeeOnCasinoProfits:
+		return "Τέλος επί των ακαθάριστων εσόδων των καζίνο"
+	case FeeOnVariousProfits:
+		return "Τέλος επί των ακαθάριστων εσόδων των λοιπών επιχειρήσεων"
+	default:
+		return "Unknown"
+	}
+}
+
 // endregion
 
 // region Κατηγορία Οντότητας
@@ -459,6 +904,25 @@ const (
 	Sender                                           // Αποστολέας (Πωλητής)
 	MiscCorrelatedEntities                           // Λοιπές Συσχετιζόμενες Οντότητες
 )
+
+func (e EntityCategory) String() string {
+	switch e {
+	case TaxRepresentative:
+		return "Φορολογικός Εκπρόσωπος"
+	case Mediator:
+		return "Διαμεσολαβητής"
+	case Transporter:
+		return "Μεταφορέας"
+	case ReceiverOfSeller:
+		return "Λήπτης του Αποστολέα (Πωλητή)"
+	case Sender:
+		return "Αποστολέας (Πωλητής)"
+	case MiscCorrelatedEntities:
+		return "Λοιπές Συσχετιζόμενες Οντότητες"
+	default:
+		return "Unknown"
+	}
+}
 
 // endregion
 
@@ -480,6 +944,33 @@ const (
 	InvoiceVAT4PercentArticle31                               // Μειωμένο Τιμολόγιο 4% (άρθρο 31 νόμος 5027/2023)
 )
 
+func (i InvoiceVATCategory) String() string {
+	switch i {
+	case InvoiceVAT24Percent:
+		return "24%"
+	case InvoiceVAT13Percent:
+		return "13%"
+	case InvoiceVAT6Percent:
+		return "6%"
+	case InvoiceVAT0Percent:
+		return "Μηδενικό Τιμολόγιο 0%"
+	case InvoiceVATExempt:
+		return "Εγγραφές χωρίς ΦΠΑ (πχ Μισθοδοσία, Αποσβέσεις)"
+	case InvoiceVAT17Percent:
+		return "17%"
+	case InvoiceVAT9Percent:
+		return "9%"
+	case InvoiceVAT4Percent:
+		return "4%"
+	case InvoiceVAT3PercentArticle31:
+		return "3% (άρθρο 31 νόμος 5027/2023)"
+	case InvoiceVAT4PercentArticle31:
+		return "4% (άρθρο 31 νόμος 5027/2023)"
+	default:
+		return "Unknown"
+	}
+}
+
 func (i InvoiceVATCategory) CalculateVAT(amount float64) float64 {
 	vatAmount := float64(0)
 
@@ -499,6 +990,10 @@ func (i InvoiceVATCategory) CalculateVAT(amount float64) float64 {
 	case InvoiceVAT9Percent:
 		vatAmount = amount * 0.9
 	case InvoiceVAT4Percent:
+		vatAmount = amount * 0.4
+	case InvoiceVAT3PercentArticle31:
+		vatAmount = amount * 0.3
+	case InvoiceVAT4PercentArticle31:
 		vatAmount = amount * 0.4
 	default:
 		vatAmount = 0
@@ -569,6 +1064,71 @@ const (
 const (
 	FuelFullOtherServices FuelCode = iota + 999 // Χρησιμοποιείται στις περιπτώσεις που σε ένα παραστατικό εκτός από καύσιμα υπάρχει η ανάγκη να τιμολογούνται και λοιπές χρεώσεις μικρών ποσών
 )
+
+func (f FuelCode) String() string {
+	switch f {
+	case FuelBenzine95RON:
+		return "Βενζίνη 95 RON"
+	case FuelBenzine95RONPlus:
+		return "Βενζίνη 95 RON Plus"
+	case FuelBenzine100RON:
+		return "Βενζίνη 100 RON"
+	case FuelBenzineLRPG:
+		return "Βενζίνη LRP"
+	case FuelBenzineAirplane:
+		return "Βενζίνη Αεροπλάνου"
+	case FuelBenzineSpecialAirplane:
+		return "Ειδικό καύσιμο αεριωθουμένων"
+	case FuelDiesel:
+		return "Diesel"
+	case FuelDieselPlus:
+		return "Diesel Plus"
+	case FuelDieselHeatNN:
+		return "Diesel Heat nn"
+	case FuelDieselHeatPremium:
+		return "Diesel Heat premium"
+	case FuelDieselLight:
+		return "Diesel Light"
+	case FuelDieselOtherUses:
+		return "Diesel άλλων χρήσεων"
+	case FuelDieselMarine:
+		return "Diesel Ναυτιλίας"
+	case FuelKerosene:
+		return "Κηροζίνη JP1"
+	case FuelKeroseneOtherUses:
+		return "Κηροζίνη άλλων χρήσεων"
+	case FuelMazout:
+		return "Μαζούτ"
+	case FuelMazoutMarine:
+		return "Μαζούτ Ναυτιλίας"
+	case FuelLPG:
+		return "LPG (υγραέριο)"
+	case FuelLPGMethaneIndustrialCommercial:
+		return "Υγραέριο (LPG) και μεθάνιο βιομηχανικό /εμπορικό κινητήρων"
+	case FuelLPGMethaneHeatingAndOtherUses:
+		return "Υγραέριο (LPG) και μεθάνιο θέρμανσης και λοιπών χρήσεων"
+	case FuelLPGMethaneIndustrialCommercialInBottles:
+		return "Υγραέριο (LPG) και μεθάνιο βιομηχανικό /εμπορικό κινητήρων (σε φιάλες)"
+	case FuelLPGMethaneHeatingAndOtherUsesInBottles:
+		return "Υγραέριο (LPG) και μεθάνιο θέρμανσης και λοιπών χρήσεων (σε φιάλες)"
+	case FuelCNG:
+		return "CNG (πεπιεσμένο φυσικό αέριο)"
+	case FuelAromaticHydrocarbons2707:
+		return "Αρωματικοί Υδρογονάνθρακες Δασμολογικής Κλάσης 2707"
+	case FuelCyclicHydrocarbons2902:
+		return "Κυκλικοί Υδρογονάνθρακες Δασμολογικής Κλάσης 2902"
+	case FuelLightPetroleumWhiteSpirit:
+		return "Ελαφρύ πετρέλαιο (WHITE SPIRIT)"
+	case FuelLightLubricants:
+		return "Ελαφριά λάδια"
+	case FuelBioDiesel:
+		return "Βιοντίζελ"
+	case FuelFullOtherServices:
+		return "Χρησιμοποιείται στις περιπτώσεις που σε ένα παραστατικό εκτός από καύσιμα υπάρχει η ανάγκη να τιμολογούνται και λοιπές χρεώσεις μικρών ποσών"
+	default:
+		return "Unknown Fuel"
+	}
+}
 
 // endregion
 
