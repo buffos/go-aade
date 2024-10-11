@@ -5,7 +5,6 @@ import (
 	"testing"
 
 	"github.com/buffos/go-aade/mydata/mydataInvoices"
-	"github.com/davecgh/go-spew/spew"
 	"github.com/stretchr/testify/require"
 )
 
@@ -21,7 +20,7 @@ func TestCancelNonExistentInvoice(t *testing.T) {
 	require.Equal(t, http.StatusOK, code, "status code should be 200")
 
 	if docs != nil {
-		spew.Dump(docs)
+		docs.Print()
 	}
 }
 
@@ -35,6 +34,6 @@ func TestCancelInvoice(t *testing.T) {
 	require.Equal(t, http.StatusOK, code, "status code should be 200")
 
 	if docs != nil {
-		spew.Dump(docs)
+		docs.Print()
 	}
 }

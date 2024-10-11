@@ -4,11 +4,12 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/davecgh/go-spew/spew"
-	"github.com/stretchr/testify/require"
 	"io"
 	"net/http"
 	"testing"
+
+	"github.com/davecgh/go-spew/spew"
+	"github.com/stretchr/testify/require"
 )
 
 func TestVersion(t *testing.T) {
@@ -70,7 +71,7 @@ func TestGetVatInfo(t *testing.T) {
 	require.NotEmpty(t, i.String())
 	js, err := json.Marshal(i)
 	require.NoError(t, err, "error marshaling json")
-	spew.Dump(string(js))
+	fmt.Printf("vat info: %s\n", string(js))
 }
 
 func TestParseVatInfo(t *testing.T) {

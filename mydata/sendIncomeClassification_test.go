@@ -1,12 +1,12 @@
 package mydata
 
 import (
-	"github.com/buffos/go-aade/mydata/mydataInvoices"
-	"github.com/buffos/go-aade/mydata/mydatavalues"
-	"github.com/davecgh/go-spew/spew"
-	"github.com/stretchr/testify/require"
 	"testing"
 	"time"
+
+	"github.com/buffos/go-aade/mydata/mydataInvoices"
+	"github.com/buffos/go-aade/mydata/mydatavalues"
+	"github.com/stretchr/testify/require"
 )
 
 func TestSendIncomeClassificationReject(t *testing.T) {
@@ -38,7 +38,9 @@ func TestSendIncomeClassificationReject(t *testing.T) {
 			tc.validateResponse(doc)
 			require.Equal(t, tc.wantErr, err != nil)
 			require.Equal(t, tc.wantedCode, code)
-			spew.Dump(doc)
+			if doc != nil {
+				doc.Print()
+			}
 		})
 		time.Sleep(2 * time.Second)
 	}
@@ -73,8 +75,9 @@ func TestSendIncomeClassificationDeviate(t *testing.T) {
 			tc.validateResponse(doc)
 			require.Equal(t, tc.wantErr, err != nil)
 			require.Equal(t, tc.wantedCode, code)
-			spew.Dump(doc)
-			spew.Dump(err)
+			if doc != nil {
+				doc.Print()
+			}
 		})
 		time.Sleep(2 * time.Second)
 	}
@@ -126,8 +129,9 @@ func TestSendIncomeClassificationEditDetail(t *testing.T) {
 			tc.validateResponse(doc)
 			require.Equal(t, tc.wantErr, err != nil)
 			require.Equal(t, tc.wantedCode, code)
-			spew.Dump(doc)
-			spew.Dump(err)
+			if doc != nil {
+				doc.Print()
+			}
 		})
 		time.Sleep(2 * time.Second)
 	}

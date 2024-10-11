@@ -15,7 +15,7 @@ func TestRequestDocs(t *testing.T) {
 	c := NewClient(userID, subscriptionKey, 30, false)
 	code, docs, err := c.RequestDocs(mydataInvoices.RequestDocsParams{
 		Mark:     "1",
-		DateFrom: time.Now().AddDate(0, -6, 0), // last 3 months
+		DateFrom: time.Now().AddDate(0, -2, 0), // last 3 months
 		DateTo:   time.Now(),
 	})
 

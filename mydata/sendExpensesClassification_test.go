@@ -2,12 +2,12 @@ package mydata
 
 import (
 	"fmt"
-	"github.com/buffos/go-aade/mydata/mydataInvoices"
-	"github.com/buffos/go-aade/mydata/mydatavalues"
-	"github.com/davecgh/go-spew/spew"
-	"github.com/stretchr/testify/require"
 	"testing"
 	"time"
+
+	"github.com/buffos/go-aade/mydata/mydataInvoices"
+	"github.com/buffos/go-aade/mydata/mydatavalues"
+	"github.com/stretchr/testify/require"
 )
 
 func TestSendExpensesClassificationRejectPostPerLine(t *testing.T) {
@@ -39,7 +39,9 @@ func TestSendExpensesClassificationRejectPostPerLine(t *testing.T) {
 			tc.validateResponse(doc)
 			require.Equal(t, tc.wantErr, err != nil)
 			require.Equal(t, tc.wantedCode, code)
-			spew.Dump(doc)
+			if doc != nil {
+				doc.Print()
+			}
 		})
 		time.Sleep(2 * time.Second)
 	}
@@ -74,8 +76,9 @@ func TestSendExpensesClassificationDeviatePostPerLine(t *testing.T) {
 			tc.validateResponse(doc)
 			require.Equal(t, tc.wantErr, err != nil)
 			require.Equal(t, tc.wantedCode, code)
-			spew.Dump(doc)
-			spew.Dump(err)
+			if doc != nil {
+				doc.Print()
+			}
 		})
 		time.Sleep(2 * time.Second)
 	}
@@ -127,8 +130,9 @@ func TestSendExpensesClassificationEditDetailPostPerLine(t *testing.T) {
 			tc.validateResponse(doc)
 			require.Equal(t, tc.wantErr, err != nil)
 			require.Equal(t, tc.wantedCode, code)
-			spew.Dump(doc)
-			spew.Dump(err)
+			if doc != nil {
+				doc.Print()
+			}
 		})
 		time.Sleep(2 * time.Second)
 	}
@@ -154,6 +158,8 @@ func TestSimpleNewWay(t *testing.T) {
 
 	c := NewClient(userID, subscriptionKey, 30, false)
 	_, result, err := c.SendExpensesClassification(doc, true)
-	spew.Dump(result)
-	spew.Dump(err)
+	require.NoError(t, err)
+	if result != nil {
+		result.Print()
+	}
 }

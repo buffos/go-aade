@@ -1,11 +1,11 @@
 package mydataInvoices
 
 import (
+	"testing"
+
 	"github.com/buffos/go-aade/mydata/mydatavalues"
-	"github.com/davecgh/go-spew/spew"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
-	"testing"
 )
 
 type ExpenseClassificationSuite struct {
@@ -105,7 +105,9 @@ func (suite *ExpenseClassificationSuite) TestEditLineNumberDetail() {
 	require.Equal(t, mydatavalues.E3_102_005, *v.ExpensesInvoiceClassification[1].InvoicesExpensesClassificationDetails[0].ExpensesClassificationDetailData[0].ClassificationType) // now access the second characterization
 	require.Equal(t, mydatavalues.ECategory2_5, *v.ExpensesInvoiceClassification[1].InvoicesExpensesClassificationDetails[0].ExpensesClassificationDetailData[0].ClassificationCategory)
 	require.Equal(t, 10.0, v.ExpensesInvoiceClassification[1].InvoicesExpensesClassificationDetails[0].ExpensesClassificationDetailData[0].Amount)
-	spew.Dump(v)
+	if v != nil {
+		v.Print()
+	}
 }
 
 func (suite *ExpenseClassificationSuite) TestInvoiceExpensesClassificationNewWay() {
@@ -170,7 +172,9 @@ func (suite *ExpenseClassificationSuite) TestInvoiceExpensesClassificationNewWay
 	require.Equal(t, (*mydatavalues.VATExceptionReasonType)(nil), inv1Entries[2].VatExemptionCategory)
 	require.Equal(t, mydatavalues.Article39a, *inv1Entries[3].VatExemptionCategory)
 
-	spew.Dump(inv1)
+	if inv1 != nil {
+		inv1.Print()
+	}
 }
 
 func (suite *ExpenseClassificationSuite) TestValidateAgainstInvoice() {

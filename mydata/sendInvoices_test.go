@@ -8,7 +8,6 @@ import (
 	"github.com/buffos/go-aade/mydata/invoicesfactory"
 	"github.com/buffos/go-aade/mydata/mydataInvoices"
 	"github.com/buffos/go-aade/mydata/mydatavalues"
-	"github.com/davecgh/go-spew/spew"
 	"github.com/stretchr/testify/require"
 )
 
@@ -178,7 +177,9 @@ func TestSendInvoice(t *testing.T) {
 				} else {
 					require.Equal(t, "201", d.Response[0].Errors.Error[0].Code, "if we fail it must be because we do not have an authorized vat to execute")
 				}
-				spew.Dump(d.Response)
+				if d != nil {
+					d.Print()
+				}
 			},
 			wantedCode: 200,
 			wantErr:    false,
@@ -241,7 +242,9 @@ func TestSendInvoice(t *testing.T) {
 				} else {
 					require.Equal(t, "201", d.Response[0].Errors.Error[0].Code, "if we fail it must be because we do not have an authorized vat to execute")
 				}
-				spew.Dump(d.Response)
+				if d != nil {
+					d.Print()
+				}
 			},
 			wantedCode: 200,
 			wantErr:    false,
@@ -302,7 +305,9 @@ func TestSendInvoice(t *testing.T) {
 				} else {
 					require.Equal(t, "201", d.Response[0].Errors.Error[0].Code, "if we fail it must be because we do not have an authorized vat to execute")
 				}
-				spew.Dump(d.Response)
+				if d != nil {
+					d.Print()
+				}
 			},
 			wantedCode: 200,
 			wantErr:    false,
@@ -368,7 +373,9 @@ func TestSendInvoice(t *testing.T) {
 				} else {
 					require.Equal(t, "201", d.Response[0].Errors.Error[0].Code, "if we fail it must be because we do not have an authorized vat to execute")
 				}
-				spew.Dump(d.Response)
+				if d != nil {
+					d.Print()
+				}
 			},
 			wantedCode: 200,
 			wantErr:    false,
@@ -427,7 +434,9 @@ func TestSendInvoice(t *testing.T) {
 				} else {
 					require.Equal(t, "201", d.Response[0].Errors.Error[0].Code, "if we fail it must be because we do not have an authorized vat to execute")
 				}
-				spew.Dump(d.Response)
+				if d != nil {
+					d.Print()
+				}
 			},
 			wantedCode: 200,
 			wantErr:    false,
@@ -487,7 +496,9 @@ func TestSendInvoice(t *testing.T) {
 				} else {
 					require.Equal(t, "201", d.Response[0].Errors.Error[0].Code, "if we fail it must be because we do not have an authorized vat to execute")
 				}
-				spew.Dump(d.Response)
+				if d != nil {
+					d.Print()
+				}
 			},
 			wantedCode: 200,
 			wantErr:    false,
@@ -543,7 +554,9 @@ func TestSendInvoice(t *testing.T) {
 				} else {
 					require.Equal(t, "201", d.Response[0].Errors.Error[0].Code, "if we fail it must be because we do not have an authorized vat to execute")
 				}
-				spew.Dump(d.Response)
+				if d != nil {
+					d.Print()
+				}
 			},
 			wantedCode: 200,
 			wantErr:    false,
@@ -594,7 +607,9 @@ func TestSendInvoice(t *testing.T) {
 				} else {
 					require.Equal(t, "201", d.Response[0].Errors.Error[0].Code, "if we fail it must be because we do not have an authorized vat to execute")
 				}
-				spew.Dump(d.Response)
+				if d != nil {
+					d.Print()
+				}
 			},
 			wantedCode: 200,
 			wantErr:    false,
@@ -647,7 +662,9 @@ func TestSendInvoice(t *testing.T) {
 				} else {
 					require.Equal(t, "201", d.Response[0].Errors.Error[0].Code, "if we fail it must be because we do not have an authorized vat to execute")
 				}
-				spew.Dump(d.Response)
+				if d != nil {
+					d.Print()
+				}
 			},
 			wantedCode: 200,
 			wantErr:    false,
@@ -698,7 +715,9 @@ func TestSendInvoice(t *testing.T) {
 				} else {
 					require.Equal(t, "201", d.Response[0].Errors.Error[0].Code, "if we fail it must be because we do not have an authorized vat to execute")
 				}
-				spew.Dump(d.Response)
+				if d != nil {
+					d.Print()
+				}
 			},
 			wantedCode: 200,
 			wantErr:    false,
@@ -746,7 +765,9 @@ func TestSendInvoice(t *testing.T) {
 				return invoices
 			},
 			validateResponse: func(d *mydataInvoices.ResponseDoc) {
-				spew.Dump(d.Response)
+				if d != nil {
+					d.Print()
+				}
 				require.NotEmpty(t, d.Response)
 				require.Len(t, d.Response, 3)
 				require.NotEqual(t, uint64(0), d.Response[0].InvoiceMark)
@@ -899,8 +920,9 @@ func TestSendInvoicePassThroughInvalid(t *testing.T) {
 			tc.validateResponse(docs)
 			require.Equal(t, tc.wantErr, err != nil)
 			require.Equal(t, tc.wantedCode, code)
-			spew.Dump(docs)
-			spew.Dump(err)
+			if docs != nil {
+				docs.Print()
+			}
 		})
 		time.Sleep(2 * time.Second)
 	}
@@ -996,7 +1018,9 @@ func TestSendInvoiceSmallSuite(t *testing.T) {
 				} else {
 					require.Equal(t, "201", d.Response[0].Errors.Error[0].Code, "if we fail it must be because we do not have an authorized vat to execute")
 				}
-				spew.Dump(d.Response)
+				if d != nil {
+					d.Print()
+				}
 			},
 			wantedCode: 200,
 			wantErr:    false,
