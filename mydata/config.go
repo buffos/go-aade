@@ -1,8 +1,8 @@
 package mydata
 
 const (
-	develHost = "mydataapidev.aade.gr"
-	prodHost  = "mydatapi.aade.gr/myDATA"
+	developmentHost = "mydataapidev.aade.gr"
+	productionHost  = "mydatapi.aade.gr/myDATA"
 
 	URLSendInvoices               = "/SendInvoices"
 	URLRequestMyIncome            = "/RequestMyIncome"

@@ -7,7 +7,6 @@ import (
 )
 
 type BookInfo struct {
-	ContinuationToken *ContinuationToken             `xml:"continuationToken"` // Στοιχείο για την τμηματική λήψη	αποτελεσμάτων
 	IssueDate         string                         `xml:"issueDate"`         // Ημερομηνία έκδοσης
 	InvType           mydatavalues.InvoiceType       `xml:"invType"`           // Τύπος Παραστατικού
 	SelfPricing       bool                           `xml:"selfPricing"`       // Αυτοτιμολόγηση
@@ -27,9 +26,6 @@ type BookInfo struct {
 }
 
 func (b *BookInfo) Print() {
-	if b.ContinuationToken != nil {
-		b.ContinuationToken.Print()
-	}
 
 	if b.IssueDate != "" {
 		fmt.Println("Ημερομηνία έκδοσης:", b.IssueDate)
@@ -82,17 +78,31 @@ func (b *BookInfo) Print() {
 }
 
 type RequestedBookInfo struct {
-	Xmlns     string     `xml:"xmlns,attr"`
-	XmlnsICLS string     `xml:"xmlns:icls,attr"`
-	XmlnsECLS string     `xml:"xmlns:ecls,attr"`
-	BooksInfo []BookInfo `xml:"bookInfo"`
+	Xmlns             string             `xml:"xmlns,attr"`
+	XmlnsICLS         string             `xml:"xmlns:icls,attr"`
+	XmlnsECLS         string             `xml:"xmlns:ecls,attr"`
+	ContinuationToken *ContinuationToken `xml:"continuationToken"` // Στοιχείο για την τμηματική λήψη	αποτελεσμάτων
+	CounterVatNumber  *string            `xml:"counterVatNumber"`  // ΑΦΜ αντισυμβαλλόμενου
+	BooksInfo         []BookInfo         `xml:"bookInfo"`
 }
 
 func (b *RequestedBookInfo) Print() {
 	fmt.Println("Καταχωρήσεις βιβλίου εσόδων - εξόδων:")
+	if b.ContinuationToken != nil {
+		b.ContinuationToken.Print()
+	}
+	if b.CounterVatNumber != nil {
+		fmt.Println("ΑΦΜ αντισυμβαλλόμενου:", *b.CounterVatNumber)
+	}
 
 	for _, book := range b.BooksInfo {
 		book.Print()
 		fmt.Println()
 	}
+}
+func (b *RequestedBookInfo) GetNextPartitionData() (string, string) {
+	if b.ContinuationToken == nil {
+		return "", ""
+	}
+	return b.ContinuationToken.NextPartitionKey, b.ContinuationToken.NextRowKey
 }

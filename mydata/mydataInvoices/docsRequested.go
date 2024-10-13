@@ -14,6 +14,13 @@ type RequestedDoc struct {
 	PaymentMethodsDoc         *PaymentMethodsDoc          `xml:"paymentMethodsDoc"`
 }
 
+func (d *RequestedDoc) GetNextPartitionData() (string, string) {
+	if d.ContinuationToken == nil {
+		return "", ""
+	}
+	return d.ContinuationToken.NextPartitionKey, d.ContinuationToken.NextRowKey
+}
+
 func (d *RequestedDoc) Print() {
 	if d.ContinuationToken != nil {
 		d.ContinuationToken.Print()

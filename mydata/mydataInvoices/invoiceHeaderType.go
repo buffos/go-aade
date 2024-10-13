@@ -46,7 +46,7 @@ func (i *InvoiceHeaderType) Print() {
 		fmt.Println("Ημερομηνία έκδοσης:", i.IssueDate)
 	}
 	if i.InvoiceType != nil {
-		fmt.Println("Είδος παραστατικού:", i.InvoiceType)
+		fmt.Println("Είδος παραστατικού:", *i.InvoiceType)
 	}
 	if i.VatPaymentSuspension != nil {
 		fmt.Println("Αναστολή καταβολής ΦΠΑ:", *i.VatPaymentSuspension)
@@ -61,7 +61,10 @@ func (i *InvoiceHeaderType) Print() {
 		fmt.Println("Αυτοτιμολόγηση:", *i.SelfPricing)
 	}
 	if i.CorrelatedInvoices != nil {
-		fmt.Println("Συσχετιζόμενα παραστατικά:", i.CorrelatedInvoices)
+		fmt.Println("Συσχετιζόμενα παραστατικά:")
+		for index, invoice := range i.CorrelatedInvoices {
+			fmt.Printf("  %d: %d\n", index, *invoice)
+		}
 	}
 	if i.DispatchDate != nil {
 		fmt.Println("Ημερομηνία αποστολής:", *i.DispatchDate)

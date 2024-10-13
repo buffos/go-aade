@@ -6,9 +6,11 @@ import (
 )
 
 const (
-	Xmlns     = "http://www.aade.gr/myDATA/invoice/v1.0"
-	XmlnsICLS = "https://www.aade.gr/myDATA/incomeClassificaton/v1.0"
-	XmlnsECLS = "https://www.aade.gr/myDATA/expensesClassificaton/v1.0"
+	Xmlns          = "http://www.aade.gr/myDATA/invoice/v1.0"
+	XmlnsXsi       = "http://www.w3.org/2001/XMLSchema-instance"
+	XmlnsICLS      = "https://www.aade.gr/myDATA/incomeClassificaton/v1.0"
+	XmlnsECLS      = "https://www.aade.gr/myDATA/expensesClassificaton/v1.0"
+	SchemaLocation = "http://www.aade.gr/myDATA/invoice/v1.0 schema.xsd"
 )
 
 // region Transmission Failure

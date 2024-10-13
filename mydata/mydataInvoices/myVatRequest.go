@@ -54,3 +54,8 @@ func (p *RequestVatInfoParams) ToMap() (map[string]string, error) {
 	// endregion
 	return result, nil
 }
+
+func (p *RequestVatInfoParams) SetNextPartitionData(partitionKey, rowKey string) {
+	p.NextPartitionKey = partitionKey
+	p.NextRowKey = rowKey
+}

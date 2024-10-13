@@ -1,12 +1,19 @@
 package mydataInvoices
 
-import "errors"
+import (
+	"encoding/xml"
+	"errors"
+
+	"github.com/buffos/go-aade/mydata/mydatavalues"
+)
 
 type InvoicesDoc struct {
-	Xmlns     string     `xml:"xmlns,attr"`
-	XmlnsICLS string     `xml:"xmlns:icls,attr"`
-	XmlnsECLS string     `xml:"xmlns:ecls,attr"`
-	Invoices  []*Invoice `xml:"invoice"`
+	Xmlns             string     `xml:"xmlns,attr"`
+	XmlnsXsi          string     `xml:"xmlns:xsi,attr"`
+	XmlnsICLS         string     `xml:"xmlns:icls,attr"`
+	XmlnsECLS         string     `xml:"xmlns:ecls,attr"`
+	XsiSchemaLocation string     `xml:"xsi:schemaLocation,attr"`
+	Invoices          []*Invoice `xml:"invoice"`
 }
 
 func (i *InvoicesDoc) Print() {
@@ -15,10 +22,27 @@ func (i *InvoicesDoc) Print() {
 	}
 }
 
+func (i *InvoicesDoc) ShouldXML() ([]byte, error) {
+	return xml.Marshal(i)
+}
+
+func (i *InvoicesDoc) MustXML() []byte {
+	body, err := xml.Marshal(i)
+	if err != nil {
+		panic(err)
+	}
+	return body
+}
+
 //goland:noinspection GoUnusedExportedFunction
 func NewInvoices() *InvoicesDoc {
 	return &InvoicesDoc{
-		Invoices: make([]*Invoice, 0),
+		Xmlns:             mydatavalues.Xmlns,
+		XmlnsXsi:          mydatavalues.XmlnsXsi,
+		XmlnsICLS:         mydatavalues.XmlnsICLS,
+		XmlnsECLS:         mydatavalues.XmlnsECLS,
+		XsiSchemaLocation: mydatavalues.SchemaLocation,
+		Invoices:          make([]*Invoice, 0),
 	}
 }
 

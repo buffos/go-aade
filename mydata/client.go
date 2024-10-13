@@ -1,7 +1,9 @@
 package mydata
 
 import (
+	"context"
 	"encoding/xml"
+	"errors"
 	"io"
 	"net/http"
 	"net/url"
@@ -14,6 +16,10 @@ type Client struct {
 	userID          string
 	subscriptionKey string
 	onInvalid       OnInvalidAction // what to do when an invalid invoice is encountered
+}
+
+type ToMap interface {
+	ToMap() (map[string]string, error)
 }
 
 // NewClient creates a new myDATA client
@@ -47,10 +53,10 @@ func (c *Client) getURL(path string, queryArgs map[string]string) string {
 		Scheme: "https",
 	}
 	if c.prod {
-		u.Host = prodHost
+		u.Host = productionHost
 		u.Path = path
 	} else {
-		u.Host = develHost
+		u.Host = developmentHost
 		u.Path = path
 	}
 	if queryArgs != nil {
@@ -86,4 +92,31 @@ func ParseXMLResponse[T any](r *http.Response) (*T, error) {
 		return nil, err
 	}
 	return &result, nil
+}
+
+func Requester[P ToMap, T any](c *Client, params P, urlPath string) (int, *T, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), c.client.Timeout)
+	defer cancel()
+	queryArgs, err := params.ToMap()
+	if err != nil {
+		return InternalErrorCode, nil, ErrorQueryURLCreation
+	}
+	request, err := http.NewRequestWithContext(ctx, http.MethodGet, c.getURL(urlPath, queryArgs), nil)
+	if err != nil {
+		return InternalErrorCode, nil, ErrorRequestCreation
+	}
+	c.authorize(request)
+	response, err := c.client.Do(request)
+	if err != nil {
+		return InternalErrorCode, nil, ErrorGettingResponse
+	}
+
+	//b, _ := c.responseToString(response)
+	//fmt.Println(b)
+
+	result, err := ParseXMLResponse[T](response)
+	if err != nil {
+		return InternalErrorCode, nil, errors.Join(ErrorXMLParsingResponse, err)
+	}
+	return response.StatusCode, result, nil
 }

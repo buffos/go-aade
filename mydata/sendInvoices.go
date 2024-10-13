@@ -5,9 +5,9 @@ import (
 	"context"
 	"encoding/xml"
 	"errors"
-	"github.com/buffos/go-aade/mydata/mydataInvoices"
-	"github.com/buffos/go-aade/mydata/mydatavalues"
 	"net/http"
+
+	"github.com/buffos/go-aade/mydata/mydataInvoices"
 )
 
 type SendInvoiceParams struct {
@@ -18,10 +18,6 @@ type SendInvoiceParams struct {
 func (c *Client) SendInvoices(invoices *mydataInvoices.InvoicesDoc) (int, *mydataInvoices.ResponseDoc, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), c.client.Timeout)
 	defer cancel()
-
-	invoices.Xmlns = mydatavalues.Xmlns
-	invoices.XmlnsICLS = mydatavalues.XmlnsICLS
-	invoices.XmlnsECLS = mydatavalues.XmlnsECLS
 
 	err := invoices.Validate()
 	// returning if one of the invoices is invalid

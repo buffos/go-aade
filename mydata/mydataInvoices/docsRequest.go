@@ -2,8 +2,9 @@ package mydataInvoices
 
 import (
 	"errors"
-	"github.com/buffos/go-aade/mydata/mydatavalues"
 	"time"
+
+	"github.com/buffos/go-aade/mydata/mydatavalues"
 )
 
 type RequestDocsParams struct {
@@ -16,6 +17,11 @@ type RequestDocsParams struct {
 	MaxMark           string                    // Μέγιστος Αριθμός ΜΑΡΚ
 	NextPartitionKey  string                    // Παράμετρος για την τμηματική λήψη των αποτελεσμάτων
 	NextRowKey        string                    // Παράμετρος για την τμηματική λήψη των αποτελεσμάτων
+}
+
+func (p *RequestDocsParams) SetNextPartitionData(partitionKey, rowKey string) {
+	p.NextPartitionKey = partitionKey
+	p.NextRowKey = rowKey
 }
 
 func (p *RequestDocsParams) ToMap() (map[string]string, error) {

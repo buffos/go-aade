@@ -22,6 +22,13 @@ func (r *RequestedVatInfoType) Print() {
 	}
 }
 
+func (r *RequestedVatInfoType) GetNextPartitionData() (string, string) {
+	if r.ContinuationToken == nil {
+		return "", ""
+	}
+	return r.ContinuationToken.NextPartitionKey, r.ContinuationToken.NextRowKey
+}
+
 type InvoiceVatDetailType struct {
 	Mark               *string    `xml:"Mark"`
 	IsCancelled        *bool      `xml:"IsCancelled"`

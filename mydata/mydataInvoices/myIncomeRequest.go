@@ -2,8 +2,9 @@ package mydataInvoices
 
 import (
 	"errors"
-	"github.com/buffos/go-aade/mydata/mydatavalues"
 	"time"
+
+	"github.com/buffos/go-aade/mydata/mydatavalues"
 )
 
 type RequestMyIncomeParams struct {
@@ -14,6 +15,11 @@ type RequestMyIncomeParams struct {
 	InvType          mydatavalues.InvoiceType // Τύπος Παραστατικού
 	NextPartitionKey string                   // Παράμετρος για την τμηματική λήψη των αποτελεσμάτων
 	NextRowKey       string                   // Παράμετρος για την τμηματική λήψη των αποτελεσμάτων
+}
+
+func (p *RequestMyIncomeParams) SetNextPartitionData(partitionKey, rowKey string) {
+	p.NextPartitionKey = partitionKey
+	p.NextRowKey = rowKey
 }
 
 func (p *RequestMyIncomeParams) ToMap() (map[string]string, error) {
@@ -58,6 +64,11 @@ type RequestMyExpensesParams struct {
 	InvType          mydatavalues.InvoiceType // Τύπος Παραστατικού
 	NextPartitionKey string                   // Παράμετρος για την τμηματική λήψη των αποτελεσμάτων
 	NextRowKey       string                   // Παράμετρος για την τμηματική λήψη των αποτελεσμάτων
+}
+
+func (p *RequestMyExpensesParams) SetNextPartitionData(partitionKey, rowKey string) {
+	p.NextPartitionKey = partitionKey
+	p.NextRowKey = rowKey
 }
 
 func (p *RequestMyExpensesParams) ToMap() (map[string]string, error) {
