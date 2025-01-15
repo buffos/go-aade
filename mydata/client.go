@@ -4,9 +4,12 @@ import (
 	"context"
 	"encoding/xml"
 	"errors"
+	"fmt"
 	"io"
 	"net/http"
 	"net/url"
+	"path"
+	"strings"
 	"time"
 )
 
@@ -47,18 +50,30 @@ func (c *Client) authorize(req *http.Request) {
 
 }
 
-// getURL creates the url for the request
-func (c *Client) getURL(path string, queryArgs map[string]string) string {
-	u := url.URL{
-		Scheme: "https",
-	}
+// getHost returns the host for the request
+func (c *Client) getHost() string {
 	if c.prod {
-		u.Host = productionHost
-		u.Path = path
-	} else {
-		u.Host = developmentHost
-		u.Path = path
+		return productionHost
 	}
+	return developmentHost
+}
+
+// getURL creates the url for the request
+func (c *Client) getURL(urlPath string, queryArgs map[string]string) string {
+	host := c.getHost()
+	// Extract the base host without the extra path component
+	hostParts := strings.Split(host, "/")
+	baseHost := hostParts[0]
+
+	u, err := url.Parse(fmt.Sprintf("https://%s", baseHost))
+	if err != nil {
+		fmt.Println("Error parsing URL:", err)
+		return ""
+	}
+
+	// Reconstruct the full path, including the extra path component
+	u.Path = path.Join(hostParts[1:]...) + urlPath
+
 	if queryArgs != nil {
 		rq := u.Query()
 		for k, v := range queryArgs {
